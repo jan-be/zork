@@ -1,0 +1,13 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Intellij + BlueJ + Maven template
+#intelliJ files
+.idea/workspace.xml
+out
+*.iws
+
+#BlueJ files
+*.ctxt
+*.class
+
+#Maven files
+target
