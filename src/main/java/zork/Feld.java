@@ -1,3 +1,5 @@
+package zork;
+
 import java.awt.*;
 import java.io.FileNotFoundException;
 
@@ -17,7 +19,7 @@ public class Feld {
         if (t == 'W') typ = 1;      //Weg
         else if (t == 'V') typ = 2; //Versteckte Tür
         else if (t == 'S') typ = 3; //Start
-        else if (t == 'M') typ = 4; //Monster
+        else if (t == 'M') typ = 4; //zork.Monster
         else typ = 0;
 
         aufgedeckt = false;
@@ -36,7 +38,7 @@ public class Feld {
     }
 
     public boolean kannBetretenWerden()
-    // liefert True, wenn das Feld ein Weg (1) ist oder wenn es sich 
+    // liefert True, wenn das zork.Feld ein Weg (1) ist oder wenn es sich
     // um das Startfeld oder ein Monsterfeld handelt
     {
         return ((typ == 1) || (typ == 3) || (typ == 4));
@@ -80,10 +82,10 @@ public class Feld {
     public void werteVomMonsterZeigen(Graphics g) {
         if (hatMonster()) {
             if (monster.leben > 0) {
-                g.drawString("Monster: Leben: " + monster.leben + ", Angriff: " + monster.angriff + ", Rüstung: " + monster.ruestung + ", Gold: " + monster.gold,
+                g.drawString("zork.Monster: Leben: " + monster.leben + ", Angriff: " + monster.angriff + ", Rüstung: " + monster.ruestung + ", Gold: " + monster.gold,
                         124, 80 + dungeonDaten.hoehe * 20);
             } else {
-                g.drawString("Monster tot", 124, 80 + dungeonDaten.hoehe * 20);
+                g.drawString("zork.Monster tot", 124, 80 + dungeonDaten.hoehe * 20);
             }
         }
     }

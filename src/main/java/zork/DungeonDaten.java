@@ -1,3 +1,5 @@
+package zork;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -18,7 +20,7 @@ public class DungeonDaten {
         String temp;
         Scanner scanner;
         int laengeDerLaengstenZeile = 0;
-        scanner = new Scanner(new File("Y:\\Info Projects\\ZORK-unsers-104\\src\\main\\resources\\karte.txt"));
+        scanner = new Scanner(new File("Y:\\Info Projects\\ZORK\\src\\main\\resources\\karte.txt"));
         temp = scanner.useDelimiter("\\A").next();
         scanner.close();
 
@@ -38,5 +40,17 @@ public class DungeonDaten {
             }
         }
 
+    }
+
+    public int getAnzahlMonster() {
+        int tmp = 0;
+        for (int i = 0; i < daten.length; i++) {
+            for (int j = 0; j < daten[i].length(); j++) {
+                if(daten[i].charAt(j)=='M') {
+                    tmp++;
+                }
+            }
+        }
+        return tmp;
     }
 }

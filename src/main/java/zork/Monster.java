@@ -1,3 +1,5 @@
+package zork;
+
 import java.awt.*;
 
 public class Monster {
