@@ -14,7 +14,6 @@ public class Dungeon {
     private long zeitAmAnfang, zeitGebraucht;
     Preferences preferences;
 
-    @SuppressWarnings("fallthrough")
     public Dungeon() throws FileNotFoundException {
         daten = new DungeonDaten();
         feld = new Feld[daten.breite][daten.hoehe];
@@ -82,6 +81,16 @@ public class Dungeon {
         feld[aktX][aktY].werteVomMonsterZeigen(g);
     }
 
+    public void kampfenOderHeilen() {
+        if (feld[aktX][aktY].hatMonster()) {
+            kaempfen();
+        } else if (feld[aktX][aktY].hatHeiltrank()) {
+            heilen();
+        } else if (feld[aktX][aktY].hatKnife()) {
+
+        }
+    }
+
     public void kaempfen() {
         if (feld[aktX][aktY].hatMonster()) {
             kurt.kaempfe(feld[aktX][aktY].gibMonster());
@@ -95,8 +104,14 @@ public class Dungeon {
         }
     }
 
+    public void heilen() {
+        if (feld[aktX][aktY].hatHeiltrank()) {
+            kurt.heilen(feld[aktX][aktY].gibHeiltrank());
+        }
+    }
+
     private void zeitStoppen() {
-        zeitGebraucht = System.currentTimeMillis()-zeitAmAnfang;
+        zeitGebraucht = System.currentTimeMillis() - zeitAmAnfang;
     }
 
     private String zeitGebrauchtString() {
@@ -104,6 +119,7 @@ public class Dungeon {
                 TimeUnit.MILLISECONDS.toSeconds(zeitGebraucht) +
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(zeitGebraucht)));
     }
+
     private void highscoreSpeichern() {
         if (Long.parseLong(preferences.get("highscore", "10000000")) > zeitGebraucht) {
             preferences.put("highscore", Long.toString(zeitGebraucht));

@@ -20,7 +20,7 @@ public class DungeonDaten {
         String temp;
         Scanner scanner;
         int laengeDerLaengstenZeile = 0;
-        scanner = new Scanner(new File("Y:\\Info Projects\\ZORK\\src\\main\\resources\\karte.txt"));
+        scanner = new Scanner(new File("E:/Info Projects/ZORK/src/main/resources/karte.txt"));
         temp = scanner.useDelimiter("\\A").next();
         scanner.close();
 

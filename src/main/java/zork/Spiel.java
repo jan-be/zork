@@ -67,7 +67,7 @@ public class Spiel extends JApplet implements ActionListener, KeyListener {
                 brett.goEast();
                 break;
             case 32:
-                brett.kaempfen();
+                brett.kampfenOderHeilen();
         }
         repaint();
     }

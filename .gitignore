@@ -8,6 +8,7 @@ out
 #BlueJ files
 *.ctxt
 *.class
+*.html
 
 #Maven files
 target

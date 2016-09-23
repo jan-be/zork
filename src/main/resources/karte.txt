@@ -1,18 +1,18 @@
-WWWWWSWWWWWWWMWWWWWWWWWW
+WWWWWSWWWWWWWMWWHWWWWWWW
 W    W     W      W    W
+H    W     W      W    W
 W    W     W      W    W
-W    W     W      W    W
-W        VWWWV    W    W
+W        VWWWV    W    K
 W        WWWMW    W    W
 W         WW      W    M
-W         WW      W    W
+W         WW      W    H
 WWWWWWWWWWWW      W    W
 WWWMWWWWWWWWWMWWWWW    W
 W         WW           W
 W         WW           W
-WWV       WWWWWWWWMWWWWW
+WHV       WWWWWWWWMWWWWW
 W         WW
-W         WW
-W         WW
-W         WW
-WWWWWMMWWWWW
+W         WW      H
+W         HW      W
+W         WW      W
+WWWWWMMWWWWWWWWWWWW
