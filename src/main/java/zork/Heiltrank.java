@@ -12,7 +12,7 @@ public class Heiltrank {
         this.x = x;
         this.y = y;
 
-        anfangsleben = 121;
+        anfangsleben = 122;
         lebenswiedergabe = anfangsleben;
     }
     public void paint(Graphics g) {
