@@ -47,7 +47,7 @@ public class Feld {
     }
 
     public boolean kannBetretenWerden()
-    // liefert True, wenn das zork.Feld ein Weg (1) ist oder wenn es sich
+    // liefert True, wenn das Feld ein Weg (1) ist oder wenn es sich
     // um das Startfeld oder ein Monsterfeld handelt
     {
         return (typ != 0);
