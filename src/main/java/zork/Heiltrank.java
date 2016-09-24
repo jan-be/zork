@@ -4,8 +4,7 @@ import java.awt.*;
 
 public class Heiltrank {
     public int x, y;
-    public int lebenswiedergabe;
-    public final int anfangsleben;
+    public int lebenswiedergabe, anfangsleben;
 
     public Heiltrank(int x, int y)
     {

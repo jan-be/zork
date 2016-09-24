@@ -30,7 +30,7 @@ public class Knife {
             int xPix = 20 + x * 20;
             int yPix = 20 + y * 20;
 
-            g.setColor(Color.RED);
+            g.setColor(Color.YELLOW);
             g.fillOval(xPix + 5, yPix + 5, 10, 10);
         }
     }

@@ -2,7 +2,6 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.util.Random;
 
 public class Held {
@@ -10,17 +9,15 @@ public class Held {
     double angriff, ruestung, leben, anfangsleben;
     int gold, monsterGetoetet;
     Random wuerfel;
+    DungeonDaten dungeonDaten = new DungeonDaten();
 
-    DungeonDaten dd;
-
-    public Held() throws FileNotFoundException {
+    public Held()  {
         leben = 255;
         anfangsleben = leben;
         angriff = 50;
         ruestung = 10;
         gold = 25;
 
-        dd = new DungeonDaten();
         wuerfel = new Random();
     }
 
@@ -60,7 +57,7 @@ public class Held {
         }
     }
 
-    public void aufsammeln(Knife knife) {
+    public void aufnehmen(Knife knife) {
         angriff += knife.angriff;
         knife.aufgesammelt = true;
     }
@@ -77,12 +74,12 @@ public class Held {
         g.fillOval(xPix + 4, yPix + 4, 12, 12);
 
         g.setColor(new Color(255, 255, 191));
-        g.fillRect(120, 40 + dd.hoehe * 20, 20 * dd.breite - 100, 70);
+        g.fillRect(120, 40 + dungeonDaten.hoehe * 20, 20 * dungeonDaten.breite - 100, 70);
         g.setColor(new Color(0, 0, 0));
-        g.drawRect(120, 40 + dd.hoehe * 20, 20 * dd.breite - 100, 70);
+        g.drawRect(120, 40 + dungeonDaten.hoehe * 20, 20 * dungeonDaten.breite - 100, 70);
 
         g.drawString("Held: Leben: " + leben + ", Angriff: " + angriff + ", Rüstung: " + ruestung + ", Gold: " + gold,
-                124, 60 + dd.hoehe * 20);
+                124, 60 + dungeonDaten.hoehe * 20);
     }
 
 }

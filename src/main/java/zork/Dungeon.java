@@ -2,42 +2,41 @@ package zork;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.util.concurrent.TimeUnit;
 import java.util.prefs.Preferences;
 
 public class Dungeon {
     private Feld[][] feld;
-    private DungeonDaten daten;
     public Held kurt;
-    private int aktX, aktY;
+    private int aktX, aktY, level;
     private long zeitAmAnfang, zeitGebraucht;
-    Preferences preferences;
+    Preferences preferences = Preferences.userNodeForPackage(Dungeon.class);
+    DungeonDaten dungeonDaten = new DungeonDaten();
 
-    public Dungeon() throws FileNotFoundException {
-        daten = new DungeonDaten();
-        feld = new Feld[daten.breite][daten.hoehe];
+    public Dungeon() {
+        feld = new Feld[dungeonDaten.breite][dungeonDaten.hoehe];
         kurt = new Held();
         zeitAmAnfang = System.currentTimeMillis();
+        felderLaden(level);
+    }
 
-        for (int y = 0; y < daten.hoehe; y++) {
-            for (int x = 0; x < daten.breite; x++) {
-                feld[x][y] = new Feld(x, y, daten.daten[y].charAt(x));
-                if (daten.daten[y].charAt(x) == 'S') {
+    public void felderLaden(int level) {
+        for (int y = 0; y < dungeonDaten.hoehe; y++) {
+            for (int x = 0; x < dungeonDaten.breite; x++) {
+                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x));
+                if (dungeonDaten.alleLevelDaten[level][y].charAt(x) == 'S') {
                     aktX = x;
                     aktY = y;
                     kurt.geheZu(aktX, aktY);
                 }
             }
         }
-
-        preferences = Preferences.userNodeForPackage(Dungeon.class);
     }
 
     public void nachbarfelderAufdecken() {
         if (aktY >= 1) feld[aktX][aktY - 1].aufdecken();
-        if (aktY <= daten.hoehe - 2) feld[aktX][aktY + 1].aufdecken();
-        if (aktX <= daten.breite - 2) feld[aktX + 1][aktY].aufdecken();
+        if (aktY <= dungeonDaten.hoehe - 2) feld[aktX][aktY + 1].aufdecken();
+        if (aktX <= dungeonDaten.breite - 2) feld[aktX + 1][aktY].aufdecken();
         if (aktX >= 1) feld[aktX - 1][aktY].aufdecken();
     }
 
@@ -50,7 +49,7 @@ public class Dungeon {
     }
 
     public void goEast() {
-        if (aktX > daten.breite - 2) return;                      // zork.Dungeon-Grenze Ost erreicht
+        if (aktX > dungeonDaten.breite - 2) return;                      // zork.Dungeon-Grenze Ost erreicht
         if (!feld[aktX + 1][aktY].kannBetretenWerden()) return;   // im Osten ist kein Weg
         aktX++;
         kurt.geheZu(aktX, aktY);
@@ -66,7 +65,7 @@ public class Dungeon {
     }
 
     public void goSouth() {
-        if (aktY > daten.hoehe - 2) return;                        // zork.Dungeon-Grenze Sued erreicht
+        if (aktY > dungeonDaten.hoehe - 2) return;                        // zork.Dungeon-Grenze Sued erreicht
         if (!feld[aktX][aktY + 1].kannBetretenWerden()) return;    // im Sueden kein Weg
         aktY++;
         kurt.geheZu(aktX, aktY);
@@ -74,20 +73,33 @@ public class Dungeon {
     }
 
     public void paint(Graphics g) {
-        for (int y = 0; y < daten.hoehe; y++)
-            for (int x = 0; x < daten.breite; x++)
+        for (int y = 0; y < dungeonDaten.hoehe; y++)
+            for (int x = 0; x < dungeonDaten.breite; x++)
                 feld[x][y].paint(g);
         kurt.paint(g);
-        feld[aktX][aktY].werteVomMonsterZeigen(g);
+        feld[aktX][aktY].werteVomGegenstandZeigen(g);
     }
 
-    public void kampfenOderHeilen() {
+    public void aktionAusführen() { //wenn true, dann wird nächstes Level gestartet
         if (feld[aktX][aktY].hatMonster()) {
             kaempfen();
         } else if (feld[aktX][aktY].hatHeiltrank()) {
             heilen();
         } else if (feld[aktX][aktY].hatKnife()) {
+            knifeAufnehmen();
+        } else if (feld[aktX][aktY].hatVersteckteTuer()) {
+            naechstesLevelStarten();
+        }
+    }
 
+    private void naechstesLevelStarten() {
+        level++;
+        felderLaden(level);
+    }
+
+    private void knifeAufnehmen() {
+        if (feld[aktX][aktY].hatKnife()) {
+            kurt.aufnehmen(feld[aktX][aktY].gibKnife());
         }
     }
 
@@ -95,7 +107,7 @@ public class Dungeon {
         if (feld[aktX][aktY].hatMonster()) {
             kurt.kaempfe(feld[aktX][aktY].gibMonster());
         }
-        if (kurt.monsterGetoetet == daten.getAnzahlMonster()) {
+        if (kurt.monsterGetoetet == dungeonDaten.getAnzahlMonster()) {
             zeitStoppen();
             highscoreSpeichern();
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),

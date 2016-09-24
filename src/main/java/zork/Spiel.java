@@ -6,24 +6,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.FileNotFoundException;
 
 public class Spiel extends JApplet implements ActionListener, KeyListener {
     Dungeon brett;
     Button[] btn;
-    DungeonDaten daten;
+    DungeonDaten dungeonDaten = new DungeonDaten();
 
     public void init() {
-        try {
-            brett = new Dungeon();
-            daten = new DungeonDaten();
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "karte.txt nicht gefunden", "ALARM", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
-        }
+        brett = new Dungeon();
+
         addKeyListener(this);
 
-        this.setSize(40 + daten.breite * 20, 140 + daten.hoehe * 20);
+        this.setSize(40 + dungeonDaten.breite * 20, 140 + dungeonDaten.hoehe * 20);
 
         this.setVisible(true);
         requestFocus();
@@ -67,7 +61,7 @@ public class Spiel extends JApplet implements ActionListener, KeyListener {
                 brett.goEast();
                 break;
             case 32:
-                brett.kampfenOderHeilen();
+                brett.aktionAusführen();
         }
         repaint();
     }

@@ -1,7 +1,6 @@
 package zork;
 
 import java.awt.*;
-import java.io.FileNotFoundException;
 
 public class Feld {
     private int typ;
@@ -9,10 +8,10 @@ public class Feld {
     private Monster monster;
     private Heiltrank heiltrank;
     private Knife knife;
+    DungeonDaten dungeonDaten = new DungeonDaten();
 
     // Aufgabe 2.3.7
     boolean aufgedeckt;
-    DungeonDaten dungeonDaten;
 
 
     public Feld(int x, int y, char t) {
@@ -28,17 +27,12 @@ public class Feld {
 
         aufgedeckt = false;
 
-        if (typ == 4)
+        if (typ == 4) {
             monster = new Monster(x, y);
-        if (typ == 5)
+        } else if (typ == 5) {
             heiltrank = new Heiltrank(x, y);
-        if (typ == 6)
+        } else if (typ == 6) {
             knife = new Knife(x, y);
-
-        try {
-            dungeonDaten = new DungeonDaten();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -60,8 +54,13 @@ public class Feld {
     public boolean hatHeiltrank() {
         return (typ == 5);
     }
+
     public boolean hatKnife() {
         return (typ == 6);
+    }
+
+    public boolean hatVersteckteTuer() {
+        return typ == 2;
     }
 
 
@@ -71,6 +70,10 @@ public class Feld {
 
     public Heiltrank gibHeiltrank() {
         return heiltrank;
+    }
+
+    public Knife gibKnife() {
+        return knife;
     }
 
     public void aufdecken() {
@@ -104,13 +107,19 @@ public class Feld {
         }
     }
 
-    public void werteVomMonsterZeigen(Graphics g) {
+    public void werteVomGegenstandZeigen(Graphics g) {
         if (hatMonster()) {
             if (monster.leben > 0) {
                 g.drawString("Monster: Leben: " + monster.leben + ", Angriff: " + monster.angriff + ", Rüstung: " + monster.ruestung + ", Gold: " + monster.gold,
                         124, 80 + dungeonDaten.hoehe * 20);
             } else {
                 g.drawString("Monster tot", 124, 80 + dungeonDaten.hoehe * 20);
+            }
+        } else if (hatHeiltrank()) {
+            if (heiltrank.lebenswiedergabe > 1) {
+                g.drawString("Der Heiltrank kann noch " + heiltrank.lebenswiedergabe + " wiedergeben", 124, 80 + dungeonDaten.hoehe * 20);
+            } else {
+                g.drawString("Heiltrank alle", 124, 80 + dungeonDaten.hoehe * 20);
             }
         }
     }
