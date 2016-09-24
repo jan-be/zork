@@ -20,7 +20,16 @@ public class DungeonDaten {
         String temp;
         Scanner scanner;
         int laengeDerLaengstenZeile = 0;
-        scanner = new Scanner(new File("E:/Info Projects/ZORK/src/main/resources/karte.txt"));
+
+        String pathOhneBuchstabe = ":/Info Projects/ZORK/src/main/resources/karte.txt";
+        String pathMitBuchstabe = "";
+        for (char letter = 'A'; letter <= 'Z'; letter++) {
+            if (new File(letter + pathOhneBuchstabe).exists()) {
+                pathMitBuchstabe = letter + pathOhneBuchstabe;
+            }
+        }
+
+        scanner = new Scanner(new File(pathMitBuchstabe));
         temp = scanner.useDelimiter("\\A").next();
         scanner.close();
 
@@ -46,7 +55,7 @@ public class DungeonDaten {
         int tmp = 0;
         for (int i = 0; i < daten.length; i++) {
             for (int j = 0; j < daten[i].length(); j++) {
-                if(daten[i].charAt(j)=='M') {
+                if (daten[i].charAt(j) == 'M') {
                     tmp++;
                 }
             }
