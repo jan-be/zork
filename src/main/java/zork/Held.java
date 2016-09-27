@@ -60,6 +60,9 @@ public class Held {
     public void aufnehmen(Knife knife) {
         angriff += knife.angriff;
         knife.aufgesammelt = true;
+        knife.angriff = 0;
+
+
     }
 
     public void paint(Graphics g) {
