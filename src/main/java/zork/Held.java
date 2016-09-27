@@ -1,4 +1,4 @@
- package zork;
+package zork;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ public class Held {
     Random wuerfel;
     DungeonDaten dungeonDaten = new DungeonDaten();
 
-    public Held()  {
+    public Held() {
         leben = 255;
         anfangsleben = leben;
         angriff = 50;
@@ -58,18 +58,17 @@ public class Held {
     }
 
     public void aufnehmen(Knife knife) {
-        angriff += knife.angriff;
-        knife.aufgesammelt = true;
-        knife.angriff = 0;
-
-
+        if (!knife.aufgesammelt) {
+            angriff += knife.angriff;
+            knife.aufgesammelt = true;
+        }
     }
 
     public void paint(Graphics g) {
         int xPix = 20 + x * 20;
         int yPix = 20 + y * 20;
 
-        if (leben / anfangsleben> 1) {
+        if (leben / anfangsleben > 1) {
             g.setColor(Color.GREEN);
         } else {
             g.setColor(new Color(0, (int) (255 * leben / anfangsleben), 0));
