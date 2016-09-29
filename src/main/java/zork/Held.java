@@ -9,9 +9,10 @@ public class Held {
     double angriff, ruestung, leben, anfangsleben;
     int gold, monsterGetoetet;
     Random wuerfel;
-    DungeonDaten dungeonDaten = new DungeonDaten();
+    DungeonDaten dungeonDaten;
 
-    public Held() {
+    public Held(DungeonDaten dungeonDaten) {
+        this.dungeonDaten = dungeonDaten;
         leben = 255;
         anfangsleben = leben;
         angriff = 50;

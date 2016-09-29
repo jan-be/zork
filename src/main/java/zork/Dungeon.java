@@ -11,11 +11,12 @@ public class Dungeon {
     private int aktX, aktY, level;
     private long zeitAmAnfang, zeitGebraucht;
     Preferences preferences = Preferences.userNodeForPackage(Dungeon.class);
-    DungeonDaten dungeonDaten = new DungeonDaten();
+    DungeonDaten dungeonDaten;
 
-    public Dungeon() {
+    public Dungeon(DungeonDaten dungeonDaten) {
+        this.dungeonDaten = dungeonDaten;
         feld = new Feld[dungeonDaten.breite][dungeonDaten.hoehe];
-        kurt = new Held();
+        kurt = new Held(dungeonDaten);
         zeitAmAnfang = System.currentTimeMillis();
         felderLaden(level);
     }
@@ -23,7 +24,7 @@ public class Dungeon {
     public void felderLaden(int level) {
         for (int y = 0; y < dungeonDaten.hoehe; y++) {
             for (int x = 0; x < dungeonDaten.breite; x++) {
-                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x));
+                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x), dungeonDaten);
                 if (dungeonDaten.alleLevelDaten[level][y].charAt(x) == 'S') {
                     aktX = x;
                     aktY = y;
@@ -31,9 +32,11 @@ public class Dungeon {
                 }
             }
         }
+        nachbarfelderAufdecken();
     }
 
     public void nachbarfelderAufdecken() {
+        feld[aktX][aktY].aufdecken();
         if (aktY >= 1) feld[aktX][aktY - 1].aufdecken();
         if (aktY <= dungeonDaten.hoehe - 2) feld[aktX][aktY + 1].aufdecken();
         if (aktX <= dungeonDaten.breite - 2) feld[aktX + 1][aktY].aufdecken();

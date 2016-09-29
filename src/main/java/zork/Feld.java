@@ -8,13 +8,14 @@ public class Feld {
     private Monster monster;
     private Heiltrank heiltrank;
     private Knife knife;
-    DungeonDaten dungeonDaten = new DungeonDaten();
+    DungeonDaten dungeonDaten;
 
     // Aufgabe 2.3.7
     boolean aufgedeckt;
 
 
-    public Feld(int x, int y, char t) {
+    public Feld(int x, int y, char t, DungeonDaten dungeonDaten) {
+        this.dungeonDaten = dungeonDaten;
         this.x = 20 + x * 20;
         this.y = 20 + y * 20;
         if (t == 'W') typ = 1;      //Weg

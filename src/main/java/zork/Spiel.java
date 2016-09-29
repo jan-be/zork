@@ -13,7 +13,7 @@ public class Spiel extends JApplet implements ActionListener, KeyListener {
     DungeonDaten dungeonDaten = new DungeonDaten();
 
     public void init() {
-        brett = new Dungeon();
+        brett = new Dungeon(dungeonDaten);
 
         addKeyListener(this);
 
