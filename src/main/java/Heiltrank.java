@@ -1,5 +1,3 @@
-package zork;
-
 import java.awt.*;
 
 public class Heiltrank {

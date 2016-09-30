@@ -1,9 +1,7 @@
-package zork;
-
 import javax.swing.*;
 import java.awt.*;
 
-public class TheFrame {
+public class Frame {
     public static void main(String[] args) {
         JFrame jFrame = new JFrame("ZORK");
         DungeonDaten dungeonDaten = new DungeonDaten();
