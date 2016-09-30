@@ -59,7 +59,7 @@ public class Spiel extends JPanel implements ActionListener, KeyListener {
                 brett.goEast();
                 break;
             case 32:
-                brett.aktionAusführen();
+                brett.aktionAusfuehren();
         }
         repaint();
     }

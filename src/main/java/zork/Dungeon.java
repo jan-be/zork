@@ -83,7 +83,7 @@ public class Dungeon {
         feld[aktX][aktY].werteVomGegenstandZeigen(g);
     }
 
-    public void aktionAusführen() { //wenn true, dann wird nächstes Level gestartet
+    public void aktionAusfuehren() { //wenn true, dann wird nächstes Level gestartet
         if (feld[aktX][aktY].hatMonster()) {
             kaempfen();
         } else if (feld[aktX][aktY].hatHeiltrank()) {
