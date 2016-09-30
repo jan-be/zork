@@ -7,40 +7,38 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Spiel extends JApplet implements ActionListener, KeyListener {
+public class Spiel extends JPanel implements ActionListener, KeyListener {
     Dungeon brett;
-    Button[] btn;
-    DungeonDaten dungeonDaten = new DungeonDaten();
+    JButton[] btn;
+    DungeonDaten dungeonDaten;
 
-    public void init() {
+    public Spiel(DungeonDaten dungeonDaten) {
+        this.dungeonDaten = dungeonDaten;
         brett = new Dungeon(dungeonDaten);
 
         addKeyListener(this);
 
-        this.setSize(40 + dungeonDaten.breite * 20, 140 + dungeonDaten.hoehe * 20);
+        setLayout(null);
+        btn = new JButton[4];
 
-        this.setVisible(true);
-        requestFocus();
-
-        btn = new Button[4];
-
-        btn[0] = new Button("west");
-        btn[1] = new Button("north");
-        btn[2] = new Button("east");
-        btn[3] = new Button("south");
+        btn[0] = new JButton("west");
+        btn[1] = new JButton("north");
+        btn[2] = new JButton("east");
+        btn[3] = new JButton("south");
 
         btn[0].setBounds(20, 420, 40, 20);
         btn[1].setBounds(40, 400, 40, 20);
         btn[2].setBounds(60, 420, 40, 20);
         btn[3].setBounds(40, 440, 40, 20);
 
-        getContentPane().setLayout(null);
 
         for (int b = 0; b < 4; b++) {
-            getContentPane().add(btn[b]);
+            add(btn[b]);
             btn[b].addActionListener(this);
+            btn[b].setFocusable(false);
+            btn[b].setMargin(new Insets(0,0,0,0));
         }
-        repaint();
+        setFocusable(true);
     }
 
     public void keyTyped(KeyEvent k) {
@@ -82,11 +80,11 @@ public class Spiel extends JApplet implements ActionListener, KeyListener {
         else if (ereignis.getSource() == btn[3])
             brett.goSouth();
 
-        requestFocus();
         repaint();
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         brett.paint(g);
     }
 
