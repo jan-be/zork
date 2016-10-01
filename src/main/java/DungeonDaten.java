@@ -3,16 +3,17 @@ import java.util.Scanner;
 
 class DungeonDaten {
 
-    String[][] alleLevelDaten = new String[3][100];
-    int breite, hoehe, anzahlMonster;
+    String[][] alleLevelDaten = new String[Frame.ANZAHL_LEVEL][100];
+    int breite, hoehe;
+    int[] anzahlMonsterProLevel = new int[Frame.ANZAHL_LEVEL];
 
     DungeonDaten() {
         for (int i = 0; i < 2; i++) {
             alleLevelDaten[i] = getDaten(i+1);
+            anzahlMonsterProLevel[i] = getAnzahlMonster(i);
         }
         hoehe = alleLevelDaten[0].length;
         breite = getBreite();
-        anzahlMonster = getAnzahlMonster();
     }
 
     private static String[] getDaten(int level) {
@@ -54,8 +55,8 @@ class DungeonDaten {
     }
 
 
-    private int getAnzahlMonster() {
-        String[] temp = alleLevelDaten[0];
+    private int getAnzahlMonster(int level) {
+        String[] temp = alleLevelDaten[level];
         int tmp = 0;
         for (String aTemp : temp) {
             for (int j = 0; j < aTemp.length(); j++) {

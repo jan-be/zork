@@ -98,8 +98,12 @@ class Dungeon {
     }
 
     private void naechstesLevelStarten() {
-        level++;
-        felderLaden(level);
+        if (level < Frame.ANZAHL_LEVEL-1) {
+            level++;
+            felderLaden(level);
+        } else {
+            JOptionPane.showMessageDialog(null, "Damn Daniel, \n du hast es geschafft.", "Props.", 1);
+        }
     }
 
     private void knifeAufnehmen() {
@@ -118,13 +122,12 @@ class Dungeon {
         if (feld[aktX][aktY].hatMonster()) {
             kurt.kaempfe(feld[aktX][aktY].gibMonster());
         }
-        if (kurt.monsterGetoetet == dungeonDaten.anzahlMonster) {
+        if (kurt.monsterGetoetet == dungeonDaten.anzahlMonsterProLevel[level]) {
             zeitStoppen();
             highscoreSpeichern();
-            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),
-                    "Du hast in " + zeitFormatieren(zeitGebraucht) + " alle Monster getötet. Dein Highscore: " +
-                            zeitFormatieren(Long.parseLong(preferences.get("highscore", "0"))),
-                    "Fertig", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Du hast in " + zeitFormatieren(zeitGebraucht) + " alle Monster getötet. " +
+                            "\n Dein Highscore: " + zeitFormatieren(Long.parseLong(preferences.get("highscore", "0"))),
+                    "Fertig", 1);
         }
     }
 
@@ -139,15 +142,23 @@ class Dungeon {
     }
 
     private static String zeitFormatieren(long millis) {
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-        millis -= TimeUnit.MINUTES.toMillis(minutes);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+        long minuten = TimeUnit.MILLISECONDS.toMinutes(millis);
+        millis -= TimeUnit.MINUTES.toMillis(minuten);
+        long sekunden = TimeUnit.MILLISECONDS.toSeconds(millis);
 
-        return (String.valueOf(minutes) +
-                " Minuten " +
-                seconds +
-                " Sekunden");
+        if (minuten == 1 && sekunden == 1) {
+            return minuten + " Minute " + sekunden + " Sekunde";
+        } else if (minuten == 1) {
+            return minuten + " Minute " + sekunden + " Sekunden";
+        } else if (minuten > 1 && sekunden == 1) {
+            return minuten + " Minuten " + sekunden + " Sekunde";
+        } else if (minuten > 1) {
+            return minuten + " Minuten " + sekunden + " Sekunden";
+        } else if (sekunden == 1) {
+            return ("scheiß cheater (ง ͠° ͟ل͜ ͡°)ง");
+        } else {
+            return sekunden + " Sekunden";
+        }
     }
-
 
 }
