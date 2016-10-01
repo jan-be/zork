@@ -7,7 +7,6 @@ class Feld {
     private Heiltrank heiltrank;
     private Knife knife;
     private DungeonDaten dungeonDaten;
-    private BilderGetter bilderGetter;
 
     // Aufgabe 2.3.7
     private boolean aufgedeckt;
@@ -15,7 +14,6 @@ class Feld {
 
     Feld(int x, int y, char t, DungeonDaten dungeonDaten, BilderGetter bilderGetter) {
         this.dungeonDaten = dungeonDaten;
-        this.bilderGetter = bilderGetter;
         this.x = 20 + x * Frame.FELD_SIZE;
         this.y = 20 + y * Frame.FELD_SIZE;
         if (t == 'W') typ = 1;      //Weg

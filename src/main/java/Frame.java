@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Frame {
 
-    static final int FELD_SIZE = 35;
+    static final int FELD_SIZE = 30;
 
     public static void main(String[] args) {
         JFrame jFrame = new JFrame("ZORK");
