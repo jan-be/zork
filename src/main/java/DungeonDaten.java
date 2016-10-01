@@ -1,12 +1,5 @@
-import javax.swing.*;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.Scanner;
-
-import static javafx.scene.input.KeyCode.*;
-import static javax.swing.text.html.HTML.Tag.UL;
 
 /*
  *  Pfad vor dem Ausführen anpassen!
@@ -31,7 +24,7 @@ public class DungeonDaten {
         String[] tempArray;
         int laengeDerLaengstenZeile = 0;
 
-        InputStream inputStream = Frame.class.getResourceAsStream("karte"+level+".txt");
+        InputStream inputStream = Frame.class.getResourceAsStream("karten/" +level+".txt");
 
         Scanner scanner = new Scanner(inputStream);
         temp = scanner.useDelimiter("\\A").next();
