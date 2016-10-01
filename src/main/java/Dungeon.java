@@ -44,32 +44,32 @@ class Dungeon {
     }
 
     void goWest() {
-        if (aktX < 1) return;                                  // zork.Dungeon-Grenze West erreicht
-        if (!feld[aktX - 1][aktY].kannBetretenWerden()) return;  // im Westen ist kein Weg
+        if (aktX < 1) return;
+        if (!feld[aktX - 1][aktY].kannBetretenWerden()) return;
         aktX--;
         kurt.geheZu(aktX, aktY);
         nachbarfelderAufdecken();
     }
 
     void goEast() {
-        if (aktX > dungeonDaten.breite - 2) return;                      // zork.Dungeon-Grenze Ost erreicht
-        if (!feld[aktX + 1][aktY].kannBetretenWerden()) return;   // im Osten ist kein Weg
+        if (aktX > dungeonDaten.breite - 2) return;
+        if (!feld[aktX + 1][aktY].kannBetretenWerden()) return;
         aktX++;
         kurt.geheZu(aktX, aktY);
         nachbarfelderAufdecken();
     }
 
     void goNorth() {
-        if (aktY < 1) return;                                    // zork.Dungeon-Grenze Nord erreicht
-        if (!feld[aktX][aktY - 1].kannBetretenWerden()) return;    // im Norden kein Weg
+        if (aktY < 1) return;
+        if (!feld[aktX][aktY - 1].kannBetretenWerden()) return;
         aktY--;
         kurt.geheZu(aktX, aktY);
         nachbarfelderAufdecken();
     }
 
     void goSouth() {
-        if (aktY > dungeonDaten.hoehe - 2) return;                        // zork.Dungeon-Grenze Sued erreicht
-        if (!feld[aktX][aktY + 1].kannBetretenWerden()) return;    // im Sueden kein Weg
+        if (aktY > dungeonDaten.hoehe - 2) return;
+        if (!feld[aktX][aktY + 1].kannBetretenWerden()) return;
         aktY++;
         kurt.geheZu(aktX, aktY);
         nachbarfelderAufdecken();
@@ -85,7 +85,7 @@ class Dungeon {
         feld[aktX][aktY].werteVomGegenstandZeigen(g);
     }
 
-    void aktionAusfuehren() { //wenn true, dann wird nächstes Level gestartet
+    void aktionAusfuehren() {
         if (feld[aktX][aktY].hatMonster()) {
             kaempfen();
         } else if (feld[aktX][aktY].hatHeiltrank()) {
@@ -108,22 +108,23 @@ class Dungeon {
         }
     }
 
+    private void heilen() {
+        if (feld[aktX][aktY].hatHeiltrank()) {
+            kurt.heilen(feld[aktX][aktY].gibHeiltrank());
+        }
+    }
+
     private void kaempfen() {
         if (feld[aktX][aktY].hatMonster()) {
             kurt.kaempfe(feld[aktX][aktY].gibMonster());
         }
-        if (kurt.monsterGetoetet == dungeonDaten.getAnzahlMonster()) {
+        if (kurt.monsterGetoetet == dungeonDaten.anzahlMonster) {
             zeitStoppen();
             highscoreSpeichern();
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),
-                    "Du hast in " + zeitGebrauchtString() + " alle Monster getötet. Dein Highscore: " + preferences.get("highscoreString", "0"),
+                    "Du hast in " + zeitFormatieren(zeitGebraucht) + " alle Monster getötet. Dein Highscore: " +
+                            zeitFormatieren(Long.parseLong(preferences.get("highscore", "0"))),
                     "Fertig", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
-    private void heilen() {
-        if (feld[aktX][aktY].hatHeiltrank()) {
-            kurt.heilen(feld[aktX][aktY].gibHeiltrank());
         }
     }
 
@@ -131,16 +132,22 @@ class Dungeon {
         zeitGebraucht = System.currentTimeMillis() - zeitAmAnfang;
     }
 
-    private String zeitGebrauchtString() {
-        return String.format("%02d min, %02d sec", TimeUnit.MILLISECONDS.toMinutes(zeitGebraucht),
-                TimeUnit.MILLISECONDS.toSeconds(zeitGebraucht) +
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(zeitGebraucht)));
-    }
-
     private void highscoreSpeichern() {
         if (Long.parseLong(preferences.get("highscore", "10000000")) > zeitGebraucht) {
             preferences.put("highscore", Long.toString(zeitGebraucht));
-            preferences.put("highscoreString", zeitGebrauchtString());
         }
     }
+
+    private static String zeitFormatieren(long millis) {
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+        millis -= TimeUnit.MINUTES.toMillis(minutes);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+
+        return (String.valueOf(minutes) +
+                " Minuten " +
+                seconds +
+                " Sekunden");
+    }
+
+
 }

@@ -1,25 +1,21 @@
 import java.io.InputStream;
 import java.util.Scanner;
 
-/*
- *  Pfad vor dem Ausführen anpassen!
- */
-
-public class DungeonDaten {
+class DungeonDaten {
 
     String[][] alleLevelDaten = new String[3][100];
     int breite, hoehe, anzahlMonster;
 
-    public DungeonDaten() {
+    DungeonDaten() {
         for (int i = 0; i < 2; i++) {
             alleLevelDaten[i] = getDaten(i+1);
         }
-        hoehe = getHoehe();
+        hoehe = alleLevelDaten[0].length;
         breite = getBreite();
         anzahlMonster = getAnzahlMonster();
     }
 
-    public static String[] getDaten(int level) {
+    private static String[] getDaten(int level) {
         String temp;
         String[] tempArray;
         int laengeDerLaengstenZeile = 0;
@@ -47,7 +43,7 @@ public class DungeonDaten {
         return tempArray;
     }
 
-    public int getBreite() {
+    private int getBreite() {
         int breite = 0;
         for (String s : alleLevelDaten[0]) {
             if (s.length() > breite) {
@@ -57,17 +53,13 @@ public class DungeonDaten {
         return breite;
     }
 
-    public  int getHoehe() {
-        return alleLevelDaten[0].length;
-    }
 
-
-    public int getAnzahlMonster() {
+    private int getAnzahlMonster() {
         String[] temp = alleLevelDaten[0];
         int tmp = 0;
-        for (int i = 0; i < temp.length; i++) {
-            for (int j = 0; j < temp[i].length(); j++) {
-                if (temp[i].charAt(j) == 'M') {
+        for (String aTemp : temp) {
+            for (int j = 0; j < aTemp.length(); j++) {
+                if (aTemp.charAt(j) == 'M') {
                     tmp++;
                 }
             }

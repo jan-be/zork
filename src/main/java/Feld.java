@@ -8,7 +8,6 @@ class Feld {
     private Knife knife;
     private DungeonDaten dungeonDaten;
 
-    // Aufgabe 2.3.7
     private boolean aufgedeckt;
 
 
