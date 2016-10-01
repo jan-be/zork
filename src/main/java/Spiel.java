@@ -5,14 +5,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Spiel extends JPanel implements ActionListener, KeyListener {
-    Dungeon brett;
-    JButton[] btn;
-    DungeonDaten dungeonDaten;
+class Spiel extends JPanel implements ActionListener, KeyListener {
+    private Dungeon brett;
+    private JButton[] btn;
 
-    public Spiel(DungeonDaten dungeonDaten) {
-        this.dungeonDaten = dungeonDaten;
-        brett = new Dungeon(dungeonDaten);
+    Spiel(DungeonDaten dungeonDaten) {
+        BilderGetter bilderGetter = new BilderGetter();
+        brett = new Dungeon(dungeonDaten, bilderGetter);
 
         addKeyListener(this);
 
@@ -24,10 +23,10 @@ public class Spiel extends JPanel implements ActionListener, KeyListener {
         btn[2] = new JButton("east");
         btn[3] = new JButton("south");
 
-        btn[0].setBounds(20, 420, 40, 20);
-        btn[1].setBounds(40, 400, 40, 20);
-        btn[2].setBounds(60, 420, 40, 20);
-        btn[3].setBounds(40, 440, 40, 20);
+        btn[0].setBounds(20, dungeonDaten.hoehe*Frame.FELD_SIZE +60, 40, 20);
+        btn[1].setBounds(40, dungeonDaten.hoehe*Frame.FELD_SIZE +40, 40, 20);
+        btn[2].setBounds(60, dungeonDaten.hoehe*Frame.FELD_SIZE +60, 40, 20);
+        btn[3].setBounds(40, dungeonDaten.hoehe*Frame.FELD_SIZE +80, 40, 20);
 
 
         for (int b = 0; b < 4; b++) {

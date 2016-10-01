@@ -2,15 +2,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-public class Held {
+class Held {
     private int x, y;
-    double angriff, ruestung, leben, anfangsleben;
-    int gold, monsterGetoetet;
-    Random wuerfel;
-    DungeonDaten dungeonDaten;
+    private double angriff, ruestung, leben, anfangsleben;
+    private int gold;
+    int monsterGetoetet;
+    private Random wuerfel;
+    private DungeonDaten dungeonDaten;
+    private BilderGetter bilderGetter;
 
-    public Held(DungeonDaten dungeonDaten) {
+    Held(DungeonDaten dungeonDaten, BilderGetter bilderGetter) {
         this.dungeonDaten = dungeonDaten;
+        this.bilderGetter = bilderGetter;
         leben = 255;
         anfangsleben = leben;
         angriff = 50;
@@ -20,12 +23,12 @@ public class Held {
         wuerfel = new Random();
     }
 
-    public void geheZu(int xPos, int yPos) {
+    void geheZu(int xPos, int yPos) {
         x = xPos;
         y = yPos;
     }
 
-    public void kaempfe(Monster gegner) {
+    void kaempfe(Monster gegner) {
         if (gegner.leben > 0) {
             int wert = wuerfel.nextInt(6) + 1;
 
@@ -43,44 +46,46 @@ public class Held {
             }
         }
         if (leben <= 0) {
-            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "ALARM", "Tot", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Du bist gestorben.", "Tot", 2);
             System.exit(0);
         }
 
     }
 
-    public void heilen(Heiltrank heiltrank) {
+    void heilen(Heiltrank heiltrank) {
         if (heiltrank.lebenswiedergabe >= heiltrank.anfangsleben / 3) {
             leben += heiltrank.anfangsleben / 3;
             heiltrank.lebenswiedergabe -= heiltrank.anfangsleben / 3;
         }
     }
 
-    public void aufnehmen(Knife knife) {
+    void aufnehmen(Knife knife) {
         if (!knife.aufgesammelt) {
             angriff += knife.angriff;
+            ruestung += knife.ruestung;
             knife.aufgesammelt = true;
         }
     }
 
-    public void paint(Graphics g) {
-        int xPix = 20 + x * 20;
-        int yPix = 20 + y * 20;
+    void paint(Graphics g) {
+        int xPix = 20 + x * Frame.FELD_SIZE;
+        int yPix = 20 + y * Frame.FELD_SIZE;
 
         if (leben / anfangsleben > 1) {
             g.setColor(Color.GREEN);
         } else {
             g.setColor(new Color(0, (int) (255 * leben / anfangsleben), 0));
         }
-        g.fillOval(xPix + 4, yPix + 4, 12, 12);
+        //g.fillOval(xPix + 4, yPix + 4, 12, 12);
+        g.drawImage(bilderGetter.heldBild, xPix + Frame.FELD_SIZE /10, yPix + Frame.FELD_SIZE /10, Frame.FELD_SIZE *4/5, Frame.FELD_SIZE *4/5, null);
 
         g.setColor(new Color(255, 255, 191));
-        g.fillRect(120, 40 + dungeonDaten.hoehe * 20, 20 * dungeonDaten.breite - 100, 70);
+        g.fillRect(120, 40 + dungeonDaten.hoehe * Frame.FELD_SIZE, Frame.FELD_SIZE * dungeonDaten.breite - 100, 70);
         g.setColor(new Color(0, 0, 0));
-        g.drawRect(120, 40 + dungeonDaten.hoehe * 20, 20 * dungeonDaten.breite - 100, 70);
+        g.drawRect(120, 40 + dungeonDaten.hoehe * Frame.FELD_SIZE, Frame.FELD_SIZE * dungeonDaten.breite - 100, 70);
 
         g.drawString("Held: Leben: " + leben + ", Angriff: " + angriff + ", Rüstung: " + ruestung + ", Gold: " + gold,
-                124, 60 + dungeonDaten.hoehe * 20);
+                124, 60 + dungeonDaten.hoehe * Frame.FELD_SIZE);
     }
 
 }

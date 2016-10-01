@@ -1,18 +1,15 @@
 import java.awt.*;
 
-public class Knife {
-    public int x, y;
-
-    // Public-Attribute ersparen sondierende und manipulierende Methoden
-    // Verletzt zwar das Prinzip der Datenkapselung,
-    // macht die Sache aber erheblich einfacher...
-    public double angriff, ruestung;
-    public int gold;
+class Knife {
+    private int x, y, gold;
+    double angriff, ruestung;
     boolean aufgesammelt;
+    private BilderGetter bilderGetter;
 
-    public Knife(int x, int y) {
+    Knife(int x, int y, BilderGetter bilderGetter) {
         this.x = x;
         this.y = y;
+        this.bilderGetter = bilderGetter;
 
         aufgesammelt = false;
 
@@ -23,13 +20,14 @@ public class Knife {
         gold = 25;
     }
 
-    public void paint(Graphics g) {
+    void paint(Graphics g) {
         if (!aufgesammelt) {
-            int xPix = 20 + x * 20;
-            int yPix = 20 + y * 20;
+            int xPix = 20 + x * Frame.FELD_SIZE;
+            int yPix = 20 + y * Frame.FELD_SIZE;
 
             g.setColor(Color.YELLOW);
-            g.fillOval(xPix + 5, yPix + 5, 10, 10);
+            //g.fillOval(xPix + 5, yPix + 5, 10, 10);
+            g.drawImage(bilderGetter.schwertBild, xPix + Frame.FELD_SIZE /10, yPix + Frame.FELD_SIZE /10, Frame.FELD_SIZE *4/5, Frame.FELD_SIZE *4/5, null);
         }
     }
 }

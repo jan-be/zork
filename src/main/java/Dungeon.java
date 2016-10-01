@@ -3,26 +3,28 @@ import java.awt.*;
 import java.util.concurrent.TimeUnit;
 import java.util.prefs.Preferences;
 
-public class Dungeon {
+class Dungeon {
     private Feld[][] feld;
-    public Held kurt;
+    private Held kurt;
     private int aktX, aktY, level;
     private long zeitAmAnfang, zeitGebraucht;
-    Preferences preferences = Preferences.userNodeForPackage(Dungeon.class);
-    DungeonDaten dungeonDaten;
+    private Preferences preferences = Preferences.userNodeForPackage(Dungeon.class);
+    private DungeonDaten dungeonDaten;
+    private BilderGetter bilderGetter;
 
-    public Dungeon(DungeonDaten dungeonDaten) {
+    Dungeon(DungeonDaten dungeonDaten, BilderGetter bilderGetter) {
         this.dungeonDaten = dungeonDaten;
+        this.bilderGetter = bilderGetter;
         feld = new Feld[dungeonDaten.breite][dungeonDaten.hoehe];
-        kurt = new Held(dungeonDaten);
+        kurt = new Held(dungeonDaten, bilderGetter);
         zeitAmAnfang = System.currentTimeMillis();
         felderLaden(level);
     }
 
-    public void felderLaden(int level) {
+    private void felderLaden(int level) {
         for (int y = 0; y < dungeonDaten.hoehe; y++) {
             for (int x = 0; x < dungeonDaten.breite; x++) {
-                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x), dungeonDaten);
+                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x), dungeonDaten, bilderGetter);
                 if (dungeonDaten.alleLevelDaten[level][y].charAt(x) == 'S') {
                     aktX = x;
                     aktY = y;
@@ -33,7 +35,7 @@ public class Dungeon {
         nachbarfelderAufdecken();
     }
 
-    public void nachbarfelderAufdecken() {
+    private void nachbarfelderAufdecken() {
         feld[aktX][aktY].aufdecken();
         if (aktY >= 1) feld[aktX][aktY - 1].aufdecken();
         if (aktY <= dungeonDaten.hoehe - 2) feld[aktX][aktY + 1].aufdecken();
@@ -41,7 +43,7 @@ public class Dungeon {
         if (aktX >= 1) feld[aktX - 1][aktY].aufdecken();
     }
 
-    public void goWest() {
+    void goWest() {
         if (aktX < 1) return;                                  // zork.Dungeon-Grenze West erreicht
         if (!feld[aktX - 1][aktY].kannBetretenWerden()) return;  // im Westen ist kein Weg
         aktX--;
@@ -49,7 +51,7 @@ public class Dungeon {
         nachbarfelderAufdecken();
     }
 
-    public void goEast() {
+    void goEast() {
         if (aktX > dungeonDaten.breite - 2) return;                      // zork.Dungeon-Grenze Ost erreicht
         if (!feld[aktX + 1][aktY].kannBetretenWerden()) return;   // im Osten ist kein Weg
         aktX++;
@@ -57,7 +59,7 @@ public class Dungeon {
         nachbarfelderAufdecken();
     }
 
-    public void goNorth() {
+    void goNorth() {
         if (aktY < 1) return;                                    // zork.Dungeon-Grenze Nord erreicht
         if (!feld[aktX][aktY - 1].kannBetretenWerden()) return;    // im Norden kein Weg
         aktY--;
@@ -65,7 +67,7 @@ public class Dungeon {
         nachbarfelderAufdecken();
     }
 
-    public void goSouth() {
+    void goSouth() {
         if (aktY > dungeonDaten.hoehe - 2) return;                        // zork.Dungeon-Grenze Sued erreicht
         if (!feld[aktX][aktY + 1].kannBetretenWerden()) return;    // im Sueden kein Weg
         aktY++;
@@ -73,15 +75,17 @@ public class Dungeon {
         nachbarfelderAufdecken();
     }
 
-    public void paint(Graphics g) {
-        for (int y = 0; y < dungeonDaten.hoehe; y++)
-            for (int x = 0; x < dungeonDaten.breite; x++)
+    void paint(Graphics g) {
+        for (int y = 0; y < dungeonDaten.hoehe; y++) {
+            for (int x = 0; x < dungeonDaten.breite; x++) {
                 feld[x][y].paint(g);
+            }
+        }
         kurt.paint(g);
         feld[aktX][aktY].werteVomGegenstandZeigen(g);
     }
 
-    public void aktionAusfuehren() { //wenn true, dann wird nächstes Level gestartet
+    void aktionAusfuehren() { //wenn true, dann wird nächstes Level gestartet
         if (feld[aktX][aktY].hatMonster()) {
             kaempfen();
         } else if (feld[aktX][aktY].hatHeiltrank()) {
@@ -104,7 +108,7 @@ public class Dungeon {
         }
     }
 
-    public void kaempfen() {
+    private void kaempfen() {
         if (feld[aktX][aktY].hatMonster()) {
             kurt.kaempfe(feld[aktX][aktY].gibMonster());
         }
@@ -117,7 +121,7 @@ public class Dungeon {
         }
     }
 
-    public void heilen() {
+    private void heilen() {
         if (feld[aktX][aktY].hatHeiltrank()) {
             kurt.heilen(feld[aktX][aktY].gibHeiltrank());
         }
