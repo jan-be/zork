@@ -11,5 +11,6 @@ class Musikspieler {
         player = new MediaPlayer(audioFile);
         player.setOnEndOfMedia(() -> player.seek(Duration.ZERO));
         player.play();
+        //test
     }
 }
