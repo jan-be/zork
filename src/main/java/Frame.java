@@ -22,5 +22,6 @@ public class Frame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 }
