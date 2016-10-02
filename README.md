@@ -1,3 +1,0 @@
-#ZORK
-
-Johann.
