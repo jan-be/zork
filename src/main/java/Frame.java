@@ -3,8 +3,8 @@ import java.awt.*;
 
 public class Frame {
 
-    static final int FELD_SIZE = 30;
-    static final int ANZAHL_LEVEL = 2;
+    static final int FELD_SIZE = 45;
+    static final int ANZAHL_LEVEL = DungeonDaten.getAnzahlLevel();
 
     public static void main(String[] args) {
         DungeonDaten dungeonDaten = new DungeonDaten();

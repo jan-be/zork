@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
 class BilderGetter {
-    Image schwertBild;
-    Image monsterBild;
-    Image heldBild;
-    Image heiltrankBild;
+    Image schwertBild,
+            monsterBild,
+            heldBild,
+            heiltrankBild;
 
     BilderGetter() {
         try {
@@ -23,7 +23,7 @@ class BilderGetter {
     private static Image getBild(String typ) throws IOException {
         Image bild;
         bild = ImageIO.read(MethodHandles.lookup().lookupClass().getResource(
-                "bilder/"+typ+".png"
+                "bilder/" + typ + ".png"
         ));
         return bild;
     }

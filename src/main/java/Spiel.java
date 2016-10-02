@@ -36,9 +36,6 @@ class Spiel extends JPanel implements ActionListener, KeyListener {
             btn[b].setMargin(new Insets(0,0,0,0));
         }
         setFocusable(true);
-
-
-        System.out.println(dungeonDaten);
     }
 
     public void keyTyped(KeyEvent k) {
