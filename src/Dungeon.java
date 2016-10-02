@@ -98,7 +98,7 @@ class Dungeon {
     }
 
     private void naechstesLevelStarten() {
-        if (level < Frame.ANZAHL_LEVEL-1) {
+        if (level < Frame.ANZAHL_LEVEL - 1) {
             level++;
             felderLaden(level);
         } else {
@@ -119,9 +119,11 @@ class Dungeon {
     }
 
     private void kaempfen() {
-        if (feld[aktX][aktY].hatMonster()) {
-            kurt.kaempfe(feld[aktX][aktY].gibMonster());
+        if (feld[aktX][aktY].gibMonster().leben >= 0) {
+            Musikspieler.playAktionsSound("schlag");
         }
+        kurt.kaempfe(feld[aktX][aktY].gibMonster());
+
         if (kurt.monsterGetoetet == dungeonDaten.anzahlMonsterProLevel[level]) {
             zeitStoppen();
             highscoreSpeichern();

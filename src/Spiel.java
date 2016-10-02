@@ -37,7 +37,7 @@ class Spiel extends JPanel implements ActionListener, KeyListener {
         }
         setFocusable(true);
 
-        Musikspieler.play("musik");
+        Musikspieler.playHintergrundMusik();
     }
 
     public void keyTyped(KeyEvent k) {
