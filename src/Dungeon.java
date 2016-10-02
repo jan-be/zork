@@ -107,15 +107,15 @@ class Dungeon {
     }
 
     private void knifeAufnehmen() {
-        if (feld[aktX][aktY].hatKnife()) {
-            kurt.aufnehmen(feld[aktX][aktY].gibKnife());
-        }
+        Musikspieler.playAktionsSound("schwertAufheben");
+        kurt.aufnehmen(feld[aktX][aktY].gibKnife());
     }
 
     private void heilen() {
-        if (feld[aktX][aktY].hatHeiltrank()) {
-            kurt.heilen(feld[aktX][aktY].gibHeiltrank());
+        if (feld[aktX][aktY].gibHeiltrank().lebenswiedergabe >= 1) {
+            Musikspieler.playAktionsSound("heiltrankTrinken");
         }
+        kurt.heilen(feld[aktX][aktY].gibHeiltrank());
     }
 
     private void kaempfen() {

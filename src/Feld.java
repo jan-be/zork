@@ -47,7 +47,7 @@ class Feld {
     }
 
     boolean hatKnife() {
-        return (typ == 6);
+        return typ == 6 && (!knife.aufgesammelt);
     }
 
     boolean hatVersteckteTuer() {
