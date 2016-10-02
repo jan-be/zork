@@ -9,11 +9,7 @@ class Musikspieler {
         new JFXPanel();
         Media audioFile = new Media(Musikspieler.class.getResource("musik/"+titel+".mp3").toExternalForm());
         player = new MediaPlayer(audioFile);
-        player.setOnEndOfMedia(new Runnable() {
-            public void run() {
-                player.seek(Duration.ZERO);
-            }
-        });
+        player.setOnEndOfMedia(() -> player.seek(Duration.ZERO));
         player.play();
     }
 }
