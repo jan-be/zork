@@ -34,10 +34,6 @@ class Feld {
         }
     }
 
-    public int getTyp() {
-        return typ;
-    }
-
     boolean kannBetretenWerden() {
         return (typ != 0);
     }
