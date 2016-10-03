@@ -1,22 +1,18 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.TimeUnit;
-import java.util.prefs.Preferences;
 
 class Dungeon {
     private Feld[][] feld;
     private Held kurt;
     private int aktX, aktY, level;
-    private long zeitAmAnfang, zeitGebraucht;
-    private Preferences preferences = Preferences.userNodeForPackage(Dungeon.class);
     private DungeonDaten dungeonDaten;
 
     Dungeon(DungeonDaten dungeonDaten) {
         this.dungeonDaten = dungeonDaten;
         feld = new Feld[dungeonDaten.breite][dungeonDaten.hoehe];
         kurt = new Held(dungeonDaten);
-        zeitAmAnfang = System.currentTimeMillis();
         felderLaden(level);
+        HighscoreZeugs.zeitStarten();
     }
 
     private void felderLaden(int level) {
@@ -97,10 +93,15 @@ class Dungeon {
 
     private void naechstesLevelStarten() {
         if (level < Frame.ANZAHL_LEVEL - 1) {
-            level++;
-            felderLaden(level);
+            if (kurt.monsterGetoetetImLevel == dungeonDaten.anzahlMonsterProLevel[level]) {
+                level++;
+                felderLaden(level);
+                kurt.monsterGetoetetImLevel = 0;
+            } else {
+                JOptionPane.showMessageDialog(null, "Du musst erst alle Monster töten", "schlecht", 2);
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Damn Daniel, \n du hast es geschafft.", "Props.", 1);
+            spielBeenden();
         }
     }
 
@@ -121,44 +122,14 @@ class Dungeon {
             Musikspieler.playAktionsSound("schlag");
         }
         kurt.kaempfe(feld[aktX][aktY].gibMonster());
-
-        if (kurt.monsterGetoetet == dungeonDaten.anzahlMonsterProLevel[level]) {
-            zeitStoppen();
-            highscoreSpeichern();
-            JOptionPane.showMessageDialog(null, "Du hast in " + zeitFormatieren(zeitGebraucht) + " alle Monster getötet. " +
-                            "\n Dein Highscore: " + zeitFormatieren(Long.parseLong(preferences.get("highscore", "0"))),
-                    "Fertig", 1);
-        }
     }
 
-    private void zeitStoppen() {
-        zeitGebraucht = System.currentTimeMillis() - zeitAmAnfang;
+    private void spielBeenden() {
+        HighscoreZeugs.zeitStoppen();
+        HighscoreZeugs.highscoreSpeichern();
+        JOptionPane.showMessageDialog(null, "Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
+                        "\n Dein Highscore: " + HighscoreZeugs.getHighscoreString(),
+                "Fertig", 1);
+        System.exit(0);
     }
-
-    private void highscoreSpeichern() {
-        if (Long.parseLong(preferences.get("highscore", "10000000")) > zeitGebraucht) {
-            preferences.put("highscore", Long.toString(zeitGebraucht));
-        }
-    }
-
-    private static String zeitFormatieren(long millis) {
-        long minuten = TimeUnit.MILLISECONDS.toMinutes(millis);
-        millis -= TimeUnit.MINUTES.toMillis(minuten);
-        long sekunden = TimeUnit.MILLISECONDS.toSeconds(millis);
-
-        if (minuten == 1 && sekunden == 1) {
-            return minuten + " Minute " + sekunden + " Sekunde";
-        } else if (minuten == 1) {
-            return minuten + " Minute " + sekunden + " Sekunden";
-        } else if (minuten > 1 && sekunden == 1) {
-            return minuten + " Minuten " + sekunden + " Sekunde";
-        } else if (minuten > 1) {
-            return minuten + " Minuten " + sekunden + " Sekunden";
-        } else if (sekunden == 1) {
-            return ("scheiß cheater (ง ͠° ͟ل͜ ͡°)ง");
-        } else {
-            return sekunden + " Sekunden";
-        }
-    }
-
 }

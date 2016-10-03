@@ -6,7 +6,7 @@ class Held {
     private int x, y;
     private double angriff, ruestung, leben, anfangsleben;
     private int gold;
-    int monsterGetoetet;
+    int monsterGetoetetImLevel;
     private Random wuerfel;
     private DungeonDaten dungeonDaten;
 
@@ -40,7 +40,7 @@ class Held {
                 gold += wuerfel.nextInt(20);    // Held gewinnt haushoch
             }
             if (gegner.leben < 0) {
-                monsterGetoetet++;
+                monsterGetoetetImLevel++;
             }
         }
         if (leben <= 0) {
