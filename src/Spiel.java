@@ -10,8 +10,8 @@ class Spiel extends JPanel implements ActionListener, KeyListener {
     private JButton[] btn;
 
     Spiel(DungeonDaten dungeonDaten) {
-        BilderGetter bilderGetter = new BilderGetter();
-        brett = new Dungeon(dungeonDaten, bilderGetter);
+        BilderGetter.bilderGetten();
+        brett = new Dungeon(dungeonDaten);
 
         addKeyListener(this);
 

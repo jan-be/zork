@@ -9,11 +9,9 @@ class Held {
     int monsterGetoetet;
     private Random wuerfel;
     private DungeonDaten dungeonDaten;
-    private BilderGetter bilderGetter;
 
-    Held(DungeonDaten dungeonDaten, BilderGetter bilderGetter) {
+    Held(DungeonDaten dungeonDaten) {
         this.dungeonDaten = dungeonDaten;
-        this.bilderGetter = bilderGetter;
         leben = 255;
         anfangsleben = leben;
         angriff = 50;
@@ -77,7 +75,7 @@ class Held {
             g.setColor(new Color(0, (int) (255 * leben / anfangsleben), 0));
         }
         //g.fillOval(xPix + 4, yPix + 4, 12, 12);
-        g.drawImage(bilderGetter.heldBild, xPix + Frame.FELD_SIZE /10, yPix + Frame.FELD_SIZE /10, Frame.FELD_SIZE *4/5, Frame.FELD_SIZE *4/5, null);
+        g.drawImage(BilderGetter.heldBild, xPix + Frame.FELD_SIZE /10, yPix + Frame.FELD_SIZE /10, Frame.FELD_SIZE *4/5, Frame.FELD_SIZE *4/5, null);
 
         g.setColor(new Color(255, 255, 191));
         g.fillRect(120, 40 + dungeonDaten.hoehe * Frame.FELD_SIZE, Frame.FELD_SIZE * dungeonDaten.breite - 100, 70);

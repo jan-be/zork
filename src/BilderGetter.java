@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
 class BilderGetter {
-    Image schwertBild,
+    static Image schwertBild,
             monsterBild,
             heldBild,
             heiltrankBild;
 
-    BilderGetter() {
+    static void bilderGetten() {
         try {
             schwertBild = getBild("schwert");
             monsterBild = getBild("monster");

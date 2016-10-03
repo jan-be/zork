@@ -11,7 +11,7 @@ class Feld {
     private boolean aufgedeckt;
 
 
-    Feld(int x, int y, char t, DungeonDaten dungeonDaten, BilderGetter bilderGetter) {
+    Feld(int x, int y, char t, DungeonDaten dungeonDaten) {
         this.dungeonDaten = dungeonDaten;
         this.x = 20 + x * Frame.FELD_SIZE;
         this.y = 20 + y * Frame.FELD_SIZE;
@@ -26,11 +26,11 @@ class Feld {
         aufgedeckt = false;
 
         if (typ == 4) {
-            monster = new Monster(x, y, bilderGetter);
+            monster = new Monster(x, y);
         } else if (typ == 5) {
-            heiltrank = new Heiltrank(x, y, bilderGetter);
+            heiltrank = new Heiltrank(x, y);
         } else if (typ == 6) {
-            knife = new Knife(x, y, bilderGetter);
+            knife = new Knife(x, y);
         }
     }
 

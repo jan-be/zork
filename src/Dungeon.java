@@ -10,13 +10,11 @@ class Dungeon {
     private long zeitAmAnfang, zeitGebraucht;
     private Preferences preferences = Preferences.userNodeForPackage(Dungeon.class);
     private DungeonDaten dungeonDaten;
-    private BilderGetter bilderGetter;
 
-    Dungeon(DungeonDaten dungeonDaten, BilderGetter bilderGetter) {
+    Dungeon(DungeonDaten dungeonDaten) {
         this.dungeonDaten = dungeonDaten;
-        this.bilderGetter = bilderGetter;
         feld = new Feld[dungeonDaten.breite][dungeonDaten.hoehe];
-        kurt = new Held(dungeonDaten, bilderGetter);
+        kurt = new Held(dungeonDaten);
         zeitAmAnfang = System.currentTimeMillis();
         felderLaden(level);
     }
@@ -24,7 +22,7 @@ class Dungeon {
     private void felderLaden(int level) {
         for (int y = 0; y < dungeonDaten.hoehe; y++) {
             for (int x = 0; x < dungeonDaten.breite; x++) {
-                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x), dungeonDaten, bilderGetter);
+                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x), dungeonDaten);
                 if (dungeonDaten.alleLevelDaten[level][y].charAt(x) == 'S') {
                     aktX = x;
                     aktY = y;

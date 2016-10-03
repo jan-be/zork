@@ -4,12 +4,10 @@ class Knife {
     private int x, y, gold;
     double angriff, ruestung;
     boolean aufgesammelt;
-    private BilderGetter bilderGetter;
 
-    Knife(int x, int y, BilderGetter bilderGetter) {
+    Knife(int x, int y) {
         this.x = x;
         this.y = y;
-        this.bilderGetter = bilderGetter;
 
         aufgesammelt = false;
 
@@ -27,7 +25,7 @@ class Knife {
 
             g.setColor(Color.YELLOW);
             //g.fillOval(xPix + 5, yPix + 5, 10, 10);
-            g.drawImage(bilderGetter.schwertBild, xPix + Frame.FELD_SIZE /10, yPix + Frame.FELD_SIZE /10, Frame.FELD_SIZE *4/5, Frame.FELD_SIZE *4/5, null);
+            g.drawImage(BilderGetter.schwertBild, xPix + Frame.FELD_SIZE /10, yPix + Frame.FELD_SIZE /10, Frame.FELD_SIZE *4/5, Frame.FELD_SIZE *4/5, null);
         }
     }
 }
