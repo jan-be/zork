@@ -1,30 +1,10 @@
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.IOException;
-import java.lang.invoke.MethodHandles;
+import javafx.scene.image.Image;
 
 class BilderGetter {
-    static Image schwertBild,
-            monsterBild,
-            heldBild,
-            heiltrankBild;
-
-    static void bilderGetten() {
-        try {
-            schwertBild = getBild("schwert");
-            monsterBild = getBild("monster");
-            heldBild = getBild("held");
-            heiltrankBild = getBild("heiltrank");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static Image getBild(String typ) throws IOException {
-        Image bild;
-        bild = ImageIO.read(MethodHandles.lookup().lookupClass().getResource(
-                "bilder/" + typ + ".png"
-        ));
-        return bild;
-    }
+    static Image schwertBild = new Image("bilder/schwert.png"),
+            monsterBild = new Image("bilder/monster.png"),
+            heldBild = new Image("bilder/held.png"),
+            heiltrankBild = new Image("bilder/heiltrank.png"),
+            dancerAnimation = new Image("animationen/dancer.gif")
+    ;
 }

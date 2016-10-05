@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="ZORK:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/ZORK_jar</output-path>
-    <root id="archive" name="ZORK.jar">
-      <element id="module-output" name="ZORK" />
-    </root>
-  </artifact>
-</component>

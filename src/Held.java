@@ -1,5 +1,7 @@
-import javax.swing.*;
-import java.awt.*;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.paint.Color;
+
 import java.util.Random;
 
 class Held {
@@ -44,7 +46,13 @@ class Held {
             }
         }
         if (leben <= 0) {
-            JOptionPane.showMessageDialog(null, "Du bist gestorben.", "Tot", 2);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Einfach zu schlecht.");
+            alert.setHeaderText("Du bist gestorben");
+            alert.setContentText("Das ist wirklich nicht so gedacht, dass man zwischendurch stirbt. " +
+                    "\nDu musst wirklich schlecht sein.");
+            alert.showAndWait();
+
             System.exit(0);
         }
 
@@ -65,25 +73,25 @@ class Held {
         }
     }
 
-    void paint(Graphics g) {
-        int xPix = 20 + x * Frame.FELD_SIZE;
-        int yPix = 20 + y * Frame.FELD_SIZE;
+    void paint(GraphicsContext g) {
+        int xPix = 20 + x * Main.FELD_SIZE;
+        int yPix = 20 + y * Main.FELD_SIZE;
 
         if (leben / anfangsleben > 1) {
-            g.setColor(Color.GREEN);
+            g.setFill(Color.GREEN);
         } else {
-            g.setColor(new Color(0, (int) (255 * leben / anfangsleben), 0));
+            g.setFill(Color.color(0, leben / anfangsleben, 0));
         }
         //g.fillOval(xPix + 4, yPix + 4, 12, 12);
-        g.drawImage(BilderGetter.heldBild, xPix + Frame.FELD_SIZE /10, yPix + Frame.FELD_SIZE /10, Frame.FELD_SIZE *4/5, Frame.FELD_SIZE *4/5, null);
+        g.drawImage(BilderGetter.heldBild, xPix + Main.FELD_SIZE /10, yPix + Main.FELD_SIZE /10, Main.FELD_SIZE *4/5, Main.FELD_SIZE *4/5);
 
-        g.setColor(new Color(255, 255, 191));
-        g.fillRect(120, 40 + dungeonDaten.hoehe * Frame.FELD_SIZE, Frame.FELD_SIZE * dungeonDaten.breite - 100, 70);
-        g.setColor(new Color(0, 0, 0));
-        g.drawRect(120, 40 + dungeonDaten.hoehe * Frame.FELD_SIZE, Frame.FELD_SIZE * dungeonDaten.breite - 100, 70);
+        g.setFill(Color.color(1, 1, 0.66));
+        g.fillRect(120, 40 + dungeonDaten.hoehe * Main.FELD_SIZE, Main.FELD_SIZE * dungeonDaten.breite - 100, 70);
+        g.setFill(Color.color(0, 0, 0));
+        g.strokeRect(120, 40 + dungeonDaten.hoehe * Main.FELD_SIZE, Main.FELD_SIZE * dungeonDaten.breite - 100, 70);
 
-        g.drawString("Held: Leben: " + leben + ", Angriff: " + angriff + ", Rüstung: " + ruestung + ", Gold: " + gold,
-                124, 60 + dungeonDaten.hoehe * Frame.FELD_SIZE);
+        g.fillText("Held: Leben: " + leben + ", Angriff: " + angriff + ", Rüstung: " + ruestung + ", Gold: " + gold,
+                124, 60 + dungeonDaten.hoehe * Main.FELD_SIZE);
     }
 
 }

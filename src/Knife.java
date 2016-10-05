@@ -1,4 +1,4 @@
-import java.awt.*;
+import javafx.scene.canvas.GraphicsContext;
 
 class Knife {
     private int x, y, gold;
@@ -18,14 +18,12 @@ class Knife {
         gold = 25;
     }
 
-    void paint(Graphics g) {
+    void paint(GraphicsContext g) {
         if (!aufgesammelt) {
-            int xPix = 20 + x * Frame.FELD_SIZE;
-            int yPix = 20 + y * Frame.FELD_SIZE;
+            int xPix = 20 + x * Main.FELD_SIZE;
+            int yPix = 20 + y * Main.FELD_SIZE;
 
-            g.setColor(Color.YELLOW);
-            //g.fillOval(xPix + 5, yPix + 5, 10, 10);
-            g.drawImage(BilderGetter.schwertBild, xPix + Frame.FELD_SIZE /10, yPix + Frame.FELD_SIZE /10, Frame.FELD_SIZE *4/5, Frame.FELD_SIZE *4/5, null);
+            g.drawImage(BilderGetter.schwertBild, xPix + Main.FELD_SIZE /10, yPix + Main.FELD_SIZE /10, Main.FELD_SIZE *4/5, Main.FELD_SIZE *4/5);
         }
     }
 }

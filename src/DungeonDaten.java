@@ -3,12 +3,12 @@ import java.util.Scanner;
 
 class DungeonDaten {
 
-    String[][] alleLevelDaten = new String[Frame.ANZAHL_LEVEL][100];
+    String[][] alleLevelDaten = new String[Main.ANZAHL_LEVEL][100];
     int breite, hoehe;
-    int[] anzahlMonsterProLevel = new int[Frame.ANZAHL_LEVEL];
+    int[] anzahlMonsterProLevel = new int[Main.ANZAHL_LEVEL];
 
     DungeonDaten() {
-        for (int i = 0; i < Frame.ANZAHL_LEVEL; i++) {
+        for (int i = 0; i < Main.ANZAHL_LEVEL; i++) {
             alleLevelDaten[i] = getDaten(i + 1);
             anzahlMonsterProLevel[i] = getAnzahlMonster(i);
         }
@@ -18,7 +18,7 @@ class DungeonDaten {
 
     static int getAnzahlLevel() {
         int i = 0;
-        while (Frame.class.getResourceAsStream("karten/" + (i + 1) + ".txt") != null) {
+        while (Main.class.getResourceAsStream("karten/" + (i + 1) + ".txt") != null) {
             i++;
         }
         return i;
@@ -29,7 +29,7 @@ class DungeonDaten {
         String[] tempArray;
         int laengeDerLaengstenZeile = 0;
 
-        InputStream inputStream = Frame.class.getResourceAsStream("karten/" + level + ".txt");
+        InputStream inputStream = Main.class.getResourceAsStream("karten/" + level + ".txt");
 
         Scanner scanner = new Scanner(inputStream);
         temp = scanner.useDelimiter("\\A").next();

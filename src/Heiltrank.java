@@ -1,4 +1,4 @@
-import java.awt.*;
+import javafx.scene.canvas.GraphicsContext;
 
 class Heiltrank {
     private int x, y;
@@ -12,14 +12,12 @@ class Heiltrank {
         anfangsleben = 123;
         lebenswiedergabe = anfangsleben;
     }
-    void paint(Graphics g) {
+    void paint(GraphicsContext g) {
         if (lebenswiedergabe > 1) {
-            int xPix = 20 + x * Frame.FELD_SIZE;
-            int yPix = 20 + y * Frame.FELD_SIZE;
+            int xPix = 20 + x * Main.FELD_SIZE;
+            int yPix = 20 + y * Main.FELD_SIZE;
 
-            g.setColor(Color.BLUE);
-            //g.fillOval(xPix + 5, yPix + 5, 10, 10);
-            g.drawImage(BilderGetter.heiltrankBild, xPix + Frame.FELD_SIZE /10, yPix + Frame.FELD_SIZE /10, Frame.FELD_SIZE *4/5, Frame.FELD_SIZE *4/5, null);
+            g.drawImage(BilderGetter.heiltrankBild, xPix + Main.FELD_SIZE /10, yPix + Main.FELD_SIZE /10, Main.FELD_SIZE *4/5, Main.FELD_SIZE *4/5);
         }
     }
 

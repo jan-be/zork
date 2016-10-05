@@ -1,3 +1,6 @@
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -69,7 +72,7 @@ class Dungeon {
         nachbarfelderAufdecken();
     }
 
-    void paint(Graphics g) {
+    void paint(GraphicsContext g) {
         for (int y = 0; y < dungeonDaten.hoehe; y++) {
             for (int x = 0; x < dungeonDaten.breite; x++) {
                 feld[x][y].paint(g);
@@ -92,13 +95,17 @@ class Dungeon {
     }
 
     private void naechstesLevelStarten() {
-        if (level < Frame.ANZAHL_LEVEL - 1) {
+        if (level < Main.ANZAHL_LEVEL - 1) {
             if (kurt.monsterGetoetetImLevel == dungeonDaten.anzahlMonsterProLevel[level]) {
                 level++;
                 felderLaden(level);
                 kurt.monsterGetoetetImLevel = 0;
             } else {
-                JOptionPane.showMessageDialog(null, "Du musst erst alle Monster töten", "schlecht", 2);
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Einfach schlecht.");
+                alert.setHeaderText(null);
+                alert.setContentText("Du musst erst alle Monster töten");
+                alert.showAndWait();
             }
         } else {
             spielBeenden();
@@ -127,9 +134,13 @@ class Dungeon {
     private void spielBeenden() {
         HighscoreZeugs.zeitStoppen();
         HighscoreZeugs.highscoreSpeichern();
-        JOptionPane.showMessageDialog(null, "Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
-                        "\n Dein Highscore: " + HighscoreZeugs.getHighscoreString(),
-                "Fertig", 1);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Props.");
+        alert.setHeaderText("Du hast das Spiel beendet");
+        alert.setContentText("Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
+                "\n Dein Highscore: " + HighscoreZeugs.getHighscoreString());
+        alert.showAndWait();
         System.exit(0);
     }
 }
