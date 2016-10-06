@@ -1,21 +1,26 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static javafx.scene.input.KeyCode.M;
 
 class Held {
     private int x, y;
-    private double angriff, ruestung, leben, anfangsleben;
+    private static final double maxLeben = 300;
+    private double angriff, ruestung, leben = maxLeben;
     private int gold;
     int monsterGetoetetImLevel;
     private Random wuerfel;
     private DungeonDaten dungeonDaten;
+    private int schwerterAufgesammelt;
 
     Held(DungeonDaten dungeonDaten) {
         this.dungeonDaten = dungeonDaten;
-        leben = 255;
-        anfangsleben = leben;
+        leben = maxLeben;
         angriff = 50;
         ruestung = 10;
         gold = 25;
@@ -59,43 +64,57 @@ class Held {
     }
 
     void heilen(Heiltrank heiltrank) {
-        if (heiltrank.lebenswiedergabe >= heiltrank.anfangsleben / 3) {
-            leben += heiltrank.anfangsleben / 3;
-            heiltrank.lebenswiedergabe -= heiltrank.anfangsleben / 3;
+        leben += ThreadLocalRandom.current().nextInt(15, 35);
+        heiltrank.maleAnklickbar--;
+        if (leben > 300) {
+            leben = 300;
+
         }
     }
 
     void aufnehmen(Knife knife) {
-        if (!knife.aufgesammelt) {
-            angriff += knife.angriff;
-            ruestung += knife.ruestung;
-            knife.aufgesammelt = true;
-        }
+        angriff += knife.angriff;
+        ruestung += knife.ruestung;
+        knife.aufgesammelt = true;
+        schwerterAufgesammelt++;
     }
 
     void paint(GraphicsContext g) {
-        double xPix = 20 + x * Main.feldSize;
-        double yPix = 20 + y * Main.feldSize;
+        double echteBreite = dungeonDaten.breite * Main.feldSize;
+        double xPix = Main.randSize + x * Main.feldSize;
+        double yPix = Main.randSize + y * Main.feldSize;
 
-        if (leben / anfangsleben > 1) {
-            g.setFill(Color.GREEN);
-        } else {
-            g.setFill(Color.color(0, leben / anfangsleben, 0));
-        }
-        //g.fillOval(xPix + 4, yPix + 4, 12, 12);
+
+        //das Bild vom Helden
         g.drawImage(BilderGetter.heldBild, xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
 
+        /*//das Infofeld
         g.setFill(Color.color(1, 1, 0.66));
-        g.fillRect(120, 40 + dungeonDaten.hoehe * Main.feldSize, Main.feldSize * dungeonDaten.breite - 100, 70);
-        g.setFill(Color.color(0, 0, 0));
-        g.strokeRect(120, 40 + dungeonDaten.hoehe * Main.feldSize, Main.feldSize * dungeonDaten.breite - 100, 70);
+        g.fillRect(120, 40 + dungeonDaten.hoehe * Main.feldSize, Main.feldSize * dungeonDaten.breite - 100, 70);*/
 
+        /*//das Textzeugs
+        g.setFill(Color.BLACK);
         g.fillText("Held: Leben: " + leben + ", Angriff: " + angriff + ", Rüstung: " + ruestung + ", Gold: " + gold,
-                124, 60 + dungeonDaten.hoehe * Main.feldSize);
+                124, 60 + dungeonDaten.hoehe * Main.feldSize);*/
 
-        for (int i = 0; i < leben / 30; i++) {
-            g.drawImage(BilderGetter.herzBild, dungeonDaten.breite * Main.feldSize / 2 + i * 30, 60 + dungeonDaten.hoehe * Main.feldSize, 20, 20);
+        //das Herzzeugs
+        for (int i = 0; i < maxLeben / 30; i++) {
+            g.drawImage(BilderGetter.grauesHerzBild, echteBreite / 2 + i * echteBreite / 60, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize, Main.feldSize / 3 * 2, Main.feldSize / 3 * 2);
         }
+        for (int i = 0; i < leben / 30; i++) {
+            g.drawImage(BilderGetter.herzBild, echteBreite / 2 + i * echteBreite / 60, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize, Main.feldSize / 3 * 2, Main.feldSize / 3 * 2);
+        }
+
+        //schwert, wenn aufgesammelt
+        for (int i = 0; i < schwerterAufgesammelt; i++) {
+            g.drawImage(BilderGetter.schwertBild, echteBreite / 4 * 3 + i * echteBreite / 60, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize, Main.feldSize / 3 * 2, Main.feldSize / 3 * 2);
+        }
+
+        //coin
+        g.drawImage(BilderGetter.coinBild, echteBreite / 40 * 36, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize, Main.feldSize / 3 * 2, Main.feldSize / 3 * 2);
+        g.setFill(Color.WHITE);
+        g.setFont(new Font(30));
+        g.fillText(Integer.toString(gold), echteBreite / 40 * 37, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize + Main.feldSize / 2 + 2);
     }
 
 }

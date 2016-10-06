@@ -20,10 +20,10 @@ class Knife {
 
     void paint(GraphicsContext g) {
         if (!aufgesammelt) {
-            double xPix = 20 + x * Main.feldSize;
-            double yPix = 20 + y * Main.feldSize;
+            double xPix = Main.randSize + x * Main.feldSize;
+            double yPix = Main.randSize + y * Main.feldSize;
 
-            g.drawImage(BilderGetter.schwertBild, xPix + Main.feldSize /10, yPix + Main.feldSize /10, Main.feldSize *4/5, Main.feldSize *4/5);
+            g.drawImage(BilderGetter.schwertBild, xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
         }
     }
 }

@@ -14,8 +14,8 @@ class Feld {
 
     Feld(int x, int y, char t, DungeonDaten dungeonDaten) {
         this.dungeonDaten = dungeonDaten;
-        this.x = 20 + x * Main.feldSize;
-        this.y = 20 + y * Main.feldSize;
+        this.x = Main.randSize + x * Main.feldSize;
+        this.y = Main.randSize + y * Main.feldSize;
         if (t == 'W') typ = 1;      //Weg
         else if (t == 'V') typ = 2; //Versteckte Tür
         else if (t == 'S') typ = 3; //Beginn
@@ -40,11 +40,11 @@ class Feld {
     }
 
     boolean hatMonster() {
-        return (typ == 4);
+        return (typ == 4 && monster.leben > 0);
     }
 
     boolean hatHeiltrank() {
-        return (typ == 5);
+        return (typ == 5 && heiltrank.maleAnklickbar > 0);
     }
 
     boolean hatKnife() {
@@ -85,7 +85,8 @@ class Feld {
 
             g.fillRect(x, y, Main.feldSize, Main.feldSize);
             g.setFill(Color.BLACK);
-            g.strokeRect(x+1, y+1, Main.feldSize -2, Main.feldSize -2);
+            g.setStroke(Color.BLACK);
+            g.strokeRect(x, y, Main.feldSize, Main.feldSize);
 
             if (monster != null)
                 monster.paint(g);
@@ -100,20 +101,12 @@ class Feld {
     }
 
     void werteVomGegenstandZeigen(GraphicsContext g) {
-        if (hatMonster()) {
-            if (monster.leben > 0) {
-                g.fillText("Monster: Leben: " + monster.leben + ", Angriff: " + monster.angriff + ", Rüstung: " + monster.ruestung + ", Gold: " + monster.gold,
-                        124, 80 + dungeonDaten.hoehe * Main.feldSize);
-            } else {
-                g.fillText("Monster tot", 124, 80 + dungeonDaten.hoehe * Main.feldSize);
-            }
+        /*if (hatMonster()) {
+            g.fillText("Monster: Leben: " + monster.leben + ", Angriff: " + monster.angriff + ", Rüstung: " + monster.ruestung + ", Gold: " + monster.gold,
+                    124, 80 + dungeonDaten.hoehe * Main.feldSize);
         } else if (hatHeiltrank()) {
-            if (heiltrank.lebenswiedergabe > 1) {
-                g.fillText("Der Heiltrank kann noch " + heiltrank.lebenswiedergabe + " wiedergeben", 124, 80 + dungeonDaten.hoehe * Main.feldSize);
-            } else {
-                g.fillText("Heiltrank alle", 124, 80 + dungeonDaten.hoehe * Main.feldSize);
-            }
-        }
+            g.fillText("Der Heiltrank kann noch " + heiltrank.maleAnklickbar + " mal angeklickt werden", 124, 80 + dungeonDaten.hoehe * Main.feldSize);
+        }*/
     }
 
 }

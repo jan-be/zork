@@ -1,14 +1,18 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.paint.Color;
 
 class Dungeon {
     private Feld[][] feld;
     private Held kurt;
     private int aktX, aktY, level;
+    private double breite, hoehe;
     private DungeonDaten dungeonDaten;
 
-    Dungeon(DungeonDaten dungeonDaten) {
+    Dungeon(DungeonDaten dungeonDaten, double breite, double hoehe) {
         this.dungeonDaten = dungeonDaten;
+        this.breite = breite;
+        this.hoehe = hoehe;
         feld = new Feld[dungeonDaten.breite][dungeonDaten.hoehe];
         kurt = new Held(dungeonDaten);
         felderLaden(level);
@@ -77,6 +81,9 @@ class Dungeon {
         }
         kurt.paint(g);
         feld[aktX][aktY].werteVomGegenstandZeigen(g);
+
+        g.setStroke(Color.WHITE);
+        g.strokeRect(Main.randSize, Main.randSize, breite - 2 * Main.randSize - Main.randSize / dungeonDaten.breite * 3, dungeonDaten.hoehe * Main.feldSize);
     }
 
     void aktionAusfuehren() {
@@ -115,16 +122,12 @@ class Dungeon {
     }
 
     private void heilen() {
-        if (feld[aktX][aktY].gibHeiltrank().lebenswiedergabe >= 1) {
-            Musikspieler.playAktionsSound("heiltrankTrinken");
-        }
+        Musikspieler.playAktionsSound("heiltrankTrinken");
         kurt.heilen(feld[aktX][aktY].gibHeiltrank());
     }
 
     private void kaempfen() {
-        if (feld[aktX][aktY].gibMonster().leben >= 0) {
-            Musikspieler.playAktionsSound("schlag");
-        }
+        Musikspieler.playAktionsSound("schlag");
         kurt.kaempfe(feld[aktX][aktY].gibMonster());
     }
 
@@ -136,7 +139,7 @@ class Dungeon {
         alert.setTitle("Props.");
         alert.setHeaderText("Du hast das Spiel beendet");
         alert.setContentText("Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
-                "\n Dein Highscore: " + HighscoreZeugs.getHighscoreString());
+                "\nDein Highscore: " + HighscoreZeugs.getHighscoreString());
         alert.showAndWait();
         System.exit(0);
     }
