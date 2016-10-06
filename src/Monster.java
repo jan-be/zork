@@ -19,10 +19,10 @@ class Monster {
 
     void paint(GraphicsContext g) {
         if (leben > 0) {
-            int xPix = 20 + x * Main.FELD_SIZE;
-            int yPix = 20 + y * Main.FELD_SIZE;
+            double xPix = 20 + x * Main.feldSize;
+            double yPix = 20 + y * Main.feldSize;
 
-            g.drawImage(BilderGetter.monsterBild, xPix + Main.FELD_SIZE / 10, yPix + Main.FELD_SIZE / 10, Main.FELD_SIZE * 4 / 5, Main.FELD_SIZE * 4 / 5);
+            g.drawImage(BilderGetter.monsterBild, xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
         }
     }
 }

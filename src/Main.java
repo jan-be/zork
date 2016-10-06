@@ -6,11 +6,18 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+import java.awt.*;
+
+import static java.awt.Toolkit.getDefaultToolkit;
 
 public class Main extends Application {
 
-    static final int FELD_SIZE = 40;
+    static double feldSize = 40;
     static final int ANZAHL_LEVEL = DungeonDaten.getAnzahlLevel();
 
     private Dungeon brett;
@@ -18,25 +25,34 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         DungeonDaten dungeonDaten = new DungeonDaten();
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        feldSize = size.getWidth()/dungeonDaten.breite - size.getWidth()/dungeonDaten.breite/dungeonDaten.breite;
         brett = new Dungeon(dungeonDaten);
 
         stage.setTitle("ZORK");
-        Group group = new Group();
-        Scene scene = new Scene(group);
+        Pane root = new Pane();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
-        Canvas canvas = new Canvas(40 + dungeonDaten.breite * FELD_SIZE, 140 + dungeonDaten.hoehe * FELD_SIZE);
-        group.getChildren().add(canvas);
+        StackPane pane = new StackPane();
+        Canvas canvas = new Canvas(size.getWidth(), size.getHeight());
+        root.getChildren().add(pane);
+        pane.getChildren().add(canvas);
+        stage.initStyle(StageStyle.UNDECORATED);
+        pane.setStyle("-fx-background-color: black");
 
-        ImageView imageView = new ImageView(BilderGetter.dancerAnimation);
+        /*ImageView imageView = new ImageView(BilderGetter.dancerAnimation);
         imageView.setX(50);
         imageView.setY(50);
-        group.getChildren().add(imageView);
+        root.getChildren().add(imageView);*/
 
         GraphicsContext g = canvas.getGraphicsContext2D();
 
+        stage.show();
+
+
         brett.paint(g);
 
-        stage.show();
+        stage.setMaximized(true);
 
         Musikspieler.playHintergrundMusik();
 
@@ -59,8 +75,11 @@ public class Main extends Application {
                 brett.goEast();
             } else if (key.getCode() == KeyCode.SPACE) {
                 brett.aktionAusfuehren();
+            } else if (key.getCode() == KeyCode.ESCAPE) {
+                System.exit(0);
             }
 
+            g.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
             brett.paint(g);
         });
     }

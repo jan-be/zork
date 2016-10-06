@@ -1,9 +1,6 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 
-import javax.swing.*;
-import java.awt.*;
-
 class Dungeon {
     private Feld[][] feld;
     private Held kurt;

@@ -5,6 +5,7 @@ class BilderGetter {
             monsterBild = new Image("bilder/monster.png"),
             heldBild = new Image("bilder/held.png"),
             heiltrankBild = new Image("bilder/heiltrank.png"),
-            dancerAnimation = new Image("animationen/dancer.gif")
+            dancerAnimation = new Image("animationen/dancer.gif"),
+            herzBild = new Image("bilder/herz.png")
     ;
 }

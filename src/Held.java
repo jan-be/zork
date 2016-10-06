@@ -74,8 +74,8 @@ class Held {
     }
 
     void paint(GraphicsContext g) {
-        int xPix = 20 + x * Main.FELD_SIZE;
-        int yPix = 20 + y * Main.FELD_SIZE;
+        double xPix = 20 + x * Main.feldSize;
+        double yPix = 20 + y * Main.feldSize;
 
         if (leben / anfangsleben > 1) {
             g.setFill(Color.GREEN);
@@ -83,15 +83,19 @@ class Held {
             g.setFill(Color.color(0, leben / anfangsleben, 0));
         }
         //g.fillOval(xPix + 4, yPix + 4, 12, 12);
-        g.drawImage(BilderGetter.heldBild, xPix + Main.FELD_SIZE /10, yPix + Main.FELD_SIZE /10, Main.FELD_SIZE *4/5, Main.FELD_SIZE *4/5);
+        g.drawImage(BilderGetter.heldBild, xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
 
         g.setFill(Color.color(1, 1, 0.66));
-        g.fillRect(120, 40 + dungeonDaten.hoehe * Main.FELD_SIZE, Main.FELD_SIZE * dungeonDaten.breite - 100, 70);
+        g.fillRect(120, 40 + dungeonDaten.hoehe * Main.feldSize, Main.feldSize * dungeonDaten.breite - 100, 70);
         g.setFill(Color.color(0, 0, 0));
-        g.strokeRect(120, 40 + dungeonDaten.hoehe * Main.FELD_SIZE, Main.FELD_SIZE * dungeonDaten.breite - 100, 70);
+        g.strokeRect(120, 40 + dungeonDaten.hoehe * Main.feldSize, Main.feldSize * dungeonDaten.breite - 100, 70);
 
         g.fillText("Held: Leben: " + leben + ", Angriff: " + angriff + ", Rüstung: " + ruestung + ", Gold: " + gold,
-                124, 60 + dungeonDaten.hoehe * Main.FELD_SIZE);
+                124, 60 + dungeonDaten.hoehe * Main.feldSize);
+
+        for (int i = 0; i < leben / 30; i++) {
+            g.drawImage(BilderGetter.herzBild, dungeonDaten.breite * Main.feldSize / 2 + i * 30, 60 + dungeonDaten.hoehe * Main.feldSize, 20, 20);
+        }
     }
 
 }

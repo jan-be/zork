@@ -3,7 +3,7 @@ import javafx.scene.paint.Color;
 
 class Feld {
     private int typ;
-    private int x, y;
+    private double x, y;
     private Monster monster;
     private Heiltrank heiltrank;
     private Knife knife;
@@ -14,8 +14,8 @@ class Feld {
 
     Feld(int x, int y, char t, DungeonDaten dungeonDaten) {
         this.dungeonDaten = dungeonDaten;
-        this.x = 20 + x * Main.FELD_SIZE;
-        this.y = 20 + y * Main.FELD_SIZE;
+        this.x = 20 + x * Main.feldSize;
+        this.y = 20 + y * Main.feldSize;
         if (t == 'W') typ = 1;      //Weg
         else if (t == 'V') typ = 2; //Versteckte Tür
         else if (t == 'S') typ = 3; //Beginn
@@ -83,9 +83,9 @@ class Feld {
             else
                 g.setFill(Color.BLACK);
 
-            g.fillRect(x, y, Main.FELD_SIZE, Main.FELD_SIZE);
+            g.fillRect(x, y, Main.feldSize, Main.feldSize);
             g.setFill(Color.BLACK);
-            g.strokeRect(x+1, y+1, Main.FELD_SIZE-2, Main.FELD_SIZE-2);
+            g.strokeRect(x+1, y+1, Main.feldSize -2, Main.feldSize -2);
 
             if (monster != null)
                 monster.paint(g);
@@ -95,7 +95,7 @@ class Feld {
                 knife.paint(g);
         } else {
             g.setFill(Color.BLACK);
-            g.fillRect(x, y, Main.FELD_SIZE, Main.FELD_SIZE);
+            g.fillRect(x, y, Main.feldSize, Main.feldSize);
         }
     }
 
@@ -103,15 +103,15 @@ class Feld {
         if (hatMonster()) {
             if (monster.leben > 0) {
                 g.fillText("Monster: Leben: " + monster.leben + ", Angriff: " + monster.angriff + ", Rüstung: " + monster.ruestung + ", Gold: " + monster.gold,
-                        124, 80 + dungeonDaten.hoehe * Main.FELD_SIZE);
+                        124, 80 + dungeonDaten.hoehe * Main.feldSize);
             } else {
-                g.fillText("Monster tot", 124, 80 + dungeonDaten.hoehe * Main.FELD_SIZE);
+                g.fillText("Monster tot", 124, 80 + dungeonDaten.hoehe * Main.feldSize);
             }
         } else if (hatHeiltrank()) {
             if (heiltrank.lebenswiedergabe > 1) {
-                g.fillText("Der Heiltrank kann noch " + heiltrank.lebenswiedergabe + " wiedergeben", 124, 80 + dungeonDaten.hoehe * Main.FELD_SIZE);
+                g.fillText("Der Heiltrank kann noch " + heiltrank.lebenswiedergabe + " wiedergeben", 124, 80 + dungeonDaten.hoehe * Main.feldSize);
             } else {
-                g.fillText("Heiltrank alle", 124, 80 + dungeonDaten.hoehe * Main.FELD_SIZE);
+                g.fillText("Heiltrank alle", 124, 80 + dungeonDaten.hoehe * Main.feldSize);
             }
         }
     }
