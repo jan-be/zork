@@ -64,7 +64,7 @@ class Held {
     }
 
     void heilen(Heiltrank heiltrank) {
-        leben += ThreadLocalRandom.current().nextInt(15, 35);
+        leben += ThreadLocalRandom.current().nextInt(25, 40);
         heiltrank.maleAnklickbar--;
         if (leben > 300) {
             leben = 300;
