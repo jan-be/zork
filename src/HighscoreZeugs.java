@@ -5,7 +5,7 @@ import static java.lang.System.currentTimeMillis;
 
 class HighscoreZeugs {
     static private long zeitAmAnfang, zeitGebraucht;
-    static private Preferences preferences = Preferences.userNodeForPackage(HighscoreZeugs.class);
+    static private final Preferences preferences = Preferences.userNodeForPackage(HighscoreZeugs.class);
 
     static void zeitStarten() {
         zeitAmAnfang = currentTimeMillis();

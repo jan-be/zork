@@ -1,8 +1,10 @@
 import javafx.scene.canvas.GraphicsContext;
 
 class Knife {
-    private int x, y, gold;
-    double angriff, ruestung;
+    private final int x;
+    private final int y;
+    final double angriff;
+    final double ruestung;
     boolean aufgesammelt;
 
     Knife(int x, int y) {
@@ -15,7 +17,6 @@ class Knife {
         // spaeter mit Zufallsgenerator festlegen
         angriff = 10;
         ruestung = 5;
-        gold = 25;
     }
 
     void paint(GraphicsContext g) {

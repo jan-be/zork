@@ -2,7 +2,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 class Heiltrank {
-    private int x, y;
+    private final int x;
+    private final int y;
     double maleAnklickbar = 3;
 
     Heiltrank(int x, int y) {

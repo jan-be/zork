@@ -3,9 +3,9 @@ import java.util.Scanner;
 
 class DungeonDaten {
 
-    String[][] alleLevelDaten = new String[Main.ANZAHL_LEVEL][100];
-    int breite, hoehe;
-    int[] anzahlMonsterProLevel = new int[Main.ANZAHL_LEVEL];
+    final String[][] alleLevelDaten = new String[Main.ANZAHL_LEVEL][100];
+    final int breite, hoehe;
+    final int[] anzahlMonsterProLevel = new int[Main.ANZAHL_LEVEL];
 
     DungeonDaten() {
         for (int i = 0; i < Main.ANZAHL_LEVEL; i++) {

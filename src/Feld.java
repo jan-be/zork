@@ -2,18 +2,17 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 class Feld {
-    private int typ;
-    private double x, y;
+    private final int typ;
+    private final double x;
+    private final double y;
     private Monster monster;
     private Heiltrank heiltrank;
     private Knife knife;
-    private DungeonDaten dungeonDaten;
 
     private boolean aufgedeckt;
 
 
-    Feld(int x, int y, char t, DungeonDaten dungeonDaten) {
-        this.dungeonDaten = dungeonDaten;
+    Feld(int x, int y, char t) {
         this.x = Main.randSize + x * Main.feldSize;
         this.y = Main.randSize + y * Main.feldSize;
         if (t == 'W') typ = 1;      //Weg
@@ -35,8 +34,8 @@ class Feld {
         }
     }
 
-    boolean kannBetretenWerden() {
-        return (typ != 0);
+    boolean kannNichtBetretenWerden() {
+        return (typ == 0);
     }
 
     boolean hatMonster() {
@@ -98,15 +97,6 @@ class Feld {
             g.setFill(Color.BLACK);
             g.fillRect(x, y, Main.feldSize, Main.feldSize);
         }
-    }
-
-    void werteVomGegenstandZeigen(GraphicsContext g) {
-        /*if (hatMonster()) {
-            g.fillText("Monster: Leben: " + monster.leben + ", Angriff: " + monster.angriff + ", Rüstung: " + monster.ruestung + ", Gold: " + monster.gold,
-                    124, 80 + dungeonDaten.hoehe * Main.feldSize);
-        } else if (hatHeiltrank()) {
-            g.fillText("Der Heiltrank kann noch " + heiltrank.maleAnklickbar + " mal angeklickt werden", 124, 80 + dungeonDaten.hoehe * Main.feldSize);
-        }*/
     }
 
 }

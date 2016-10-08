@@ -3,16 +3,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 
 class Dungeon {
-    private Feld[][] feld;
-    private Held kurt;
+    private final Feld[][] feld;
+    private final Held kurt;
     private int aktX, aktY, level;
-    private double breite, hoehe;
-    private DungeonDaten dungeonDaten;
+    private final double breite;
+    private final DungeonDaten dungeonDaten;
 
-    Dungeon(DungeonDaten dungeonDaten, double breite, double hoehe) {
+    Dungeon(DungeonDaten dungeonDaten, double breite) {
         this.dungeonDaten = dungeonDaten;
         this.breite = breite;
-        this.hoehe = hoehe;
         feld = new Feld[dungeonDaten.breite][dungeonDaten.hoehe];
         kurt = new Held(dungeonDaten);
         felderLaden(level);
@@ -22,7 +21,7 @@ class Dungeon {
     private void felderLaden(int level) {
         for (int y = 0; y < dungeonDaten.hoehe; y++) {
             for (int x = 0; x < dungeonDaten.breite; x++) {
-                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x), dungeonDaten);
+                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x));
                 if (dungeonDaten.alleLevelDaten[level][y].charAt(x) == 'S') {
                     aktX = x;
                     aktY = y;
@@ -43,7 +42,7 @@ class Dungeon {
 
     void goWest() {
         if (aktX < 1) return;
-        if (!feld[aktX - 1][aktY].kannBetretenWerden()) return;
+        if (feld[aktX - 1][aktY].kannNichtBetretenWerden()) return;
         aktX--;
         kurt.geheZu(aktX, aktY);
         nachbarfelderAufdecken();
@@ -51,7 +50,7 @@ class Dungeon {
 
     void goEast() {
         if (aktX > dungeonDaten.breite - 2) return;
-        if (!feld[aktX + 1][aktY].kannBetretenWerden()) return;
+        if (feld[aktX + 1][aktY].kannNichtBetretenWerden()) return;
         aktX++;
         kurt.geheZu(aktX, aktY);
         nachbarfelderAufdecken();
@@ -59,7 +58,7 @@ class Dungeon {
 
     void goNorth() {
         if (aktY < 1) return;
-        if (!feld[aktX][aktY - 1].kannBetretenWerden()) return;
+        if (feld[aktX][aktY - 1].kannNichtBetretenWerden()) return;
         aktY--;
         kurt.geheZu(aktX, aktY);
         nachbarfelderAufdecken();
@@ -67,7 +66,7 @@ class Dungeon {
 
     void goSouth() {
         if (aktY > dungeonDaten.hoehe - 2) return;
-        if (!feld[aktX][aktY + 1].kannBetretenWerden()) return;
+        if (feld[aktX][aktY + 1].kannNichtBetretenWerden()) return;
         aktY++;
         kurt.geheZu(aktX, aktY);
         nachbarfelderAufdecken();
@@ -80,8 +79,8 @@ class Dungeon {
             }
         }
         kurt.paint(g);
-        feld[aktX][aktY].werteVomGegenstandZeigen(g);
 
+        //Umrandung um alle Felder
         g.setStroke(Color.WHITE);
         g.strokeRect(Main.randSize, Main.randSize, breite - 2 * Main.randSize - Main.randSize / dungeonDaten.breite * 3, dungeonDaten.hoehe * Main.feldSize);
     }

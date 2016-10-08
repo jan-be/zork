@@ -3,6 +3,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -16,6 +18,7 @@ public class Main extends Application {
     static double feldSize = 40, randSize;
     static final int ANZAHL_LEVEL = DungeonDaten.getAnzahlLevel();
     private static final int monitor = 1;
+    private boolean muted = false;
 
     private Dungeon brett;
 
@@ -24,10 +27,9 @@ public class Main extends Application {
         stage.initStyle(StageStyle.UNDECORATED);
         DungeonDaten dungeonDaten = new DungeonDaten();
         Rectangle2D size = Screen.getScreens().get(monitor).getVisualBounds();
-        System.out.println(size.getHeight());
         randSize = size.getWidth() / 20;
         feldSize = (int) (size.getWidth() / dungeonDaten.breite - randSize / dungeonDaten.breite * 2);
-        brett = new Dungeon(dungeonDaten, size.getWidth(), size.getHeight()+40);
+        brett = new Dungeon(dungeonDaten, size.getWidth());
 
         stage.setTitle("ZORK");
         Pane root = new Pane();
@@ -36,15 +38,32 @@ public class Main extends Application {
         stage.setX(size.getMinX());
         stage.setY(size.getMinY());
         StackPane pane = new StackPane();
-        Canvas canvas = new Canvas(size.getWidth(), size.getHeight()+40);
+        Canvas canvas = new Canvas(size.getWidth(), size.getHeight() + 40);
         root.getChildren().add(pane);
         pane.getChildren().add(canvas);
         pane.setStyle("-fx-background-color: black");
 
-        /*ImageView imageView = new ImageView(BilderGetter.dancerAnimation);
-        imageView.setX(50);
-        imageView.setY(50);
-        root.getChildren().add(imageView);*/
+        //Mutebutton
+        ImageView muteView = new ImageView(BilderGetter.muteBild);
+        muteView.setPreserveRatio(true);
+        muteView.setFitWidth(size.getWidth() / 40);
+        Button btnMute = new Button("", muteView);
+        btnMute.setLayoutX(size.getWidth() / 20 * 19);
+        btnMute.setLayoutY((size.getHeight()) / 20 * 19);
+        btnMute.setOnAction(event -> {
+            if (!muted) {
+                Musikspieler.musikStoppen();
+                muted = true;
+                muteView.setImage(BilderGetter.unmuteBild);
+            } else {
+                Musikspieler.playHintergrundMusik();
+                muted = false;
+                muteView.setImage(BilderGetter.muteBild);
+            }
+        });
+        btnMute.setStyle("-fx-base: black");
+        root.getChildren().add(btnMute);
+        btnMute.setFocusTraversable(false);
 
         GraphicsContext g = canvas.getGraphicsContext2D();
         stage.show();

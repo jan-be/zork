@@ -3,29 +3,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static javafx.scene.input.KeyCode.M;
 
 class Held {
     private int x, y;
     private static final double maxLeben = 300;
-    private double angriff, ruestung, leben = maxLeben;
+    private double angriff = 50, ruestung = 10, leben = maxLeben;
     private int gold;
     int monsterGetoetetImLevel;
-    private Random wuerfel;
-    private DungeonDaten dungeonDaten;
+    private final DungeonDaten dungeonDaten;
     private int schwerterAufgesammelt;
 
     Held(DungeonDaten dungeonDaten) {
         this.dungeonDaten = dungeonDaten;
-        leben = maxLeben;
-        angriff = 50;
-        ruestung = 10;
-        gold = 25;
-
-        wuerfel = new Random();
     }
 
     void geheZu(int xPos, int yPos) {
@@ -35,7 +25,7 @@ class Held {
 
     void kaempfe(Monster gegner) {
         if (gegner.leben > 0) {
-            int wert = wuerfel.nextInt(6) + 1;
+            int wert = ThreadLocalRandom.current().nextInt(1,7);
 
             gegner.leben = gegner.leben - angriff;
 
@@ -44,7 +34,7 @@ class Held {
             } else if (wert >= 3) {
                 leben = leben - gegner.angriff;
             } else {
-                gold += wuerfel.nextInt(20);    // Held gewinnt haushoch
+                gold += ThreadLocalRandom.current().nextInt(0,21);    // Held gewinnt haushoch
             }
             if (gegner.leben < 0) {
                 monsterGetoetetImLevel++;

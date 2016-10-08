@@ -2,9 +2,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 class Monster {
-    private int x, y;
-    double angriff = 10, leben = 255;
-    private double anfangsLeben = leben;
+    private final int x;
+    private final int y;
+    final double angriff = 10;
+    double leben = 255;
+    private final double anfangsLeben = leben;
 
     Monster(int x, int y) {
         this.x = x;
