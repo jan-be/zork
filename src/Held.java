@@ -9,7 +9,7 @@ class Held {
     private int x, y;
     private static final double maxLeben = 300;
     private double angriff = 50, ruestung = 10, leben = maxLeben;
-    private int gold;
+    int gold;
     int monsterGetoetetImLevel;
     private final DungeonDaten dungeonDaten;
     private int schwerterAufgesammelt;
@@ -77,15 +77,6 @@ class Held {
 
         //das Bild vom Helden
         g.drawImage(BilderGetter.heldBild, xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
-
-        /*//das Infofeld
-        g.setFill(Color.color(1, 1, 0.66));
-        g.fillRect(120, 40 + dungeonDaten.hoehe * Main.feldSize, Main.feldSize * dungeonDaten.breite - 100, 70);*/
-
-        /*//das Textzeugs
-        g.setFill(Color.BLACK);
-        g.fillText("Held: Leben: " + leben + ", Angriff: " + angriff + ", Rüstung: " + ruestung + ", Gold: " + gold,
-                124, 60 + dungeonDaten.hoehe * Main.feldSize);*/
 
         //das Herzzeugs
         for (int i = 0; i < maxLeben / 30; i++) {

@@ -4,7 +4,9 @@ import java.util.prefs.Preferences;
 import static java.lang.System.currentTimeMillis;
 
 class HighscoreZeugs {
-    static private long zeitAmAnfang, zeitGebraucht;
+    static private long zeitAmAnfang;
+
+    static private long zeitGebraucht;
     static private final Preferences preferences = Preferences.userNodeForPackage(HighscoreZeugs.class);
 
     static void zeitStarten() {
@@ -19,14 +21,28 @@ class HighscoreZeugs {
         zeitGebraucht = System.currentTimeMillis() - zeitAmAnfang;
     }
 
-    static void highscoreSpeichern() {
-        if (Long.parseLong(preferences.get("highscore", "10000000")) > zeitGebraucht) {
-            preferences.put("highscore", Long.toString(zeitGebraucht));
+    static void zeitHighscoreSpeichern() {
+        if (Long.parseLong(preferences.get("zeithighscore", "10000000")) > zeitGebraucht) {
+            preferences.put("zeithighscore", Long.toString(zeitGebraucht));
         }
     }
 
+    static long getZeitHighscore() {
+        return Long.parseLong(preferences.get("zeithighscore", "0"));
+    }
+
+    static void epHighscoreSpeichern(int ep) {
+        if (Integer.parseInt(preferences.get("ephighscore", "0")) < ep) {
+            preferences.put("ephighscore", Integer.toString(ep));
+        }
+    }
+
+    static int getEpHighscore() {
+        return Integer.parseInt(preferences.get("ephighscore", "0"));
+    }
+
     static String getHighscoreString() {
-        return zeitFormatieren(Long.parseLong(preferences.get("highscore", "0")));
+        return zeitFormatieren(getZeitHighscore());
     }
 
     private static String zeitFormatieren(long millis) {
@@ -47,5 +63,15 @@ class HighscoreZeugs {
         } else {
             return sekunden + " Sekunden";
         }
+    }
+
+    static void goldHighscoreSpeichern(int gold) {
+        if (Integer.parseInt(preferences.get("goldhighscore", "0")) < gold) {
+            preferences.put("goldhighscore", Integer.toString(gold));
+        }
+    }
+
+    static int getGoldHighscore() {
+        return Integer.parseInt(preferences.get("goldhighscore", "0"));
     }
 }

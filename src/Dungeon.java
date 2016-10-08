@@ -98,20 +98,21 @@ class Dungeon {
     }
 
     private void naechstesLevelStarten() {
-        if (level < Main.ANZAHL_LEVEL - 1) {
-            if (kurt.monsterGetoetetImLevel == dungeonDaten.anzahlMonsterProLevel[level]) {
+
+        if (kurt.monsterGetoetetImLevel == dungeonDaten.anzahlMonsterProLevel[level]) {
+            if (level + 1 < Main.ANZAHL_LEVEL) {
                 level++;
                 felderLaden(level);
                 kurt.monsterGetoetetImLevel = 0;
             } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Einfach schlecht.");
-                alert.setHeaderText(null);
-                alert.setContentText("Du musst erst alle Monster töten");
-                alert.showAndWait();
+                spielBeendenDialogZeigen();
             }
         } else {
-            spielBeenden();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Einfach schlecht.");
+            alert.setHeaderText(null);
+            alert.setContentText("Du musst erst alle Monster töten");
+            alert.showAndWait();
         }
     }
 
@@ -130,15 +131,22 @@ class Dungeon {
         kurt.kaempfe(feld[aktX][aktY].gibMonster());
     }
 
-    private void spielBeenden() {
+    private void spielBeendenDialogZeigen() {
         HighscoreZeugs.zeitStoppen();
-        HighscoreZeugs.highscoreSpeichern();
+        HighscoreZeugs.zeitHighscoreSpeichern();
+        HighscoreZeugs.goldHighscoreSpeichern(kurt.gold);
+        double ep = 10000 / (double) HighscoreZeugs.getZeitHighscore() * HighscoreZeugs.getGoldHighscore();
+        HighscoreZeugs.epHighscoreSpeichern((int) Math.round(ep));
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Props.");
         alert.setHeaderText("Du hast das Spiel beendet");
         alert.setContentText("Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
-                "\nDein Highscore: " + HighscoreZeugs.getHighscoreString());
+                "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
+                "\nDu hast dabei " + kurt.gold + " Gold eingesammlt" +
+                "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
+                "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
+                "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP");
         alert.showAndWait();
         System.exit(0);
     }
