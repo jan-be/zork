@@ -6,7 +6,7 @@ W        VWWWV    W    K               W
 W        WWWMW    W    W               W
 W         WW      W    M     W         W
 W         WW      W    H     W         W
-WWWWWWWWWWWW      W    W     WWWWKWWWWWW
+WWWWWWBWWWWW      W    W     WWWWKWWWWWW
 WWWMWWWWWWWWWMWWWWW    WWWWWWW
 W         WW           W     W
 W         WW           W     W

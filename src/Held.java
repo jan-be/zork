@@ -28,7 +28,7 @@ class Held {
         gegner.leben = gegner.leben - angriff;
 
         if (wert == 6) { // Held verliert und wird schwer verletzt
-            leben = leben - 64;
+            leben = leben - 40;
         } else if (wert >= 3) {
             leben = leben - gegner.angriff;
         } else {
@@ -46,7 +46,7 @@ class Held {
     }
 
     void heilen(Gegenstand heiltrank) {
-        leben += ThreadLocalRandom.current().nextInt(25, 40);
+        leben += ThreadLocalRandom.current().nextInt(25, 50);
         heiltrank.maleAnklickbar--;
         if (heiltrank.maleAnklickbar == 0) {
             heiltrank.nochSichtbar = false;

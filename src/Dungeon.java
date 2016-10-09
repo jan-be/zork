@@ -8,6 +8,7 @@ class Dungeon {
     private int aktX, aktY, level;
     private final double breite;
     private final DungeonDaten dungeonDaten;
+    private final Rucksack rucksack = new Rucksack();
 
     Dungeon(DungeonDaten dungeonDaten, double breite) {
         this.dungeonDaten = dungeonDaten;
@@ -19,9 +20,10 @@ class Dungeon {
     }
 
     private void felderLaden(int level) {
+        rucksack.stack.clear();
         for (int y = 0; y < dungeonDaten.hoehe; y++) {
             for (int x = 0; x < dungeonDaten.breite; x++) {
-                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x));
+                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x), rucksack);
                 if (dungeonDaten.alleLevelDaten[level][y].charAt(x) == 'S') {
                     aktX = x;
                     aktY = y;
@@ -78,22 +80,29 @@ class Dungeon {
                 feld[x][y].paint(g);
             }
         }
-        kurt.paint(g);
 
         //Umrandung um alle Felder
         g.setStroke(Color.WHITE);
         g.strokeRect(Main.randSize, Main.randSize, breite - 2 * Main.randSize - Main.randSize / dungeonDaten.breite * 3, dungeonDaten.hoehe * Main.feldSize);
+
+        for (int i = 0; i < rucksack.stack.size(); i++) {
+            rucksack.stack.get(i).paint(g);
+        }
+
+        kurt.paint(g);
     }
 
     void aktionAusfuehren() {
-        if (feld[aktX][aktY].hatMonster()) {
-            kaempfen();
-        } else if (feld[aktX][aktY].hatHeiltrank()) {
+        if (rucksack.hatMonster(aktX, aktY)) {
+            kaempfen(aktX, aktY);
+        } else if (rucksack.hatHeiltrank(aktX, aktY)) {
             heilen();
-        } else if (feld[aktX][aktY].hatSchwert()) {
+        } else if (rucksack.hatSchwert(aktX, aktY)) {
             schwertAufnehmen();
         } else if (feld[aktX][aktY].hatVersteckteTuer()) {
             naechstesLevelStarten();
+        } else if (rucksack.hatBossmonster(aktX, aktY)) {
+            kaempfen(aktX + rucksack.getBossmonsterPosX(aktX, aktY), aktY + rucksack.getBossmonsterPosY(aktX, aktY));
         }
     }
 
@@ -118,16 +127,16 @@ class Dungeon {
 
     private void schwertAufnehmen() {
         Musikspieler.playSound("schwertAufheben");
-        kurt.aufnehmen(feld[aktX][aktY].gibGegenstand());
+        kurt.aufnehmen(rucksack.get(aktX, aktY));
     }
 
     private void heilen() {
         Musikspieler.playSound("heiltrankTrinken");
-        kurt.heilen(feld[aktX][aktY].gibGegenstand());
+        kurt.heilen(rucksack.get(aktX, aktY));
     }
 
-    private void kaempfen() {
+    private void kaempfen(int x, int y) {
         Musikspieler.playSound("schlag");
-        kurt.kaempfe(feld[aktX][aktY].gibGegenstand());
+        kurt.kaempfe(rucksack.get(x, y));
     }
 }

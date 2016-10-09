@@ -3,7 +3,7 @@ import javafx.scene.image.Image;
 import java.util.HashMap;
 
 class Bilder {
-    private static HashMap<String, Image> map = new HashMap<>();
+    private static final HashMap<String, Image> map = new HashMap<>();
 
     static void init() {
         String[] bilder = {

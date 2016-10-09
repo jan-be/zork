@@ -20,7 +20,7 @@ class Dialoge {
         alert.setHeaderText("Du hast das Spiel beendet");
         alert.setContentText("Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
                 "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
-                "\nDu hast dabei " + kurt.gold + " Gold eingesammlt" +
+                "\nDu hast dabei " + kurt.gold + " Gold eingesammelt" +
                 "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
                 "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
                 "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP");
