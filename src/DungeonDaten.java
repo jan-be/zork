@@ -68,7 +68,7 @@ class DungeonDaten {
         int tmp = 0;
         for (String aTemp : temp) {
             for (int j = 0; j < aTemp.length(); j++) {
-                if (aTemp.charAt(j) == 'M') {
+                if (aTemp.charAt(j) == 'M' || aTemp.charAt(j) == 'B') {
                     tmp++;
                 }
             }

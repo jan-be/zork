@@ -1,8 +1,8 @@
-WWWWWSWWWWWWWMWWHWWWWWWWWWWWWWWWWWWWMWWW
+WWWWWSWWWWWWWMWWHWWWWWWWWWWWWWWHWWWWMWWW
 W    W     W      W    W           W   W
-V    W     W      W    W           W   W
+H    W     W      W    W           W   W
 W    W     W      W    W           WWWWW
-W        VWWWV    W    K               W
+W        HWWWW    W    K               W
 W        WWWMW    W    W               W
 W         WW      W    M     W         W
 W         WW      W    H     W         W
@@ -10,9 +10,9 @@ WWWWWWBWWWWW      W    W     WWWWKWWWWWW
 WWWMWWWWWWWWWMWWWWW    WWWWWWW
 W         WW           W     W
 W         WW           W     W
-WHV       WWWWWWWWMWWWWW     M
+WH        WWWWWWWWMWWWWW     M
 W         WW
-W         WW      HWWWWWWWWWWWWWWWWWWWWW
+W         WW      HWWWWWWWWWWWWWWWWWWWWV
 W         HW      W
 W         WW      W
 WWWWWMMWWWWWWWWWWWW

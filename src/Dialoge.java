@@ -12,7 +12,7 @@ class Dialoge {
         HighscoreZeugs.zeitStoppen();
         HighscoreZeugs.zeitHighscoreSpeichern();
         HighscoreZeugs.goldHighscoreSpeichern(kurt.gold);
-        double ep = 1000 / (double) HighscoreZeugs.getZeitHighscore() * HighscoreZeugs.getGoldHighscore();
+        double ep = 10000 / (double) HighscoreZeugs.getZeitHighscore() * HighscoreZeugs.getGoldHighscore();
         HighscoreZeugs.epHighscoreSpeichern((int) Math.round(ep));
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

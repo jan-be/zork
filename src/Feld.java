@@ -8,7 +8,6 @@ class Feld {
     private boolean aufgedeckt;
     private final Rucksack rucksack;
 
-
     Feld(int x, int y, char t, Rucksack rucksack) {
         this.x = x;
         this.y = y;
@@ -33,7 +32,7 @@ class Feld {
         } else if (typ == 6) {
             rucksack.stack.push(new Gegenstand("schwert", x, y, 10, 5, 0, 0));
         } else if (typ == 7) {
-            rucksack.stack.push(new Gegenstand("bossmonster", x, y, 100, 0, 2000, 0));
+            rucksack.stack.push(new Gegenstand("bossmonster", x, y, 50, 0, 1000, 0));
         }
     }
 
@@ -72,5 +71,4 @@ class Feld {
             g.fillRect(xPixel, yPixel, Main.feldSize, Main.feldSize);
         }
     }
-
 }

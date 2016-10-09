@@ -92,5 +92,4 @@ class Held {
         g.setFont(new Font(30));
         g.fillText(Integer.toString(gold), echteBreite / 40 * 37, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize + Main.feldSize / 2 + 2);
     }
-
 }
