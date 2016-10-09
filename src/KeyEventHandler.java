@@ -5,7 +5,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 class KeyEventHandler {
-    static void handleKeys(Scene scene, Dungeon brett, GraphicsContext g, Canvas canvas) {
+    KeyEventHandler(Scene scene, Dungeon brett, GraphicsContext g, Canvas canvas) {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             if (key.getCode() == KeyCode.W) {
                 brett.goNorth();

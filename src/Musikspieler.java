@@ -8,7 +8,7 @@ class Musikspieler {
     private static MediaPlayer hintergrundPlayer;
     private static boolean muted = false;
 
-    static void playAktionsSound(String titel) {
+    static void playSound(String titel) {
         if (!muted) {
             Media audioFile = new Media(Musikspieler.class.getResource("musik/" + titel + ".mp3").toExternalForm());
             aktionsPlayer = new MediaPlayer(audioFile);

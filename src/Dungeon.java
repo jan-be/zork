@@ -90,8 +90,8 @@ class Dungeon {
             kaempfen();
         } else if (feld[aktX][aktY].hatHeiltrank()) {
             heilen();
-        } else if (feld[aktX][aktY].hatKnife()) {
-            knifeAufnehmen();
+        } else if (feld[aktX][aktY].hatSchwert()) {
+            schwertAufnehmen();
         } else if (feld[aktX][aktY].hatVersteckteTuer()) {
             naechstesLevelStarten();
         }
@@ -105,7 +105,7 @@ class Dungeon {
                 felderLaden(level);
                 kurt.monsterGetoetetImLevel = 0;
             } else {
-                spielBeendenDialogZeigen();
+                Dialoge.beenden(kurt);
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -116,38 +116,18 @@ class Dungeon {
         }
     }
 
-    private void knifeAufnehmen() {
-        Musikspieler.playAktionsSound("schwertAufheben");
-        kurt.aufnehmen(feld[aktX][aktY].gibKnife());
+    private void schwertAufnehmen() {
+        Musikspieler.playSound("schwertAufheben");
+        kurt.aufnehmen(feld[aktX][aktY].gibGegenstand());
     }
 
     private void heilen() {
-        Musikspieler.playAktionsSound("heiltrankTrinken");
-        kurt.heilen(feld[aktX][aktY].gibHeiltrank());
+        Musikspieler.playSound("heiltrankTrinken");
+        kurt.heilen(feld[aktX][aktY].gibGegenstand());
     }
 
     private void kaempfen() {
-        Musikspieler.playAktionsSound("schlag");
-        kurt.kaempfe(feld[aktX][aktY].gibMonster());
-    }
-
-    private void spielBeendenDialogZeigen() {
-        HighscoreZeugs.zeitStoppen();
-        HighscoreZeugs.zeitHighscoreSpeichern();
-        HighscoreZeugs.goldHighscoreSpeichern(kurt.gold);
-        double ep = 10000 / (double) HighscoreZeugs.getZeitHighscore() * HighscoreZeugs.getGoldHighscore();
-        HighscoreZeugs.epHighscoreSpeichern((int) Math.round(ep));
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Props.");
-        alert.setHeaderText("Du hast das Spiel beendet");
-        alert.setContentText("Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
-                "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
-                "\nDu hast dabei " + kurt.gold + " Gold eingesammlt" +
-                "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
-                "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
-                "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP");
-        alert.showAndWait();
-        System.exit(0);
+        Musikspieler.playSound("schlag");
+        kurt.kaempfe(feld[aktX][aktY].gibGegenstand());
     }
 }

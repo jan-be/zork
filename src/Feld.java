@@ -5,11 +5,9 @@ class Feld {
     private final int typ;
     private final double x;
     private final double y;
-    private Monster monster;
-    private Heiltrank heiltrank;
-    private Knife knife;
-
     private boolean aufgedeckt;
+
+    private Gegenstand gegenstand;
 
 
     Feld(int x, int y, char t) {
@@ -26,11 +24,11 @@ class Feld {
         aufgedeckt = false;
 
         if (typ == 4) {
-            monster = new Monster(x, y);
+            gegenstand = new Gegenstand("monster", x, y, 10, 0, 255, 0);
         } else if (typ == 5) {
-            heiltrank = new Heiltrank(x, y);
+            gegenstand = new Gegenstand("heiltrank", x, y, 0, 0, 0, 3);
         } else if (typ == 6) {
-            knife = new Knife(x, y);
+            gegenstand = new Gegenstand("schwert", x, y, 10, 5, 0, 0);
         }
     }
 
@@ -39,32 +37,23 @@ class Feld {
     }
 
     boolean hatMonster() {
-        return (typ == 4 && monster.leben > 0);
+        return (typ == 4 && gegenstand.nochSichtbar);
     }
 
     boolean hatHeiltrank() {
-        return (typ == 5 && heiltrank.maleAnklickbar > 0);
+        return (typ == 5 && gegenstand.nochSichtbar);
     }
 
-    boolean hatKnife() {
-        return typ == 6 && (!knife.aufgesammelt);
+    boolean hatSchwert() {
+        return typ == 6 && gegenstand.nochSichtbar;
     }
 
     boolean hatVersteckteTuer() {
         return typ == 2;
     }
 
-
-    Monster gibMonster() {
-        return monster;
-    }
-
-    Heiltrank gibHeiltrank() {
-        return heiltrank;
-    }
-
-    Knife gibKnife() {
-        return knife;
+    Gegenstand gibGegenstand() {
+        return gegenstand;
     }
 
     void aufdecken() {
@@ -87,12 +76,9 @@ class Feld {
             g.setStroke(Color.BLACK);
             g.strokeRect(x, y, Main.feldSize, Main.feldSize);
 
-            if (monster != null)
-                monster.paint(g);
-            if (heiltrank != null)
-                heiltrank.paint(g);
-            if (knife != null)
-                knife.paint(g);
+            if (gegenstand != null) {
+                gegenstand.paint(g);
+            }
         } else {
             g.setFill(Color.BLACK);
             g.fillRect(x, y, Main.feldSize, Main.feldSize);

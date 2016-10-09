@@ -4,9 +4,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 class MuteButton {
-    private static boolean muted = false;
-    static void buttonZeigen(Rectangle2D size, Pane root) {
-        ImageView muteView = new ImageView(BilderGetter.muteBild);
+    private boolean muted = false;
+    MuteButton(Rectangle2D size, Pane root) {
+        ImageView muteView = new ImageView(Bilder.get("mute"));
         muteView.setPreserveRatio(true);
         muteView.setFitWidth(size.getWidth() / 40);
         Button btnMute = new Button("", muteView);
@@ -16,11 +16,11 @@ class MuteButton {
             if (!muted) {
                 Musikspieler.musikStoppen();
                 muted = true;
-                muteView.setImage(BilderGetter.unmuteBild);
+                muteView.setImage(Bilder.get("unmute"));
             } else {
                 Musikspieler.playHintergrundMusik();
                 muted = false;
-                muteView.setImage(BilderGetter.muteBild);
+                muteView.setImage(Bilder.get("mute"));
             }
         });
         btnMute.setStyle("-fx-base: black");
