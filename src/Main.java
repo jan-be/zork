@@ -6,15 +6,21 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application {
-    static double feldSize = 40, randSize;
     static final int ANZAHL_LEVEL = DungeonDaten.getAnzahlLevel();
+    static double feldSize = 40, randSize;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
         int monitor = 0;
-        Rectangle2D size = Dialoge.bildschirmWaehlen(stage, monitor);
+        stage.initStyle(StageStyle.UNDECORATED);
+        Rectangle2D size = Dialoge.bildschirmWaehlen(monitor);
 
         DungeonDaten dungeonDaten = new DungeonDaten();
         randSize = size.getWidth() / 20;
@@ -45,9 +51,5 @@ public class Main extends Application {
         Musikspieler.playHintergrundMusik();
 
         new KeyEventHandler(scene, brett, g, canvas);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

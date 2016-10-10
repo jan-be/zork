@@ -5,12 +5,12 @@ import javafx.scene.text.Font;
 import java.util.concurrent.ThreadLocalRandom;
 
 class Held {
-    private int x, y;
     private static final double maxLeben = 300;
-    private double angriff = 50, ruestung = 10, leben = maxLeben;
+    private final DungeonDaten dungeonDaten;
     int gold;
     int monsterGetoetetImLevel;
-    private final DungeonDaten dungeonDaten;
+    private int x, y;
+    private double angriff = 50, ruestung = 10, leben = maxLeben;
     private int schwerterAufgesammelt;
 
     Held(DungeonDaten dungeonDaten) {
@@ -27,8 +27,8 @@ class Held {
 
         gegner.leben = gegner.leben - angriff;
 
-        if (wert == 6) { // Held verliert und wird schwer verletzt
-            leben = leben - 40;
+        if (wert == 6) {
+            leben = leben - 40;     // Held verliert und wird schwer verletzt
         } else if (wert >= 3) {
             leben = leben - gegner.angriff;
         } else {

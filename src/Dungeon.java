@@ -1,14 +1,13 @@
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 
 class Dungeon {
     private final Feld[][] feld;
     private final Held kurt;
-    private int aktX, aktY, level;
     private final double breite;
     private final DungeonDaten dungeonDaten;
     private final Rucksack rucksack = new Rucksack();
+    private int aktX, aktY, level;
 
     Dungeon(DungeonDaten dungeonDaten, double breite) {
         this.dungeonDaten = dungeonDaten;
@@ -117,11 +116,7 @@ class Dungeon {
                 Dialoge.beenden(kurt);
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Einfach schlecht.");
-            alert.setHeaderText(null);
-            alert.setContentText("Du musst erst alle Monster töten");
-            alert.showAndWait();
+            Dialoge.erstMonsterToeten();
         }
     }
 
