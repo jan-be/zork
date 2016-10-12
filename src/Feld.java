@@ -5,15 +5,13 @@ class Feld {
     private final int typ;
     private final double xPixel, yPixel;
     private final int x, y;
-    private final Assets assets;
     private boolean aufgedeckt;
 
-    Feld(int x, int y, char t, Assets assets) {
+    Feld(int x, int y, char t) {
         this.x = x;
         this.y = y;
         this.xPixel = Main.randSize + x * Main.feldSize;
         this.yPixel = Main.randSize + y * Main.feldSize;
-        this.assets = assets;
         if (t == 'W') typ = 1;      //Weg
         else if (t == 'V') typ = 2; //Versteckte Tür
         else if (t == 'S') typ = 3; //Beginn
@@ -26,13 +24,13 @@ class Feld {
         aufgedeckt = false;
 
         if (typ == 4) {
-            assets.dinge.push(new Ding("monster", x, y, 10, 0, 255, 0));
+            Assets.dinge.push(new Ding("monster", x, y, 10, 0, 255, 0));
         } else if (typ == 5) {
-            assets.dinge.push(new Ding("heiltrank", x, y, 0, 0, 0, 3));
+            Assets.dinge.push(new Ding("heiltrank", x, y, 0, 0, 0, 3));
         } else if (typ == 6) {
-            assets.dinge.push(new Ding("schwert", x, y, 10, 5, 0, 0));
+            Assets.dinge.push(new Ding("schwert", x, y, 10, 5, 0, 0));
         } else if (typ == 7) {
-            assets.dinge.push(new Ding("bossmonster", x, y, 50, 0, 1000, 0));
+            Assets.dinge.push(new Ding("bossmonster", x, y, 50, 0, 1000, 0));
         }
     }
 
@@ -46,8 +44,8 @@ class Feld {
 
     void aufdecken() {
         aufgedeckt = true;
-        if (assets.getDing(x, y) != null) {
-            assets.getDing(x, y).aufgedeckt = true;
+        if (Assets.getDing(x, y) != null) {
+            Assets.getDing(x, y).aufgedeckt = true;
         }
     }
 

@@ -1,5 +1,6 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -8,23 +9,27 @@ class Dungeon {
     private final Held held;
     private final double breite;
     private final DungeonDaten dungeonDaten;
-    private final Assets assets = new Assets();
+    private final DerClient client;
+    private final Stage stage;
     private int aktX, aktY, level;
+    private GraphicsContext g;
 
-    Dungeon(DungeonDaten dungeonDaten, double breite) {
+    Dungeon(DungeonDaten dungeonDaten, double breite, Stage stage, String name, DerClient client) {
         this.dungeonDaten = dungeonDaten;
         this.breite = breite;
+        this.client = client;
+        this.stage = stage;
         feld = new Feld[dungeonDaten.breite][dungeonDaten.hoehe];
-        held = assets.helden.get(1);
+        held = Assets.helden.get(name);
         felderLaden(level);
         HighscoreZeugs.zeitStarten();
     }
 
     private void felderLaden(int level) {
-        assets.dinge.clear();
+        Assets.dinge.clear();
         for (int y = 0; y < dungeonDaten.hoehe; y++) {
             for (int x = 0; x < dungeonDaten.breite; x++) {
-                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x), assets);
+                feld[x][y] = new Feld(x, y, dungeonDaten.alleLevelDaten[level][y].charAt(x));
                 if (dungeonDaten.alleLevelDaten[level][y].charAt(x) == 'S') {
                     aktX = x;
                     aktY = y;
@@ -51,6 +56,7 @@ class Dungeon {
         held.x = aktX;
         held.y = aktY;
         nachbarfelderAufdecken();
+        client.sendHeld();
     }
 
     void goEast() {
@@ -60,6 +66,7 @@ class Dungeon {
         held.x = aktX;
         held.y = aktY;
         nachbarfelderAufdecken();
+        client.sendHeld();
     }
 
     void goNorth() {
@@ -69,6 +76,7 @@ class Dungeon {
         held.x = aktX;
         held.y = aktY;
         nachbarfelderAufdecken();
+        client.sendHeld();
     }
 
     void goSouth() {
@@ -78,9 +86,15 @@ class Dungeon {
         held.x = aktX;
         held.y = aktY;
         nachbarfelderAufdecken();
+        client.sendHeld();
     }
 
-    void paint(GraphicsContext g) {
+    void init(GraphicsContext g) {
+        this.g = g;
+    }
+
+    void paint() {
+        g.clearRect(0, 0, stage.getWidth(), stage.getHeight());
         for (int y = 0; y < dungeonDaten.hoehe; y++) {
             for (int x = 0; x < dungeonDaten.breite; x++) {
                 feld[x][y].paint(g);
@@ -91,20 +105,20 @@ class Dungeon {
         g.setStroke(Color.WHITE);
         g.strokeRect(Main.randSize, Main.randSize, breite - 2 * Main.randSize - Main.randSize / dungeonDaten.breite * 3, dungeonDaten.hoehe * Main.feldSize);
 
-        Painter.paint(assets.dinge, assets.helden, dungeonDaten, g);
+        Painter.paint();
     }
 
     void aktionAusfuehren() {
-        if (assets.hatMonster(aktX, aktY)) {
+        if (Assets.hatMonster(aktX, aktY)) {
             kaempfen(aktX, aktY);
-        } else if (assets.hatHeiltrank(aktX, aktY)) {
+        } else if (Assets.hatHeiltrank(aktX, aktY)) {
             heilen();
-        } else if (assets.hatSchwert(aktX, aktY)) {
+        } else if (Assets.hatSchwert(aktX, aktY)) {
             schwertAufnehmen();
         } else if (feld[aktX][aktY].hatVersteckteTuer()) {
             naechstesLevelStarten();
-        } else if (assets.hatBossmonster(aktX, aktY)) {
-            kaempfen(aktX + assets.getBossmonsterPosX(aktX, aktY), aktY + assets.getBossmonsterPosY(aktX, aktY));
+        } else if (Assets.hatBossmonster(aktX, aktY)) {
+            kaempfen(aktX + Assets.getBossmonsterPosX(aktX, aktY), aktY + Assets.getBossmonsterPosY(aktX, aktY));
         }
     }
 
@@ -125,7 +139,7 @@ class Dungeon {
     private void schwertAufnehmen() {
         Musikspieler.playSound("schwertAufheben");
 
-        Ding schwert = assets.getDing(aktX, aktY);
+        Ding schwert = Assets.getDing(aktX, aktY);
 
         held.angriff += schwert.angriff;
         held.ruestung += schwert.ruestung;
@@ -136,7 +150,7 @@ class Dungeon {
     private void heilen() {
         Musikspieler.playSound("heiltrankTrinken");
 
-        Ding heiltrank = assets.getDing(aktX, aktY);
+        Ding heiltrank = Assets.getDing(aktX, aktY);
 
         held.leben += ThreadLocalRandom.current().nextInt(25, 50);
         heiltrank.maleAnklickbar--;
@@ -152,7 +166,7 @@ class Dungeon {
     private void kaempfen(int x, int y) {
         Musikspieler.playSound("schlag");
 
-        Ding gegner = assets.getDing(x, y);
+        Ding gegner = Assets.getDing(x, y);
 
         int wert = ThreadLocalRandom.current().nextInt(1, 7);
 

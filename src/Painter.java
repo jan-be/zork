@@ -1,19 +1,37 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Stack;
 
 class Painter {
+    static Stack<Ding> dinge;
+    static HashMap<String, Held> helden;
+    static DungeonDaten dungeonDaten;
+    static GraphicsContext g;
+    private static Stage stage;
+    private static String name;
 
-    static void paint(Stack<Ding> dinge, HashMap<Integer, Held> helden, DungeonDaten dungeonDaten, GraphicsContext g) {
+    static void init(DungeonDaten dungeonDaten, Stage stage, String name, GraphicsContext g) {
+        Painter.dinge = Assets.dinge;
+        Painter.helden = Assets.helden;
+        Painter.dungeonDaten = dungeonDaten;
+        Painter.stage = stage;
+        Painter.name = name;
+        Painter.g = g;
+    }
+
+    static void paint() {
         for (Ding d : dinge) {
             dingPaint(g, d);
         }
-        eigenenHeldenPaint(dungeonDaten, g, helden.get(1));
-        for (int i = 2; i < helden.size(); i++) {
-            andereHeldenPaint(g, helden.get(i));
+        eigenenHeldenPaint(dungeonDaten, g, helden.get(name));
+        Collection<Held> heldenCollection = helden.values();
+        for (Held h : heldenCollection) {
+            andereHeldenPaint(g, h);
         }
     }
 
@@ -21,7 +39,6 @@ class Painter {
         double echteBreite = dungeonDaten.breite * Main.feldSize;
         double xPix = Main.randSize + held.x * Main.feldSize;
         double yPix = Main.randSize + held.y * Main.feldSize;
-
 
         //das Bild vom Helden
         g.drawImage(Bilder.get("held"), xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
@@ -49,7 +66,6 @@ class Painter {
     private static void andereHeldenPaint(GraphicsContext g, Held held) {
         double xPix = Main.randSize + held.x * Main.feldSize;
         double yPix = Main.randSize + held.y * Main.feldSize;
-
 
         //das Bild vom Helden
         g.drawImage(Bilder.get("held"), xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);

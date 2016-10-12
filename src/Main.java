@@ -1,3 +1,4 @@
+import com.esotericsoftware.minlog.Log;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -11,6 +12,7 @@ import javafx.stage.StageStyle;
 public class Main extends Application {
     static final int ANZAHL_LEVEL = DungeonDaten.getAnzahlLevel();
     static double feldSize = 40, randSize;
+    static String ipAdresse;
 
     public static void main(String[] args) {
         launch(args);
@@ -18,6 +20,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        String name = Dialoge.name();
+        Assets.init(name);
+        Log.set(Log.LEVEL_DEBUG);
+        if (Dialoge.isServer()) {
+            new DerServer();
+            ipAdresse = "localhost";
+        } else {
+            ipAdresse = Dialoge.ipAdresse();
+        }
+        DerClient client = new DerClient(name);
+
         int monitor = 0;
         stage.initStyle(StageStyle.UNDECORATED);
         Rectangle2D size = Dialoge.bildschirmWaehlen(monitor);
@@ -25,7 +38,7 @@ public class Main extends Application {
         DungeonDaten dungeonDaten = new DungeonDaten();
         randSize = size.getWidth() / 20;
         feldSize = (int) (size.getWidth() / dungeonDaten.breite - randSize / dungeonDaten.breite * 2);
-        Dungeon brett = new Dungeon(dungeonDaten, size.getWidth());
+        Dungeon dungeon = new Dungeon(dungeonDaten, size.getWidth(), stage, name, client);
 
         stage.setTitle("ZORK");
         Pane root = new Pane();
@@ -44,12 +57,19 @@ public class Main extends Application {
         new MuteButton(size, root);
 
         GraphicsContext g = canvas.getGraphicsContext2D();
+        dungeon.init(g);
+        Painter.init(dungeonDaten, stage, name, g);
+        dungeon.paint();
         stage.show();
 
-        brett.paint(g);
 
         Musikspieler.playHintergrundMusik();
 
-        new KeyEventHandler(scene, brett, g, canvas);
+        new KeyEventHandler(scene, dungeon);
+    }
+
+    @Override
+    public void stop() throws Exception {
+        System.exit(0);
     }
 }

@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.controlsfx:controlsfx-samples:8.20.9" level="project" />
+    <orderEntry type="library" name="com.esotericsoftware:kryonet:2.22.0-RC1" level="project" />
   </component>
 </module>

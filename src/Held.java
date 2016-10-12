@@ -5,4 +5,5 @@ class Held {
     int x, y;
     double angriff = 50, ruestung = 10, leben = maxLeben;
     int schwerterAufgesammelt;
+    String name;
 }

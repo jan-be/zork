@@ -1,6 +1,4 @@
 import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextInputDialog;
 import javafx.stage.Screen;
 import org.controlsfx.dialog.Dialogs;
 
@@ -15,6 +13,40 @@ class Dialoge {
                 majorVersion > 1.8;
     }
 
+    static boolean isServer() {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Server oder Host");
+        alert.setHeaderText("Server oder Host");
+        alert.setContentText("Ist dieser PC Server oder Host");
+        javafx.scene.control.ButtonType server = new javafx.scene.control.ButtonType("Server");
+        javafx.scene.control.ButtonType client = new javafx.scene.control.ButtonType("Client");
+
+        alert.getButtonTypes().setAll(server, client);
+
+        Optional<javafx.scene.control.ButtonType> result = alert.showAndWait();
+        return result.get() == server;
+    }
+
+    static String name() {
+        javafx.scene.control.TextInputDialog dialog = new javafx.scene.control.TextInputDialog("dick");
+        dialog.setTitle("Name");
+        dialog.setHeaderText("Wie willst du heißen");
+        dialog.setContentText("gib deinen Namen ein");
+        Optional<String> ergebnis = dialog.showAndWait();
+        return ergebnis.get();
+
+    }
+
+    static String ipAdresse() {
+        javafx.scene.control.TextInputDialog dialog = new javafx.scene.control.TextInputDialog("localhost");
+        dialog.setTitle("IP-Adresse");
+        dialog.setHeaderText("Wie lautet die IP-Adresse von deinem Mitspieler");
+        dialog.setContentText("gib die IP-Adresse ein");
+        Optional<String> ergebnis = dialog.showAndWait();
+        return ergebnis.get();
+
+    }
+
     static void beenden(Held kurt) {
         if (isJavaNeuer840()) {
             HighscoreZeugs.zeitStoppen();
@@ -23,7 +55,7 @@ class Dialoge {
             double ep = 10000 / (double) HighscoreZeugs.getZeitHighscore() * HighscoreZeugs.getGoldHighscore();
             HighscoreZeugs.epHighscoreSpeichern((int) Math.round(ep));
 
-            javafx.scene.control.Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
             alert.setTitle("Props.");
             alert.setHeaderText("Du hast das Spiel beendet");
             alert.setContentText("Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
@@ -58,7 +90,7 @@ class Dialoge {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     static Rectangle2D bildschirmWaehlen(int monitor) {
         if (isJavaNeuer840()) {
-            javafx.scene.control.TextInputDialog dialog = new TextInputDialog();
+            javafx.scene.control.TextInputDialog dialog = new javafx.scene.control.TextInputDialog();
             dialog.setTitle("Gib den Monitor ein");
             dialog.setHeaderText("Gib den Monitor ein, auf dem das Spiel laufen soll");
             dialog.setContentText("Wenn leer startet es auf dem Primärmonitor");
@@ -70,7 +102,7 @@ class Dialoge {
                 }
                 size = Screen.getScreens().get(monitor).getVisualBounds();
             } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
                 alert.setHeaderText("Es gibt den Monitor nicht");
                 alert.setContentText("Was kannst du eigentlich?");
                 alert.showAndWait();
@@ -103,7 +135,7 @@ class Dialoge {
 
     static void sterben() {
         if (isJavaNeuer840()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING);
             alert.setTitle("Einfach zu schlecht.");
             alert.setHeaderText("Du bist gestorben");
             alert.setContentText("Das ist wirklich nicht so gedacht, dass man zwischendurch stirbt. " +
@@ -124,7 +156,7 @@ class Dialoge {
 
     static void erstMonsterToeten() {
         if (isJavaNeuer840()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING);
             alert.setTitle("Einfach schlecht.");
             alert.setHeaderText(null);
             alert.setContentText("Du musst erst alle Monster töten");
