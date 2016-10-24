@@ -141,6 +141,7 @@ class Dungeon {
 
         Ding schwert = Assets.getDing(aktX, aktY);
 
+        assert schwert != null;
         held.angriff += schwert.angriff;
         held.ruestung += schwert.ruestung;
         schwert.nochSichtbar = false;
@@ -153,6 +154,7 @@ class Dungeon {
         Ding heiltrank = Assets.getDing(aktX, aktY);
 
         held.leben += ThreadLocalRandom.current().nextInt(25, 50);
+        assert heiltrank != null;
         heiltrank.maleAnklickbar--;
         if (heiltrank.maleAnklickbar == 0) {
             heiltrank.nochSichtbar = false;
@@ -170,6 +172,7 @@ class Dungeon {
 
         int wert = ThreadLocalRandom.current().nextInt(1, 7);
 
+        assert gegner != null;
         gegner.leben = gegner.leben - held.angriff;
 
         if (wert == 6) {
@@ -184,7 +187,10 @@ class Dungeon {
             gegner.nochSichtbar = false;
         }
         if (held.leben <= 0) {
-            Dialoge.sterben();
+            if (Dialoge.sterben()) {
+                felderLaden(0);
+                held.monsterGetoetetImLevel = 0;
+            }
         }
     }
 }

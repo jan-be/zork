@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/ZORK_jar</output-path>
     <root id="archive" name="ZORK.jar">
       <element id="module-output" name="ZORK" />
-      <element id="library" level="project" name="org.controlsfx:controlsfx-samples:8.20.9" />
     </root>
   </artifact>
 </component>

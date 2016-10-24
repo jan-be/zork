@@ -35,8 +35,7 @@ class Assets {
         return getDing(x, y) != null && getDing(x, y).typ.equals("bossmonster") && getDing(x, y).nochSichtbar ||
                 getDing(x - 1, y) != null && getDing(x - 1, y).typ.equals("bossmonster") && getDing(x - 1, y).nochSichtbar ||
                 getDing(x, y - 1) != null && getDing(x, y - 1).typ.equals("bossmonster") && getDing(x, y - 1).nochSichtbar ||
-                getDing(x - 1, y - 1) != null && getDing(x - 1, y - 1).typ.equals("bossmonster") && getDing(x - 1, y - 1).nochSichtbar
-                ;
+                getDing(x - 1, y - 1) != null && getDing(x - 1, y - 1).typ.equals("bossmonster") && getDing(x - 1, y - 1).nochSichtbar;
     }
 
     static int getBossmonsterPosX(int x, int y) {
