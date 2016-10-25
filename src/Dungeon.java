@@ -123,7 +123,7 @@ class Dungeon {
     }
 
     private void naechstesLevelStarten() {
-        if (held.monsterGetoetetImLevel == dungeonDaten.anzahlMonsterProLevel[level]) {
+        if (held.monsterGetoetetImLevel == dungeonDaten.anzahlMonsterProLevel[level] - 1) {
             if (level + 1 < Main.ANZAHL_LEVEL) {
                 level++;
                 felderLaden(level);

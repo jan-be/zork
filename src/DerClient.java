@@ -9,6 +9,7 @@ import java.util.Stack;
 public class DerClient {
     Stack<Ding> dinge = Assets.dinge;
     HashMap<String, Held> helden = Assets.helden;
+    Dungeon dungeon;
     Client client;
     String name;
 
@@ -31,15 +32,21 @@ public class DerClient {
 
             @Override
             public void received(Connection connection, Object object) {
+                System.out.println("was received " + object.getClass().getName());
                 if (object instanceof Network.AddHeld) {
                     Network.AddHeld msg = (Network.AddHeld) object;
-                    helden.put(msg.held.name, msg.held);
+                    helden.putIfAbsent(msg.held.name, msg.held);
                 } else if (object instanceof Network.UpdateHeldVonServer) {
                     Network.UpdateHeldVonServer msg = (Network.UpdateHeldVonServer) object;
-                    helden.put(msg.held.name, msg.held);
+                    if (!msg.held.name.equals(name)) {
+                        helden.put(msg.held.name, msg.held);
+                    }
                 } else if (object instanceof Network.RemoveHeld) {
                     Network.RemoveHeld msg = (Network.RemoveHeld) object;
                     helden.remove(msg.name);
+                }
+                if (dungeon != null) {
+                    dungeon.paint();
                 }
             }
         }));
@@ -51,8 +58,13 @@ public class DerClient {
         }
     }
 
+    void dungeonInit(Dungeon dungeon) {
+        this.dungeon = dungeon;
+
+    }
+
     void sendHeld() {
-        Network.UpdateHeldVonServer msg = new Network.UpdateHeldVonServer();
+        Network.UpdateHeldZuServer msg = new Network.UpdateHeldZuServer();
         msg.held = helden.get(name);
         client.sendTCP(msg);
     }

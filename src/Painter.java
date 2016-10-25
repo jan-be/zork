@@ -69,6 +69,7 @@ class Painter {
 
         //das Bild vom Helden
         g.drawImage(Bilder.get("held"), xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
+        g.fillText(held.name, xPix, yPix);
     }
 
     private static void dingPaint(GraphicsContext g, Ding ding) {

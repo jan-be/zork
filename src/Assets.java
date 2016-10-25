@@ -8,6 +8,7 @@ class Assets {
 
     static void init(String name) {
         helden.put(name, new Held());
+        helden.get(name).name = name;
     }
 
     static Ding getDing(int x, int y) {
