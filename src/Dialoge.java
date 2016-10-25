@@ -9,7 +9,7 @@ class Dialoge {
                 "Server",
                 "Client"};
         int n = JOptionPane.showOptionDialog(null,
-                "Ist dieser PC Server oder Host",
+                "Ist dieser PC Server oder Client",
                 "Server oder Client?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -36,7 +36,8 @@ class Dialoge {
         double ep = 10000 / (double) HighscoreZeugs.getZeitHighscore() * HighscoreZeugs.getGoldHighscore();
         HighscoreZeugs.epHighscoreSpeichern((int) Math.round(ep));
 
-        JOptionPane.showMessageDialog(null, "Du hast das Spiel beendet. " +
+        JOptionPane.showMessageDialog(null,
+                "Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
                 "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
                 "\nDu hast dabei " + kurt.gold + " Gold eingesammelt" +
                 "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
