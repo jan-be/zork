@@ -21,7 +21,7 @@ class Dialoge {
 
     static String name() {
         return JOptionPane.showInputDialog(null,
-                "Wie willst du heißen", "dick");
+                "Wie willst du heißen", "Name");
     }
 
     static String ipAdresse() {

@@ -1,8 +1,6 @@
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
-import java.util.Stack;
-
 public class Network {
     static public void register(EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
@@ -22,7 +20,6 @@ public class Network {
     static public class Login {
         public String name;
         public Held held;
-        //TODO das einbauen
 //        public Stack<Ding> dinge;
     }
 
@@ -47,12 +44,10 @@ public class Network {
 //        public Stack<Ding> dinge;
 //    }
 //
-//    //TODO add server, client
 //    static public class UpdateDingZuServer {
 //        public Ding ding;
 //    }
 //
-//    //TODO add server, client
 //    static public class UpdateDingVonServer {
 //        public Ding ding;
 //    }

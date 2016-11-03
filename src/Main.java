@@ -63,10 +63,12 @@ public class Main extends Application {
         dungeon.paint();
         stage.show();
 
-
         Musikspieler.playHintergrundMusik();
 
         new KeyEventHandler(scene, dungeon);
+
+        //TODO Inventarframe einbauen
+//        InventarFrame.show();
     }
 
     @Override
