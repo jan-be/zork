@@ -2,7 +2,7 @@ WWWWWSWWWWWWWMWWHWWWWWWWWWWWWWWHWWWWMWWW
 W    W     W      W    W           W   W
 H    W     W      W    W           W   W
 W    W     W      W    W           WWWWW
-W        HWWWW    W    K               W
+W        HWWWW    W    W               W
 W        WWWMW    W    W               W
 W         WW      W    M     W         W
 W         WW      W    H     W         W

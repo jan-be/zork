@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -95,18 +96,24 @@ class Dungeon {
     }
 
     void paint() {
-        g.clearRect(0, 0, stage.getWidth(), stage.getHeight());
-        for (int y = 0; y < dungeonDaten.hoehe; y++) {
-            for (int x = 0; x < dungeonDaten.breite; x++) {
-                feld[x][y].paint(g);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                g.clearRect(0, 0, stage.getWidth(), stage.getHeight());
+                for (int y = 0; y < dungeonDaten.hoehe; y++) {
+                    for (int x = 0; x < dungeonDaten.breite; x++) {
+                        feld[x][y].paint(g);
+                    }
+                }
+
+                //Umrandung um alle Felder
+                g.setStroke(Color.WHITE);
+                g.strokeRect(Main.randSize, Main.randSize, breite - 2 * Main.randSize - Main.randSize / dungeonDaten.breite * 3, dungeonDaten.hoehe * Main.feldSize);
+
+                Painter.paint();
             }
-        }
+        });
 
-        //Umrandung um alle Felder
-        g.setStroke(Color.WHITE);
-        g.strokeRect(Main.randSize, Main.randSize, breite - 2 * Main.randSize - Main.randSize / dungeonDaten.breite * 3, dungeonDaten.hoehe * Main.feldSize);
-
-        Painter.paint();
     }
 
     void aktionAusfuehren() {
@@ -191,6 +198,10 @@ class Dungeon {
             if (Dialoge.sterben()) {
                 felderLaden(0);
                 held.monsterGetoetetImLevel = 0;
+                held.gold = 0;
+                held.leben = Held.maxLeben;
+                held.ruestung = Held.anfangsruestung;
+                held.schwerterAufgesammelt = 0;
             }
         }
     }

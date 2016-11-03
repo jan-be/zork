@@ -43,25 +43,26 @@ public class DerServer {
                     msgZuruck.held = msg.held;
                     server.sendToAllTCP(msgZuruck);
 
-                    if (c.getID() == 1) {
-                        dinge = msg.dinge;
-                    } else {
-                        Network.AddDinge msg2 = new Network.AddDinge();
-                        msg2.dinge = dinge;
-                        server.sendToAllTCP(msg2);
-                    }
+//                    if (c.getID() == 1) {
+//                        dinge = msg.dinge;
+//                    } else {
+//                        Network.AddDinge msg2 = new Network.AddDinge();
+//                        msg2.dinge = dinge;
+//                        server.sendToAllTCP(msg2);
+//                    }
 
                 } else if (object instanceof Network.UpdateHeldZuServer) {
                     Network.UpdateHeldZuServer msg = (Network.UpdateHeldZuServer) object;
                     Network.UpdateHeldVonServer zuruckMsg = new Network.UpdateHeldVonServer();
                     zuruckMsg.held = msg.held;
                     server.sendToAllTCP(zuruckMsg);
-                } else if (object instanceof Network.UpdateDingZuServer) {
-                    Network.UpdateDingZuServer msg = (Network.UpdateDingZuServer) object;
-                    Network.UpdateDingVonServer msgZuruck = new Network.UpdateDingVonServer();
-                    msgZuruck.ding = msg.ding;
-                    server.sendToAllTCP(msgZuruck);
                 }
+//                else if (object instanceof Network.UpdateDingZuServer) {
+//                    Network.UpdateDingZuServer msg = (Network.UpdateDingZuServer) object;
+//                    Network.UpdateDingVonServer msgZuruck = new Network.UpdateDingVonServer();
+//                    msgZuruck.ding = msg.ding;
+//                    server.sendToAllTCP(msgZuruck);
+//                }
             }
 
             private boolean isValid(String value) {

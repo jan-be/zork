@@ -1,11 +1,11 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Stack;
 
 class Painter {
     static HashMap<String, Held> helden;
@@ -29,8 +29,7 @@ class Painter {
         eigenenHeldenPaint(dungeonDaten, g, helden.get(name));
         Collection<Held> heldenCollection = helden.values();
         for (Held h : heldenCollection) {
-            andereHeldenPaint(g, h);
-            System.out.println("++++++++++++++++++++++++++++++++++++++" + h.x + "+" + h.y);
+            alleHeldenPaint(g, h);
         }
     }
 
@@ -38,10 +37,6 @@ class Painter {
         double echteBreite = dungeonDaten.breite * Main.feldSize;
         double xPix = Main.randSize + held.x * Main.feldSize;
         double yPix = Main.randSize + held.y * Main.feldSize;
-
-        //das Bild vom Helden
-        g.drawImage(Bilder.get("held"), xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
-
         //das Herzzeugs
         for (int i = 0; i < Held.maxLeben / 30; i++) {
             g.drawImage(Bilder.get("grauesHerz"), echteBreite / 2 + i * echteBreite / 60, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize, Main.feldSize / 3 * 2, Main.feldSize / 3 * 2);
@@ -62,14 +57,15 @@ class Painter {
         g.fillText(Integer.toString(held.gold), echteBreite / 40 * 37, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize + Main.feldSize / 2 + 2);
     }
 
-    private static void andereHeldenPaint(GraphicsContext g, Held held) {
+    private static void alleHeldenPaint(GraphicsContext g, Held held) {
         double xPix = Main.randSize + held.x * Main.feldSize;
         double yPix = Main.randSize + held.y * Main.feldSize;
 
         //das Bild vom Helden
         g.drawImage(Bilder.get("held"), xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
 
-        g.fillText(held.name, xPix, yPix);
+        g.setTextAlign(TextAlignment.CENTER);
+        g.fillText(held.name, xPix + Main.feldSize / 2, yPix);
     }
 
     private static void dingPaint(GraphicsContext g, Ding ding) {
