@@ -3,32 +3,31 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Stack;
 
 public class DerServer {
     Server server;
-    HashSet<String> namen = new HashSet<>();
+    Stack<Ding> dinge;
+    HashMap<Integer, String> idToString = new HashMap<>();
 
     public DerServer() {
-        server = new Server() {
-            protected Connection newConnection() {
-                return new HeldConnection();
-            }
-        };
+        server = new Server();
 
         Network.register(server);
 
         server.addListener(new Listener() {
             @Override
             public void disconnected(Connection c) {
-                HeldConnection connection = (HeldConnection) c;
                 Network.RemoveHeld removeHeld = new Network.RemoveHeld();
-                removeHeld.name = connection.held.name;
+                removeHeld.name = idToString.get(c.getID());
                 server.sendToAllTCP(removeHeld);
             }
 
             @Override
             public void received(Connection c, Object object) {
+
                 if (object instanceof Network.Login) {
                     String name = ((Network.Login) object).name;
                     if (!isValid(name)) {
@@ -36,19 +35,32 @@ public class DerServer {
                         return;
                     }
 
+                    idToString.put(c.getID(), name);
+
                     Network.Login msg = (Network.Login) object;
 
                     Network.AddHeld msgZuruck = new Network.AddHeld();
                     msgZuruck.held = msg.held;
                     server.sendToAllTCP(msgZuruck);
 
+                    if (c.getID() == 1) {
+                        dinge = msg.dinge;
+                    } else {
+                        Network.AddDinge msg2 = new Network.AddDinge();
+                        msg2.dinge = dinge;
+                        server.sendToAllTCP(msg2);
+                    }
+
                 } else if (object instanceof Network.UpdateHeldZuServer) {
                     Network.UpdateHeldZuServer msg = (Network.UpdateHeldZuServer) object;
                     Network.UpdateHeldVonServer zuruckMsg = new Network.UpdateHeldVonServer();
                     zuruckMsg.held = msg.held;
                     server.sendToAllTCP(zuruckMsg);
-                } else if (object instanceof Network.RemoveHeld) {
-                    server.sendToAllTCP(object);
+                } else if (object instanceof Network.UpdateDingZuServer) {
+                    Network.UpdateDingZuServer msg = (Network.UpdateDingZuServer) object;
+                    Network.UpdateDingVonServer msgZuruck = new Network.UpdateDingVonServer();
+                    msgZuruck.ding = msg.ding;
+                    server.sendToAllTCP(msgZuruck);
                 }
             }
 
@@ -65,9 +77,5 @@ public class DerServer {
             e.printStackTrace();
         }
         server.start();
-    }
-
-    static class HeldConnection extends Connection {
-        Held held;
     }
 }

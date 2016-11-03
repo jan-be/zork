@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Stack;
 
 class Painter {
-    static Stack<Ding> dinge;
     static HashMap<String, Held> helden;
     static DungeonDaten dungeonDaten;
     static GraphicsContext g;
@@ -16,7 +15,6 @@ class Painter {
     private static String name;
 
     static void init(DungeonDaten dungeonDaten, Stage stage, String name, GraphicsContext g) {
-        Painter.dinge = Assets.dinge;
         Painter.helden = Assets.helden;
         Painter.dungeonDaten = dungeonDaten;
         Painter.stage = stage;
@@ -25,13 +23,14 @@ class Painter {
     }
 
     static void paint() {
-        for (Ding d : dinge) {
+        for (Ding d : Assets.dinge) {
             dingPaint(g, d);
         }
         eigenenHeldenPaint(dungeonDaten, g, helden.get(name));
         Collection<Held> heldenCollection = helden.values();
         for (Held h : heldenCollection) {
             andereHeldenPaint(g, h);
+            System.out.println("++++++++++++++++++++++++++++++++++++++" + h.x + "+" + h.y);
         }
     }
 
@@ -69,6 +68,7 @@ class Painter {
 
         //das Bild vom Helden
         g.drawImage(Bilder.get("held"), xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
+
         g.fillText(held.name, xPix, yPix);
     }
 

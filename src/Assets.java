@@ -7,8 +7,9 @@ class Assets {
     static HashMap<String, Held> helden = new HashMap<>();
 
     static void init(String name) {
-        helden.put(name, new Held());
-        helden.get(name).name = name;
+        Held held = new Held();
+        held.name = name;
+        helden.put(name, held);
     }
 
     static Ding getDing(int x, int y) {
@@ -18,6 +19,19 @@ class Assets {
             }
         }
         return null;
+    }
+
+    static void setDing(int x, int y, Ding ding) {
+        try {
+            for (int i = 1; i < dinge.size(); i++) {
+                if (dinge.get(i).x == x && dinge.get(i).y == y) {
+                    dinge.remove(i);
+                    dinge.add(i,ding);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     static boolean hatMonster(int x, int y) {

@@ -57,6 +57,7 @@ class Dungeon {
         held.y = aktY;
         nachbarfelderAufdecken();
         client.sendHeld();
+        //client.sendDingUpdate(Assets.getDing(aktX,aktY));
     }
 
     void goEast() {

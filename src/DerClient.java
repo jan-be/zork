@@ -27,24 +27,37 @@ public class DerClient {
                 Network.Login login = new Network.Login();
                 login.name = name;
                 login.held = helden.get(name);
+                login.dinge = Assets.dinge;
                 client.sendTCP(login);
             }
 
             @Override
             public void received(Connection connection, Object object) {
-                System.out.println("was received " + object.getClass().getName());
                 if (object instanceof Network.AddHeld) {
                     Network.AddHeld msg = (Network.AddHeld) object;
                     helden.putIfAbsent(msg.held.name, msg.held);
+
                 } else if (object instanceof Network.UpdateHeldVonServer) {
                     Network.UpdateHeldVonServer msg = (Network.UpdateHeldVonServer) object;
+                    System.out.println(msg.held.x);
                     if (!msg.held.name.equals(name)) {
                         helden.put(msg.held.name, msg.held);
                     }
+
                 } else if (object instanceof Network.RemoveHeld) {
                     Network.RemoveHeld msg = (Network.RemoveHeld) object;
                     helden.remove(msg.name);
+
+                } else if (object instanceof Network.UpdateDingVonServer) {
+                    Network.UpdateDingVonServer msg = (Network.UpdateDingVonServer) object;
+                    Assets.setDing(msg.ding.x, msg.ding.y, msg.ding);
+
+                } else if (object instanceof Network.AddDinge) {
+                    Network.AddDinge msg = (Network.AddDinge) object;
+                    Assets.dinge = msg.dinge;
                 }
+
+
                 if (dungeon != null) {
                     dungeon.paint();
                 }
@@ -58,6 +71,7 @@ public class DerClient {
         }
     }
 
+
     void dungeonInit(Dungeon dungeon) {
         this.dungeon = dungeon;
 
@@ -66,6 +80,12 @@ public class DerClient {
     void sendHeld() {
         Network.UpdateHeldZuServer msg = new Network.UpdateHeldZuServer();
         msg.held = helden.get(name);
+        client.sendTCP(msg);
+    }
+
+    void sendDingUpdate(Ding ding) {
+        Network.UpdateDingZuServer msg = new Network.UpdateDingZuServer();
+        msg.ding = ding;
         client.sendTCP(msg);
     }
 }
