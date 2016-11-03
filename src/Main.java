@@ -32,7 +32,7 @@ public class Main extends Application {
         DerClient client = new DerClient(name);
 
         int monitor = 0;
-        //stage.initStyle(StageStyle.UNDECORATED);
+        stage.initStyle(StageStyle.UNDECORATED);
         Rectangle2D size = Dialoge.bildschirmWaehlen(monitor);
 
         DungeonDaten dungeonDaten = new DungeonDaten();
