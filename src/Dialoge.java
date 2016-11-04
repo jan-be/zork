@@ -1,7 +1,9 @@
+import com.esotericsoftware.kryonet.Client;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 
 import javax.swing.*;
+import java.net.InetAddress;
 
 class Dialoge {
     static boolean isServer() {
@@ -38,11 +40,11 @@ class Dialoge {
 
         JOptionPane.showMessageDialog(null,
                 "Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
-                "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
-                "\nDu hast dabei " + kurt.gold + " Gold eingesammelt" +
-                "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
-                "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
-                "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP");
+                        "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
+                        "\nDu hast dabei " + kurt.gold + " Gold eingesammelt" +
+                        "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
+                        "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
+                        "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP");
         System.exit(0);
     }
 
@@ -78,5 +80,32 @@ class Dialoge {
         JOptionPane.showMessageDialog(null,
                 "Du musst erst alle Monster töten",
                 "so läuft's halt", JOptionPane.WARNING_MESSAGE);
+    }
+
+    static String mitServerVerbinden() {
+        Client client = new Client();
+        InetAddress address = client.discoverHost(54777, 500);
+
+        if (address != null) {
+            String ipString = address.toString().substring(1);
+            Object[] optionen = {
+                    "Ja",
+                    "Nein"};
+            int n = JOptionPane.showOptionDialog(null,
+                    "Im Netzwerk läuft bereits ein Server mit IP-Adresse \n" +
+                            ipString + "\n" +
+                            "möchtest du dich damit verbinden?",
+                    "Mit Server verbinden?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    optionen,
+                    optionen[0]);
+            if (n == 0) {
+                return ipString;
+            }
+        }
+
+        return null;
     }
 }

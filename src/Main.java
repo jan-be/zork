@@ -1,3 +1,5 @@
+import com.esotericsoftware.kryo.NotNull;
+import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -7,6 +9,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import javax.swing.*;
+import java.net.InetAddress;
 
 public class Main extends Application {
     static final int ANZAHL_LEVEL = DungeonDaten.getAnzahlLevel();
@@ -21,12 +26,16 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         String name = Dialoge.name();
         Assets.init(name);
-        Log.set(Log.LEVEL_DEBUG);
-        if (Dialoge.isServer()) {
+        Log.set(Log.LEVEL_WARN);
+
+        String vielleichtIp = Dialoge.mitServerVerbinden();
+        if (vielleichtIp == null && Dialoge.isServer()) {
             new DerServer();
             ipAdresse = "localhost";
-        } else {
+        } else if (vielleichtIp == null) {
             ipAdresse = Dialoge.ipAdresse();
+        } else {
+            ipAdresse = vielleichtIp;
         }
         DerClient client = new DerClient(name);
 
