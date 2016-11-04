@@ -1,5 +1,3 @@
-import com.esotericsoftware.kryo.NotNull;
-import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -9,9 +7,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-import javax.swing.*;
-import java.net.InetAddress;
 
 public class Main extends Application {
     static final int ANZAHL_LEVEL = DungeonDaten.getAnzahlLevel();
