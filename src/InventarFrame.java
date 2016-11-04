@@ -1,3 +1,4 @@
+/*
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -26,3 +27,4 @@ public class InventarFrame {
         stage.show();
     }
 }
+*/

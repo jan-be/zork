@@ -4,18 +4,17 @@ import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Stack;
 
-public class DerServer {
-    Server server;
-    Stack<Ding> dinge;
-    HashMap<Integer, String> idToString = new HashMap<>();
+class DerServer {
+    private final Server server;
+    private final HashMap<Integer, String> idToString = new HashMap<>();
 
-    public DerServer() {
+    DerServer() {
         server = new Server();
 
         Network.register(server);
 
+        //noinspection BooleanMethodIsAlwaysInverted,BooleanMethodIsAlwaysInverted
         server.addListener(new Listener() {
             @Override
             public void disconnected(Connection c) {
@@ -42,28 +41,28 @@ public class DerServer {
                     msgZuruck.held = msg.held;
                     server.sendToAllTCP(msgZuruck);
 
-//                    if (c.getID() == 1) {
-//                        dinge = msg.dinge;
-//                    } else {
-//                        Network.AddDinge msg2 = new Network.AddDinge();
-//                        msg2.dinge = dinge;
-//                        server.sendToAllTCP(msg2);
-//                    }
+                    if (c.getID() != 1) {
+                        Network.AddDingeVonServer msg2 = new Network.AddDingeVonServer();
+                        msg2.dinge = Assets.dinge;
+                        server.sendToTCP(c.getID(), msg2);
+                    }
 
                 } else if (object instanceof Network.UpdateHeldZuServer) {
                     Network.UpdateHeldZuServer msg = (Network.UpdateHeldZuServer) object;
                     Network.UpdateHeldVonServer zuruckMsg = new Network.UpdateHeldVonServer();
                     zuruckMsg.held = msg.held;
                     server.sendToAllTCP(zuruckMsg);
+
+                } else if (object instanceof Network.UpdateDingZuServer) {
+                    Network.UpdateDingZuServer msg = (Network.UpdateDingZuServer) object;
+                    Network.UpdateDingVonServer msgZuruck = new Network.UpdateDingVonServer();
+                    msgZuruck.ding = msg.ding;
+                    server.sendToAllTCP(msgZuruck);
+
                 }
-//                else if (object instanceof Network.UpdateDingZuServer) {
-//                    Network.UpdateDingZuServer msg = (Network.UpdateDingZuServer) object;
-//                    Network.UpdateDingVonServer msgZuruck = new Network.UpdateDingVonServer();
-//                    msgZuruck.ding = msg.ding;
-//                    server.sendToAllTCP(msgZuruck);
-//                }
             }
 
+            @SuppressWarnings("BooleanMethodIsAlwaysInverted")
             private boolean isValid(String value) {
                 if (value == null) return false;
                 value = value.trim();

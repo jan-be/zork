@@ -23,14 +23,18 @@ class Feld {
 
         aufgedeckt = false;
 
-        if (typ == 4) {
-            Assets.dinge.push(new Ding("monster", x, y, 10, 0, 255, 0));
-        } else if (typ == 5) {
-            Assets.dinge.push(new Ding("heiltrank", x, y, 0, 0, 0, 3));
-        } else if (typ == 6) {
-            Assets.dinge.push(new Ding("schwert", x, y, 10, 5, 0, 0));
-        } else if (typ == 7) {
-            Assets.dinge.push(new Ding("bossmonster", x, y, 50, 0, 1000, 0));
+        if (typ == 4 || typ == 5 || typ == 6 || typ == 7) {
+            Ding ding = new Ding();
+            if (typ == 4) {
+                ding.init("monster", x, y, 10, 0, 255, 0);
+            } else if (typ == 5) {
+                ding.init("heiltrank", x, y, 0, 0, 0, 3);
+            } else if (typ == 6) {
+                ding.init("schwert", x, y, 10, 5, 0, 0);
+            } else {
+                ding.init("bossmonster", x, y, 50, 0, 1000, 0);
+            }
+            Assets.dinge.push(ding);
         }
     }
 
@@ -45,6 +49,7 @@ class Feld {
     void aufdecken() {
         aufgedeckt = true;
         if (Assets.getDing(x, y) != null) {
+            //noinspection ConstantConditions
             Assets.getDing(x, y).aufgedeckt = true;
         }
     }

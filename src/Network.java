@@ -1,8 +1,10 @@
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
-public class Network {
-    static public void register(EndPoint endPoint) {
+import java.util.Stack;
+
+class Network {
+    static void register(EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
         kryo.register(Held.class);
         kryo.register(Login.class);
@@ -11,44 +13,42 @@ public class Network {
         kryo.register(RemoveHeld.class);
         kryo.register(AddHeld.class);
         kryo.register(Ding.class);
-//        kryo.register(UpdateDingZuServer.class);
-//        kryo.register(UpdateDingVonServer.class);
-//        kryo.register(Stack.class);
-//        kryo.register(AddDinge.class);
+        kryo.register(UpdateDingZuServer.class);
+        kryo.register(UpdateDingVonServer.class);
+        kryo.register(Stack.class);
+        kryo.register(AddDingeVonServer.class);
     }
 
-    static public class Login {
-        public String name;
-        public Held held;
-//        public Stack<Ding> dinge;
+    static class Login {
+        String name;
+        Held held;
     }
 
-    static public class AddHeld {
-        public Held held;
+    static class AddHeld {
+        Held held;
     }
 
-    static public class UpdateHeldVonServer {
-        public Held held;
+    static class UpdateHeldVonServer {
+        Held held;
     }
 
-    static public class UpdateHeldZuServer {
-        public Held held;
+    static class UpdateHeldZuServer {
+        Held held;
     }
 
-    static public class RemoveHeld {
-        public String name;
+    static class RemoveHeld {
+        String name;
     }
 
-//    //TODO add server, client
-//    static public class AddDinge {
-//        public Stack<Ding> dinge;
-//    }
-//
-//    static public class UpdateDingZuServer {
-//        public Ding ding;
-//    }
-//
-//    static public class UpdateDingVonServer {
-//        public Ding ding;
-//    }
+    static class AddDingeVonServer {
+        Stack<Ding> dinge;
+    }
+
+    static class UpdateDingZuServer {
+        Ding ding;
+    }
+
+    static class UpdateDingVonServer {
+        Ding ding;
+    }
 }

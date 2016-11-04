@@ -2,22 +2,19 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 
 import java.util.Collection;
 import java.util.HashMap;
 
 class Painter {
-    static HashMap<String, Held> helden;
-    static DungeonDaten dungeonDaten;
-    static GraphicsContext g;
-    private static Stage stage;
+    private static HashMap<String, Held> helden;
+    private static DungeonDaten dungeonDaten;
+    private static GraphicsContext g;
     private static String name;
 
-    static void init(DungeonDaten dungeonDaten, Stage stage, String name, GraphicsContext g) {
+    static void init(DungeonDaten dungeonDaten, String name, GraphicsContext g) {
         Painter.helden = Assets.helden;
         Painter.dungeonDaten = dungeonDaten;
-        Painter.stage = stage;
         Painter.name = name;
         Painter.g = g;
     }
@@ -35,8 +32,7 @@ class Painter {
 
     private static void eigenenHeldenPaint(DungeonDaten dungeonDaten, GraphicsContext g, Held held) {
         double echteBreite = dungeonDaten.breite * Main.feldSize;
-        double xPix = Main.randSize + held.x * Main.feldSize;
-        double yPix = Main.randSize + held.y * Main.feldSize;
+
         //das Herzzeugs
         for (int i = 0; i < Held.maxLeben / 30; i++) {
             g.drawImage(Bilder.get("grauesHerz"), echteBreite / 2 + i * echteBreite / 60, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize, Main.feldSize / 3 * 2, Main.feldSize / 3 * 2);
@@ -65,7 +61,7 @@ class Painter {
         g.drawImage(Bilder.get("held"), xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
 
         g.setTextAlign(TextAlignment.CENTER);
-        g.fillText(held.name, xPix + Main.feldSize / 2, yPix);
+        g.fillText(held.name, xPix + Main.feldSize / 2, yPix-2);
     }
 
     private static void dingPaint(GraphicsContext g, Ding ding) {

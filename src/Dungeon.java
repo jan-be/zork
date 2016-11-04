@@ -48,7 +48,17 @@ class Dungeon {
         if (aktY <= dungeonDaten.hoehe - 2) feld[aktX][aktY + 1].aufdecken();
         if (aktX <= dungeonDaten.breite - 2) feld[aktX + 1][aktY].aufdecken();
         if (aktX >= 1) feld[aktX - 1][aktY].aufdecken();
+
+        update(aktX, aktY);
+        update(aktX, aktY-1);
+        update(aktX-1, aktY);
+        update(aktX+1, aktY);
+        update(aktX, aktY+1);
     }
+
+   private void update(int x, int y) {
+       client.sendDingUpdate(Assets.getDing(x,y));
+   }
 
     void goWest() {
         if (aktX < 1) return;
@@ -58,7 +68,6 @@ class Dungeon {
         held.y = aktY;
         nachbarfelderAufdecken();
         client.sendHeld();
-        //client.sendDingUpdate(Assets.getDing(aktX,aktY));
     }
 
     void goEast() {
@@ -96,22 +105,19 @@ class Dungeon {
     }
 
     void paint() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                g.clearRect(0, 0, stage.getWidth(), stage.getHeight());
-                for (int y = 0; y < dungeonDaten.hoehe; y++) {
-                    for (int x = 0; x < dungeonDaten.breite; x++) {
-                        feld[x][y].paint(g);
-                    }
+        Platform.runLater(() -> {
+            g.clearRect(0, 0, stage.getWidth(), stage.getHeight());
+            for (int y = 0; y < dungeonDaten.hoehe; y++) {
+                for (int x = 0; x < dungeonDaten.breite; x++) {
+                    feld[x][y].paint(g);
                 }
-
-                //Umrandung um alle Felder
-                g.setStroke(Color.WHITE);
-                g.strokeRect(Main.randSize, Main.randSize, breite - 2 * Main.randSize - Main.randSize / dungeonDaten.breite * 3, dungeonDaten.hoehe * Main.feldSize);
-
-                Painter.paint();
             }
+
+            //Umrandung um alle Felder
+            g.setStroke(Color.WHITE);
+            g.strokeRect(Main.randSize, Main.randSize, breite - 2 * Main.randSize - Main.randSize / dungeonDaten.breite * 3, dungeonDaten.hoehe * Main.feldSize);
+
+            Painter.paint();
         });
 
     }
@@ -128,6 +134,7 @@ class Dungeon {
         } else if (Assets.hatBossmonster(aktX, aktY)) {
             kaempfen(aktX + Assets.getBossmonsterPosX(aktX, aktY), aktY + Assets.getBossmonsterPosY(aktX, aktY));
         }
+        client.sendDingUpdate(Assets.getDing(aktX,aktY));
     }
 
     private void naechstesLevelStarten() {
@@ -196,7 +203,8 @@ class Dungeon {
         }
         if (held.leben <= 0) {
             if (Dialoge.sterben()) {
-                felderLaden(0);
+                level = 0;
+                felderLaden(level);
                 held.monsterGetoetetImLevel = 0;
                 held.gold = 0;
                 held.leben = Held.maxLeben;

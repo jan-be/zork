@@ -77,6 +77,6 @@ class Dialoge {
     static void erstMonsterToeten() {
         JOptionPane.showMessageDialog(null,
                 "Du musst erst alle Monster töten",
-                "so läufts halt", JOptionPane.WARNING_MESSAGE);
+                "so läuft's halt", JOptionPane.WARNING_MESSAGE);
     }
 }

@@ -6,14 +6,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Stack;
 
-public class DerClient {
-    Stack<Ding> dinge = Assets.dinge;
-    HashMap<String, Held> helden = Assets.helden;
-    Dungeon dungeon;
-    Client client;
-    String name;
+class DerClient {
+    private final HashMap<String, Held> helden = Assets.helden;
+    private Dungeon dungeon;
+    private final Client client;
+    private final String name;
+    private Stack<Ding> tempDinge = new Stack<>();
 
-    public DerClient(String name) {
+    DerClient(String name) {
         this.name = name;
 
         client = new Client();
@@ -27,7 +27,6 @@ public class DerClient {
                 Network.Login login = new Network.Login();
                 login.name = name;
                 login.held = helden.get(name);
-//                login.dinge = Assets.dinge;
                 client.sendTCP(login);
             }
 
@@ -40,7 +39,6 @@ public class DerClient {
 
                 } else if (object instanceof Network.UpdateHeldVonServer) {
                     Network.UpdateHeldVonServer msg = (Network.UpdateHeldVonServer) object;
-                    System.out.println(msg.held.x);
                     if (!msg.held.name.equals(name)) {
                         helden.put(msg.held.name, msg.held);
                     }
@@ -49,15 +47,14 @@ public class DerClient {
                     Network.RemoveHeld msg = (Network.RemoveHeld) object;
                     helden.remove(msg.name);
 
+                } else if (object instanceof Network.UpdateDingVonServer) {
+                    Network.UpdateDingVonServer msg = (Network.UpdateDingVonServer) object;
+                    Assets.setDing(msg.ding);
+
+                } else if (object instanceof Network.AddDingeVonServer) {
+                    Network.AddDingeVonServer msg = (Network.AddDingeVonServer) object;
+                    tempDinge = msg.dinge;
                 }
-//                else if (object instanceof Network.UpdateDingVonServer) {
-//                    Network.UpdateDingVonServer msg = (Network.UpdateDingVonServer) object;
-//                    Assets.setDing(msg.ding.x, msg.ding.y, msg.ding);
-//
-//                } else if (object instanceof Network.AddDinge) {
-//                    Network.AddDinge msg = (Network.AddDinge) object;
-//                    Assets.dinge = msg.dinge;
-//                }
 
 
                 if (dungeon != null) {
@@ -85,9 +82,15 @@ public class DerClient {
         client.sendTCP(msg);
     }
 
-//    void sendDingUpdate(Ding ding) {
-//        Network.UpdateDingZuServer msg = new Network.UpdateDingZuServer();
-//        msg.ding = ding;
-//        client.sendTCP(msg);
-//    }
+    void sendDingUpdate(Ding ding) {
+        Network.UpdateDingZuServer msg = new Network.UpdateDingZuServer();
+        msg.ding = ding;
+        client.sendTCP(msg);
+    }
+
+    void dingeVomServerEinbauen() {
+        if (!tempDinge.empty()) {
+            Assets.dinge = tempDinge;
+        }
+    }
 }
