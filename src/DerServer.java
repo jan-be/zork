@@ -8,13 +8,13 @@ import java.util.HashMap;
 class DerServer {
     private final Server server;
     private final HashMap<Integer, String> idToString = new HashMap<>();
+    private int level = 0;
 
     DerServer() {
-        server = new Server();
+        server = new Server(20000, 20000);
 
         Network.register(server);
 
-        //noinspection BooleanMethodIsAlwaysInverted,BooleanMethodIsAlwaysInverted
         server.addListener(new Listener() {
             @Override
             public void disconnected(Connection c) {
@@ -41,10 +41,18 @@ class DerServer {
                     msgZuruck.held = msg.held;
                     server.sendToAllTCP(msgZuruck);
 
+                    Network.LevelLaden levelLadenMsg = new Network.LevelLaden();
+                    levelLadenMsg.level = level;
+                    server.sendToTCP(c.getID(), levelLadenMsg);
+
                     if (c.getID() != 1) {
-                        Network.AddDingeVonServer msg2 = new Network.AddDingeVonServer();
-                        msg2.dinge = Assets.dinge;
-                        server.sendToTCP(c.getID(), msg2);
+                        Network.AddDinge addDingeMsg = new Network.AddDinge();
+                        addDingeMsg.dinge = Assets.dinge;
+                        server.sendToTCP(c.getID(), addDingeMsg);
+
+                        Network.AddFelder addFelderMsg = new Network.AddFelder();
+                        addFelderMsg.felder = Dungeon.felder;
+                        server.sendToTCP(c.getID(), addFelderMsg);
                     }
 
                 } else if (object instanceof Network.UpdateHeldZuServer) {
@@ -53,16 +61,27 @@ class DerServer {
                     zuruckMsg.held = msg.held;
                     server.sendToAllTCP(zuruckMsg);
 
-                } else if (object instanceof Network.UpdateDingZuServer) {
-                    Network.UpdateDingZuServer msg = (Network.UpdateDingZuServer) object;
-                    Network.UpdateDingVonServer msgZuruck = new Network.UpdateDingVonServer();
-                    msgZuruck.ding = msg.ding;
-                    server.sendToAllTCP(msgZuruck);
+                } else if (object instanceof Network.UpdateDing) {
+                    server.sendToAllTCP(object);
 
+                } else if (object instanceof Network.UpdateFeld) {
+                    server.sendToAllTCP(object);
+
+                } else if (object instanceof Network.NaechstesLevelVonClient) {
+                    Network.NaechstesLevelVonServer msg = new Network.NaechstesLevelVonServer();
+                    level++;
+                    msg.level = level;
+                    server.sendToAllTCP(msg);
+                    System.out.println(level);
+
+                } else if (object instanceof Network.MonsterGetoetet) {
+                    server.sendToAllTCP(object);
+
+                } else if (object instanceof Network.SpielBeenden) {
+                    server.sendToAllTCP(object);
                 }
             }
 
-            @SuppressWarnings("BooleanMethodIsAlwaysInverted")
             private boolean isValid(String value) {
                 if (value == null) return false;
                 value = value.trim();

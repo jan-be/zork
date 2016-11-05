@@ -31,17 +31,17 @@ class Dialoge {
                 "Wie lautet die IP-Adresse von deinem Mitspieler", "localhost");
     }
 
-    static void beenden(Held kurt) {
+    static void beenden(Held held) {
         HighscoreZeugs.zeitStoppen();
         HighscoreZeugs.zeitHighscoreSpeichern();
-        HighscoreZeugs.goldHighscoreSpeichern(kurt.gold);
+        HighscoreZeugs.goldHighscoreSpeichern(held.gold);
         double ep = 10000 / (double) HighscoreZeugs.getZeitHighscore() * HighscoreZeugs.getGoldHighscore();
         HighscoreZeugs.epHighscoreSpeichern((int) Math.round(ep));
 
         JOptionPane.showMessageDialog(null,
                 "Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
                         "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
-                        "\nDu hast dabei " + kurt.gold + " Gold eingesammelt" +
+                        "\nDu hast dabei " + held.gold + " Gold eingesammelt" +
                         "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
                         "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
                         "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP");

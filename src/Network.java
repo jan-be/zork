@@ -13,10 +13,19 @@ class Network {
         kryo.register(RemoveHeld.class);
         kryo.register(AddHeld.class);
         kryo.register(Ding.class);
-        kryo.register(UpdateDingZuServer.class);
-        kryo.register(UpdateDingVonServer.class);
+        kryo.register(UpdateDing.class);
         kryo.register(Stack.class);
-        kryo.register(AddDingeVonServer.class);
+        kryo.register(AddDinge.class);
+        kryo.register(AddFelder.class);
+        kryo.register(Feld[][].class);
+        kryo.register(Feld[].class);
+        kryo.register(Feld.class);
+        kryo.register(UpdateFeld.class);
+        kryo.register(LevelLaden.class);
+        kryo.register(NaechstesLevelVonClient.class);
+        kryo.register(NaechstesLevelVonServer.class);
+        kryo.register(MonsterGetoetet.class);
+        kryo.register(SpielBeenden.class);
     }
 
     static class Login {
@@ -40,15 +49,37 @@ class Network {
         String name;
     }
 
-    static class AddDingeVonServer {
+    static class AddDinge {
         Stack<Ding> dinge;
     }
 
-    static class UpdateDingZuServer {
+    static class UpdateDing {
         Ding ding;
     }
 
-    static class UpdateDingVonServer {
-        Ding ding;
+    static class AddFelder {
+        Feld[][] felder;
+    }
+
+    static class UpdateFeld {
+        Feld feld;
+    }
+
+    static class LevelLaden {
+        int level;
+    }
+
+    static class NaechstesLevelVonClient {
+    }
+
+    static class NaechstesLevelVonServer {
+        int level;
+    }
+
+    static class MonsterGetoetet {
+        int monsterGetoetet;
+    }
+
+    static class SpielBeenden {
     }
 }

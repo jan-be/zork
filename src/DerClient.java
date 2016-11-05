@@ -12,11 +12,13 @@ class DerClient {
     private final Client client;
     private final String name;
     private Stack<Ding> tempDinge = new Stack<>();
+    private Feld[][] tempFelder;
+    private int level;
 
     DerClient(String name) {
         this.name = name;
 
-        client = new Client();
+        client = new Client(20000, 20000);
         client.start();
 
         Network.register(client);
@@ -47,19 +49,40 @@ class DerClient {
                     Network.RemoveHeld msg = (Network.RemoveHeld) object;
                     helden.remove(msg.name);
 
-                } else if (object instanceof Network.UpdateDingVonServer) {
-                    Network.UpdateDingVonServer msg = (Network.UpdateDingVonServer) object;
+                } else if (object instanceof Network.UpdateDing) {
+                    Network.UpdateDing msg = (Network.UpdateDing) object;
                     Assets.setDing(msg.ding);
 
-                } else if (object instanceof Network.AddDingeVonServer) {
-                    Network.AddDingeVonServer msg = (Network.AddDingeVonServer) object;
+                } else if (object instanceof Network.AddDinge) {
+                    Network.AddDinge msg = (Network.AddDinge) object;
                     tempDinge = msg.dinge;
+
+                } else if (object instanceof Network.AddFelder) {
+                    Network.AddFelder msg = (Network.AddFelder) object;
+                    tempFelder = msg.felder;
+
+                } else if (object instanceof Network.UpdateFeld) {
+                    Network.UpdateFeld msg = (Network.UpdateFeld) object;
+                    dungeon.setFeld(msg.feld);
+
+                } else if (object instanceof Network.LevelLaden) {
+                    Network.LevelLaden msg = (Network.LevelLaden) object;
+                    level = msg.level;
+
+                } else if (object instanceof Network.NaechstesLevelVonServer) {
+                    Network.NaechstesLevelVonServer msg = (Network.NaechstesLevelVonServer) object;
+                    dungeon.levelStarten(msg.level);
+
+                } else if (object instanceof Network.MonsterGetoetet) {
+                    Network.MonsterGetoetet msg = (Network.MonsterGetoetet) object;
+                    dungeon.held.monsterGetoetetImLevel = msg.monsterGetoetet;
+
+                } else if (object instanceof Network.SpielBeenden) {
+                    Dialoge.beenden(dungeon.held);
                 }
 
 
-                if (dungeon != null) {
-                    dungeon.paint();
-                }
+                if (dungeon != null) dungeon.paint();
             }
         }));
 
@@ -73,7 +96,6 @@ class DerClient {
 
     void dungeonInit(Dungeon dungeon) {
         this.dungeon = dungeon;
-
     }
 
     void sendHeld() {
@@ -82,15 +104,47 @@ class DerClient {
         client.sendTCP(msg);
     }
 
-    void sendDingUpdate(Ding ding) {
-        Network.UpdateDingZuServer msg = new Network.UpdateDingZuServer();
-        msg.ding = ding;
-        client.sendTCP(msg);
+    void sendDingUndFeldUpdate(Ding ding, Feld feld) {
+        if (ding != null) {
+            Network.UpdateDing msg = new Network.UpdateDing();
+            msg.ding = ding;
+            client.sendTCP(msg);
+        }
+
+        if (feld != null) {
+            Network.UpdateFeld msg2 = new Network.UpdateFeld();
+            msg2.feld = feld;
+            client.sendTCP(msg2);
+        }
     }
 
     void dingeVomServerEinbauen() {
         if (!tempDinge.empty()) {
             Assets.dinge = tempDinge;
         }
+        if (tempFelder != null) {
+            Dungeon.felder = tempFelder;
+        }
+    }
+
+    int getStartLevel() {
+        return level;
+    }
+
+    void naechtesLevel() {
+        Network.NaechstesLevelVonClient msg = new Network.NaechstesLevelVonClient();
+        client.sendTCP(msg);
+    }
+
+    void monsterToeten() {
+        Network.MonsterGetoetet msg = new Network.MonsterGetoetet();
+        System.out.println(dungeon.held.monsterGetoetetImLevel);
+        msg.monsterGetoetet = dungeon.held.monsterGetoetetImLevel;
+        client.sendTCP(msg);
+    }
+
+    void spielBeenden() {
+        Network.SpielBeenden msg = new Network.SpielBeenden();
+        client.sendTCP(msg);
     }
 }

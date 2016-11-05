@@ -1,5 +1,6 @@
 import com.esotericsoftware.minlog.Log;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -21,7 +22,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         String name = Dialoge.name();
         Assets.init(name);
-        Log.set(Log.LEVEL_WARN);
+        Log.set(Log.LEVEL_DEBUG);
 
         String vielleichtIp = Dialoge.mitServerVerbinden();
         if (vielleichtIp == null && Dialoge.isServer()) {

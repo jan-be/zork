@@ -49,7 +49,7 @@ class Painter {
         //coin
         g.drawImage(Bilder.get("coin"), echteBreite / 40 * 36, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize, Main.feldSize / 3 * 2, Main.feldSize / 3 * 2);
         g.setFill(Color.WHITE);
-        g.setFont(new Font(30));
+        g.setFont(new Font(20));
         g.fillText(Integer.toString(held.gold), echteBreite / 40 * 37, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize + Main.feldSize / 2 + 2);
     }
 

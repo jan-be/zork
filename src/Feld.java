@@ -2,12 +2,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 class Feld {
-    private final int typ;
-    private final double xPixel, yPixel;
-    private final int x, y;
+    private int typ;
+    private double xPixel, yPixel;
+    int x, y;
     private boolean aufgedeckt;
 
-    Feld(int x, int y, char t) {
+    void init(int x, int y, char t) {
         this.x = x;
         this.y = y;
         this.xPixel = Main.randSize + x * Main.feldSize;
