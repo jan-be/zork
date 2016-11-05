@@ -1,4 +1,3 @@
-/*
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -6,7 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class InventarFrame {
+class InventarFrame {
     static void show() {
         Stage stage = new Stage();
         stage.setTitle("Inventar");
@@ -27,4 +26,3 @@ public class InventarFrame {
         stage.show();
     }
 }
-*/

@@ -138,7 +138,6 @@ class DerClient {
 
     void monsterToeten() {
         Network.MonsterGetoetet msg = new Network.MonsterGetoetet();
-        System.out.println(dungeon.held.monsterGetoetetImLevel);
         msg.monsterGetoetet = dungeon.held.monsterGetoetetImLevel;
         client.sendTCP(msg);
     }

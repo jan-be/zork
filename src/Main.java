@@ -22,7 +22,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         String name = Dialoge.name();
         Assets.init(name);
-        Log.set(Log.LEVEL_DEBUG);
+        Log.set(Log.LEVEL_WARN);
 
         String vielleichtIp = Dialoge.mitServerVerbinden();
         if (vielleichtIp == null && Dialoge.isServer()) {

@@ -150,7 +150,6 @@ class Dungeon {
     }
 
     private void naechstesLevelStartVersuch() {
-        System.out.println(held.monsterGetoetetImLevel+"   "+(dungeonDaten.anzahlMonsterProLevel[level]-1));
         if (held.monsterGetoetetImLevel == dungeonDaten.anzahlMonsterProLevel[level] - 1) {
             if (level + 1 < Main.ANZAHL_LEVEL) {
                 client.naechtesLevel();

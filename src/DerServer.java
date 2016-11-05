@@ -72,7 +72,6 @@ class DerServer {
                     level++;
                     msg.level = level;
                     server.sendToAllTCP(msg);
-                    System.out.println(level);
 
                 } else if (object instanceof Network.MonsterGetoetet) {
                     server.sendToAllTCP(object);
