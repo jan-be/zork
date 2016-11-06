@@ -3,15 +3,12 @@ import javafx.scene.paint.Color;
 
 class Feld {
     private int typ;
-    private double xPixel, yPixel;
     int x, y;
     private boolean aufgedeckt;
 
     void init(int x, int y, char t) {
         this.x = x;
         this.y = y;
-        this.xPixel = Main.randSize + x * Main.feldSize;
-        this.yPixel = Main.randSize + y * Main.feldSize;
         if (t == 'W') typ = 1;      //Weg
         else if (t == 'V') typ = 2; //Versteckte Tür
         else if (t == 'S') typ = 3; //Beginn
@@ -55,6 +52,8 @@ class Feld {
     }
 
     void paint(GraphicsContext g) {
+        double xPix = Main.randSize + x * Main.feldSize;
+        double yPix = Main.randSize + y * Main.feldSize;
         if (aufgedeckt) {
             if ((typ == 1) || (typ == 4) || typ == 5 || typ == 6 || typ == 7)
                 g.setFill(Color.color(0.33, 0.33, 0));
@@ -65,13 +64,13 @@ class Feld {
             else
                 g.setFill(Color.BLACK);
 
-            g.fillRect(xPixel, yPixel, Main.feldSize, Main.feldSize);
+            g.fillRect(xPix, yPix, Main.feldSize, Main.feldSize);
             g.setFill(Color.BLACK);
             g.setStroke(Color.BLACK);
-            g.strokeRect(xPixel, yPixel, Main.feldSize, Main.feldSize);
+            g.strokeRect(xPix, yPix, Main.feldSize, Main.feldSize);
         } else {
             g.setFill(Color.BLACK);
-            g.fillRect(xPixel, yPixel, Main.feldSize, Main.feldSize);
+            g.fillRect(xPix, yPix, Main.feldSize, Main.feldSize);
         }
     }
 }
