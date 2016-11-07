@@ -63,7 +63,7 @@ class DerClient {
 
                 } else if (object instanceof Network.UpdateFeld) {
                     Network.UpdateFeld msg = (Network.UpdateFeld) object;
-                    dungeon.setFeld(msg.feld);
+                    if (dungeon != null) dungeon.setFeld(msg.feld);
 
                 } else if (object instanceof Network.LevelLaden) {
                     Network.LevelLaden msg = (Network.LevelLaden) object;
@@ -80,7 +80,7 @@ class DerClient {
                 } else if (object instanceof Network.SpielBeenden) {
                     Dialoge.beenden(dungeon.held, client);
 
-                } else if(object instanceof Network.SpielNeustarten) {
+                } else if (object instanceof Network.SpielNeustarten) {
                     dungeon.levelStarten(0);
                 }
 
