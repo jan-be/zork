@@ -26,6 +26,7 @@ class Network {
         kryo.register(NaechstesLevelVonServer.class);
         kryo.register(MonsterGetoetet.class);
         kryo.register(SpielBeenden.class);
+        kryo.register(SpielNeustarten.class);
     }
 
     static class Login {
@@ -81,5 +82,8 @@ class Network {
     }
 
     static class SpielBeenden {
+    }
+
+    static class SpielNeustarten {
     }
 }

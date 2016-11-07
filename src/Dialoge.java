@@ -31,21 +31,39 @@ class Dialoge {
                 "Wie lautet die IP-Adresse von deinem Mitspieler", "localhost");
     }
 
-    static void beenden(Held held) {
+    static void beenden(Held held, Client client) {
         HighscoreZeugs.zeitStoppen();
         HighscoreZeugs.zeitHighscoreSpeichern();
         HighscoreZeugs.goldHighscoreSpeichern(held.gold);
         double ep = 10000 / (double) HighscoreZeugs.getZeitHighscore() * HighscoreZeugs.getGoldHighscore();
         HighscoreZeugs.epHighscoreSpeichern((int) Math.round(ep));
 
-        JOptionPane.showMessageDialog(null,
+//        JOptionPane.showMessageDialog(null,
+//                "Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
+//                        "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
+//                        "\nDu hast dabei " + held.gold + " Gold eingesammelt" +
+//                        "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
+//                        "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
+//                        "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP");
+//        System.exit(0);
+
+        Object[] optionen = {"Nochmal versuchen", "Verlassen"};
+
+        int n = JOptionPane.showOptionDialog(null,
                 "Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
                         "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
                         "\nDu hast dabei " + held.gold + " Gold eingesammelt" +
                         "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
                         "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
-                        "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP");
-        System.exit(0);
+                        "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP",
+                "Spiel beendet,",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, optionen, optionen[1]);
+        if (n == 1) System.exit(0);
+        else {
+            Network.SpielNeustarten msg = new Network.SpielNeustarten();
+            client.sendTCP(msg);
+        }
     }
 
     static Rectangle2D bildschirmWaehlen(int monitor) {

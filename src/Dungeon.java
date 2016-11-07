@@ -28,6 +28,12 @@ class Dungeon {
     }
 
     private void felderLaden(int level) {
+        held.monsterGetoetetImLevel = 0;
+        held.gold = 0;
+        held.leben = Held.maxLeben;
+        held.ruestung = Held.anfangsruestung;
+        held.schwerterAufgesammelt = 0;
+
         Assets.dinge.clear();
         for (int y = 0; y < dungeonDaten.hoehe; y++) {
             for (int x = 0; x < dungeonDaten.breite; x++) {
@@ -146,7 +152,6 @@ class Dungeon {
     void levelStarten(int level) {
         this.level = level;
         felderLaden(level);
-        held.monsterGetoetetImLevel = 0;
     }
 
     private void naechstesLevelStartVersuch() {
@@ -216,11 +221,6 @@ class Dungeon {
             if (Dialoge.sterben()) {
                 level = 0;
                 felderLaden(level);
-                held.monsterGetoetetImLevel = 0;
-                held.gold = 0;
-                held.leben = Held.maxLeben;
-                held.ruestung = Held.anfangsruestung;
-                held.schwerterAufgesammelt = 0;
             }
         }
     }

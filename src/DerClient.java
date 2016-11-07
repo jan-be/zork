@@ -78,7 +78,10 @@ class DerClient {
                     dungeon.held.monsterGetoetetImLevel = msg.monsterGetoetet;
 
                 } else if (object instanceof Network.SpielBeenden) {
-                    Dialoge.beenden(dungeon.held);
+                    Dialoge.beenden(dungeon.held, client);
+
+                } else if(object instanceof Network.SpielNeustarten) {
+                    dungeon.levelStarten(0);
                 }
 
 
