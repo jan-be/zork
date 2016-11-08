@@ -2,16 +2,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 class Feld {
-    private final int typ;
-    private final double xPixel, yPixel;
-    private final int x, y;
+    private int typ;
+    int x, y;
     private boolean aufgedeckt;
 
-    Feld(int x, int y, char t) {
+    void init(int x, int y, char t) {
         this.x = x;
         this.y = y;
-        this.xPixel = Main.randSize + x * Main.feldSize;
-        this.yPixel = Main.randSize + y * Main.feldSize;
         if (t == 'W') typ = 1;      //Weg
         else if (t == 'V') typ = 2; //Versteckte Tür
         else if (t == 'S') typ = 3; //Beginn
@@ -23,14 +20,18 @@ class Feld {
 
         aufgedeckt = false;
 
-        if (typ == 4) {
-            Assets.dinge.push(new Ding("monster", x, y, 10, 0, 255, 0));
-        } else if (typ == 5) {
-            Assets.dinge.push(new Ding("heiltrank", x, y, 0, 0, 0, 3));
-        } else if (typ == 6) {
-            Assets.dinge.push(new Ding("schwert", x, y, 10, 5, 0, 0));
-        } else if (typ == 7) {
-            Assets.dinge.push(new Ding("bossmonster", x, y, 50, 0, 1000, 0));
+        if (typ == 4 || typ == 5 || typ == 6 || typ == 7) {
+            Ding ding = new Ding();
+            if (typ == 4) {
+                ding.init("monster", x, y, 10, 0, 255, 0);
+            } else if (typ == 5) {
+                ding.init("heiltrank", x, y, 0, 0, 0, 3);
+            } else if (typ == 6) {
+                ding.init("schwert", x, y, 10, 5, 0, 0);
+            } else {
+                ding.init("bossmonster", x, y, 50, 0, 1000, 0);
+            }
+            Assets.dinge.push(ding);
         }
     }
 
@@ -45,11 +46,14 @@ class Feld {
     void aufdecken() {
         aufgedeckt = true;
         if (Assets.getDing(x, y) != null) {
+            //noinspection ConstantConditions
             Assets.getDing(x, y).aufgedeckt = true;
         }
     }
 
     void paint(GraphicsContext g) {
+        double xPix = Main.randSize + x * Main.feldSize;
+        double yPix = Main.randSize + y * Main.feldSize;
         if (aufgedeckt) {
             if ((typ == 1) || (typ == 4) || typ == 5 || typ == 6 || typ == 7)
                 g.setFill(Color.color(0.33, 0.33, 0));
@@ -60,13 +64,13 @@ class Feld {
             else
                 g.setFill(Color.BLACK);
 
-            g.fillRect(xPixel, yPixel, Main.feldSize, Main.feldSize);
+            g.fillRect(xPix, yPix, Main.feldSize, Main.feldSize);
             g.setFill(Color.BLACK);
             g.setStroke(Color.BLACK);
-            g.strokeRect(xPixel, yPixel, Main.feldSize, Main.feldSize);
+            g.strokeRect(xPix, yPix, Main.feldSize, Main.feldSize);
         } else {
             g.setFill(Color.BLACK);
-            g.fillRect(xPixel, yPixel, Main.feldSize, Main.feldSize);
+            g.fillRect(xPix, yPix, Main.feldSize, Main.feldSize);
         }
     }
 }

@@ -5,7 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class InventarFrame {
+class InventarFrame {
     static void show() {
         Stage stage = new Stage();
         stage.setTitle("Inventar");

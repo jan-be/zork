@@ -4,7 +4,7 @@ import java.util.Stack;
 @SuppressWarnings("ConstantConditions")
 class Assets {
     static Stack<Ding> dinge = new Stack<>();
-    static HashMap<String, Held> helden = new HashMap<>();
+    static final HashMap<String, Held> helden = new HashMap<>();
 
     static void init(String name) {
         Held held = new Held();
@@ -21,16 +21,20 @@ class Assets {
         return null;
     }
 
-    static void setDing(int x, int y, Ding ding) {
+    static void setDing(Ding ding) {
         try {
-            for (int i = 1; i < dinge.size(); i++) {
-                if (dinge.get(i).x == x && dinge.get(i).y == y) {
+            boolean done = false;
+            for (int i = 0; i < dinge.size(); i++) {
+                if (dinge.get(i).x == ding.x && dinge.get(i).y == ding.y) {
                     dinge.remove(i);
                     dinge.add(i,ding);
+                    done = true;
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            if(!done) {
+                dinge.push(ding);
+            }
+        } catch (Exception ignore) {
         }
     }
 

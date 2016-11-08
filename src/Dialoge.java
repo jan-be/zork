@@ -1,7 +1,9 @@
+import com.esotericsoftware.kryonet.Client;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 
 import javax.swing.*;
+import java.net.InetAddress;
 
 class Dialoge {
     static boolean isServer() {
@@ -29,21 +31,39 @@ class Dialoge {
                 "Wie lautet die IP-Adresse von deinem Mitspieler", "localhost");
     }
 
-    static void beenden(Held kurt) {
+    static void beenden(Held held, Client client) {
         HighscoreZeugs.zeitStoppen();
         HighscoreZeugs.zeitHighscoreSpeichern();
-        HighscoreZeugs.goldHighscoreSpeichern(kurt.gold);
+        HighscoreZeugs.goldHighscoreSpeichern(held.gold);
         double ep = 10000 / (double) HighscoreZeugs.getZeitHighscore() * HighscoreZeugs.getGoldHighscore();
         HighscoreZeugs.epHighscoreSpeichern((int) Math.round(ep));
 
-        JOptionPane.showMessageDialog(null,
+//        JOptionPane.showMessageDialog(null,
+//                "Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
+//                        "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
+//                        "\nDu hast dabei " + held.gold + " Gold eingesammelt" +
+//                        "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
+//                        "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
+//                        "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP");
+//        System.exit(0);
+
+        Object[] optionen = {"Nochmal versuchen", "Verlassen"};
+
+        int n = JOptionPane.showOptionDialog(null,
                 "Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
-                "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
-                "\nDu hast dabei " + kurt.gold + " Gold eingesammelt" +
-                "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
-                "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
-                "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP");
-        System.exit(0);
+                        "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
+                        "\nDu hast dabei " + held.gold + " Gold eingesammelt" +
+                        "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
+                        "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
+                        "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP",
+                "Spiel beendet,",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, optionen, optionen[1]);
+        if (n == 1) System.exit(0);
+        else {
+            Network.SpielNeustarten msg = new Network.SpielNeustarten();
+            client.sendTCP(msg);
+        }
     }
 
     static Rectangle2D bildschirmWaehlen(int monitor) {
@@ -77,6 +97,33 @@ class Dialoge {
     static void erstMonsterToeten() {
         JOptionPane.showMessageDialog(null,
                 "Du musst erst alle Monster töten",
-                "so läufts halt", JOptionPane.WARNING_MESSAGE);
+                "so läuft's halt", JOptionPane.WARNING_MESSAGE);
+    }
+
+    static String mitServerVerbinden() {
+        Client client = new Client();
+        InetAddress address = client.discoverHost(54777, 500);
+
+        if (address != null) {
+            String ipString = address.toString().substring(1);
+            Object[] optionen = {
+                    "Ja",
+                    "Nein"};
+            int n = JOptionPane.showOptionDialog(null,
+                    "Im Netzwerk läuft bereits ein Server mit IP-Adresse \n" +
+                            ipString + "\n" +
+                            "möchtest du dich damit verbinden?",
+                    "Mit Server verbinden?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    optionen,
+                    optionen[0]);
+            if (n == 0) {
+                return ipString;
+            }
+        }
+
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 import com.esotericsoftware.minlog.Log;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -7,7 +8,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class Main extends Application {
     static final int ANZAHL_LEVEL = DungeonDaten.getAnzahlLevel();
@@ -22,17 +22,21 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         String name = Dialoge.name();
         Assets.init(name);
-        Log.set(Log.LEVEL_DEBUG);
-        if (Dialoge.isServer()) {
+        Log.set(Log.LEVEL_WARN);
+
+        String vielleichtIp = Dialoge.mitServerVerbinden();
+        if (vielleichtIp == null && Dialoge.isServer()) {
             new DerServer();
             ipAdresse = "localhost";
-        } else {
+        } else if (vielleichtIp == null) {
             ipAdresse = Dialoge.ipAdresse();
+        } else {
+            ipAdresse = vielleichtIp;
         }
         DerClient client = new DerClient(name);
 
         int monitor = 0;
-        stage.initStyle(StageStyle.UNDECORATED);
+//        stage.initStyle(StageStyle.UNDECORATED);
         Rectangle2D size = Dialoge.bildschirmWaehlen(monitor);
 
         DungeonDaten dungeonDaten = new DungeonDaten();
@@ -59,13 +63,15 @@ public class Main extends Application {
 
         GraphicsContext g = canvas.getGraphicsContext2D();
         dungeon.init(g);
-        Painter.init(dungeonDaten, stage, name, g);
+        Painter.init(dungeonDaten, name, g);
         dungeon.paint();
         stage.show();
 
         Musikspieler.playHintergrundMusik();
 
         new KeyEventHandler(scene, dungeon);
+
+        client.dingeVomServerEinbauen();
 
         //TODO Inventarframe einbauen
 //        InventarFrame.show();

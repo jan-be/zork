@@ -4,15 +4,14 @@ import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Stack;
 
-public class DerServer {
-    Server server;
-    Stack<Ding> dinge;
-    HashMap<Integer, String> idToString = new HashMap<>();
+class DerServer {
+    private final Server server;
+    private final HashMap<Integer, String> idToString = new HashMap<>();
+    private int level = 0;
 
-    public DerServer() {
-        server = new Server();
+    DerServer() {
+        server = new Server(20000, 20000);
 
         Network.register(server);
 
@@ -42,26 +41,47 @@ public class DerServer {
                     msgZuruck.held = msg.held;
                     server.sendToAllTCP(msgZuruck);
 
-//                    if (c.getID() == 1) {
-//                        dinge = msg.dinge;
-//                    } else {
-//                        Network.AddDinge msg2 = new Network.AddDinge();
-//                        msg2.dinge = dinge;
-//                        server.sendToAllTCP(msg2);
-//                    }
+                    Network.LevelLaden levelLadenMsg = new Network.LevelLaden();
+                    levelLadenMsg.level = level;
+                    server.sendToTCP(c.getID(), levelLadenMsg);
+
+                    if (c.getID() != 1) {
+                        Network.AddDinge addDingeMsg = new Network.AddDinge();
+                        addDingeMsg.dinge = Assets.dinge;
+                        server.sendToTCP(c.getID(), addDingeMsg);
+
+                        Network.AddFelder addFelderMsg = new Network.AddFelder();
+                        addFelderMsg.felder = Dungeon.felder;
+                        server.sendToTCP(c.getID(), addFelderMsg);
+                    }
 
                 } else if (object instanceof Network.UpdateHeldZuServer) {
                     Network.UpdateHeldZuServer msg = (Network.UpdateHeldZuServer) object;
                     Network.UpdateHeldVonServer zuruckMsg = new Network.UpdateHeldVonServer();
                     zuruckMsg.held = msg.held;
                     server.sendToAllTCP(zuruckMsg);
+
+                } else if (object instanceof Network.UpdateDing) {
+                    server.sendToAllTCP(object);
+
+                } else if (object instanceof Network.UpdateFeld) {
+                    server.sendToAllTCP(object);
+
+                } else if (object instanceof Network.NaechstesLevelVonClient) {
+                    Network.NaechstesLevelVonServer msg = new Network.NaechstesLevelVonServer();
+                    level++;
+                    msg.level = level;
+                    server.sendToAllTCP(msg);
+
+                } else if (object instanceof Network.MonsterGetoetet) {
+                    server.sendToAllTCP(object);
+
+                } else if (object instanceof Network.SpielBeenden) {
+                    server.sendToAllTCP(object);
+
+                } else if(object instanceof Network.SpielNeustarten) {
+                    server.sendToAllTCP(object);
                 }
-//                else if (object instanceof Network.UpdateDingZuServer) {
-//                    Network.UpdateDingZuServer msg = (Network.UpdateDingZuServer) object;
-//                    Network.UpdateDingVonServer msgZuruck = new Network.UpdateDingVonServer();
-//                    msgZuruck.ding = msg.ding;
-//                    server.sendToAllTCP(msgZuruck);
-//                }
             }
 
             private boolean isValid(String value) {
