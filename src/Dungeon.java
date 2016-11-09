@@ -155,7 +155,7 @@ class Dungeon {
     }
 
     private void naechstesLevelStartVersuch() {
-        if (held.monsterGetoetetImLevel == dungeonDaten.anzahlMonsterProLevel[level] - 1) {
+        if (held.monsterGetoetetImLevel == dungeonDaten.anzahlMonsterProLevel[level]) {
             if (level + 1 < Main.ANZAHL_LEVEL) {
                 client.naechtesLevel();
             } else {
@@ -171,7 +171,7 @@ class Dungeon {
 
         Ding schwert = Assets.getDing(aktX, aktY);
 
-        assert schwert != null;
+        if (schwert == null) return;
         held.angriff += schwert.angriff;
         held.ruestung += schwert.ruestung;
         schwert.nochSichtbar = false;
@@ -184,7 +184,9 @@ class Dungeon {
         Ding heiltrank = Assets.getDing(aktX, aktY);
 
         held.leben += ThreadLocalRandom.current().nextInt(25, 50);
-        assert heiltrank != null;
+
+        if (heiltrank == null) return;
+
         heiltrank.maleAnklickbar--;
         if (heiltrank.maleAnklickbar == 0) {
             heiltrank.nochSichtbar = false;
@@ -193,6 +195,7 @@ class Dungeon {
             held.leben = 300;
 
         }
+
     }
 
     private void kaempfen(int x, int y) {
@@ -202,7 +205,7 @@ class Dungeon {
 
         int wert = ThreadLocalRandom.current().nextInt(1, 7);
 
-        assert gegner != null;
+        if (gegner == null) return;
         gegner.leben = gegner.leben - held.angriff;
 
         if (wert == 6) {

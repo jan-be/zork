@@ -13,9 +13,9 @@ class Assets {
     }
 
     static Ding getDing(int x, int y) {
-        for (int i = 1; i < dinge.size(); i++) {
-            if (dinge.get(i).x == x && dinge.get(i).y == y) {
-                return dinge.get(i);
+        for (Ding d : dinge) {
+            if (d.x == x && d.y == y) {
+                return d;
             }
         }
         return null;
