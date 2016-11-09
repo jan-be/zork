@@ -35,17 +35,8 @@ class Dialoge {
         HighscoreZeugs.zeitStoppen();
         HighscoreZeugs.zeitHighscoreSpeichern();
         HighscoreZeugs.goldHighscoreSpeichern(held.gold);
-        double ep = 10000 / (double) HighscoreZeugs.getZeitHighscore() * HighscoreZeugs.getGoldHighscore();
+        double ep = 1000000 / (double) HighscoreZeugs.zeitGebraucht * held.gold;
         HighscoreZeugs.epHighscoreSpeichern((int) Math.round(ep));
-
-//        JOptionPane.showMessageDialog(null,
-//                "Du hast das Spiel in " + HighscoreZeugs.getZeitGebrauchtString() + " beendet. " +
-//                        "\nDein Highscore: " + HighscoreZeugs.getHighscoreString() +
-//                        "\nDu hast dabei " + held.gold + " Gold eingesammelt" +
-//                        "\nDein Highscore: " + HighscoreZeugs.getGoldHighscore() + " Gold" +
-//                        "\nUnd so " + Math.round(ep) + " Erfahrungspunkte gesammelt" +
-//                        "\nDein Highscore: " + HighscoreZeugs.getEpHighscore() + " EP");
-//        System.exit(0);
 
         Object[] optionen = {"Nochmal versuchen", "Verlassen"};
 

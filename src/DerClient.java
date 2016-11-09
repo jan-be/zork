@@ -81,6 +81,7 @@ class DerClient {
                     Dialoge.beenden(dungeon.held, client);
 
                 } else if (object instanceof Network.SpielNeustarten) {
+                    HighscoreZeugs.zeitStarten();
                     dungeon.levelStarten(0);
                 }
 

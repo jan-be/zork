@@ -6,7 +6,7 @@ import static java.lang.System.currentTimeMillis;
 class HighscoreZeugs {
     static private long zeitAmAnfang;
 
-    static private long zeitGebraucht;
+    static long zeitGebraucht;
     static private final Preferences preferences = Preferences.userNodeForPackage(HighscoreZeugs.class);
 
     static void zeitStarten() {
@@ -27,7 +27,7 @@ class HighscoreZeugs {
         }
     }
 
-    static long getZeitHighscore() {
+    private static long getZeitHighscore() {
         return Long.parseLong(preferences.get("zeithighscore", "0"));
     }
 

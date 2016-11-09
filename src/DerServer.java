@@ -80,6 +80,7 @@ class DerServer {
                     server.sendToAllTCP(object);
 
                 } else if(object instanceof Network.SpielNeustarten) {
+                    level = 0;
                     server.sendToAllTCP(object);
                 }
             }
