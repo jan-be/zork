@@ -1,12 +1,7 @@
 class Ding {
     String typ;
-    int x;
-    int y;
-    double angriff;
-    double ruestung;
-    double anfangsLeben;
-    double leben;
-    double maleAnklickbar;
+    int x, y;
+    double angriff, ruestung, anfangsLeben, leben, maleAnklickbar;
     boolean nochSichtbar = true;
     boolean aufgedeckt = false;
 
