@@ -78,7 +78,7 @@ class DerClient {
                     dungeon.held.monsterGetoetetImLevel = msg.monsterGetoetet;
 
                 } else if (object instanceof Network.SpielBeenden) {
-                    Dialoge.beenden(dungeon.held, client);
+                    Dialoge.beenden(dungeon.held, dungeon);
 
                 } else if (object instanceof Network.SpielNeustarten) {
                     HighscoreZeugs.zeitStarten();
@@ -105,20 +105,20 @@ class DerClient {
     void sendHeld() {
         Network.UpdateHeldZuServer msg = new Network.UpdateHeldZuServer();
         msg.held = helden.get(name);
-        client.sendTCP(msg);
+        client.sendUDP(msg);
     }
 
     void sendDingUndFeldUpdate(Ding ding, Feld feld) {
         if (ding != null) {
             Network.UpdateDing msg = new Network.UpdateDing();
             msg.ding = ding;
-            client.sendTCP(msg);
+            client.sendUDP(msg);
         }
 
         if (feld != null) {
             Network.UpdateFeld msg2 = new Network.UpdateFeld();
             msg2.feld = feld;
-            client.sendTCP(msg2);
+            client.sendUDP(msg2);
         }
     }
 
@@ -148,6 +148,11 @@ class DerClient {
 
     void spielBeenden() {
         Network.SpielBeenden msg = new Network.SpielBeenden();
+        client.sendTCP(msg);
+    }
+
+    void neuStarten() {
+        Network.SpielNeustarten msg = new Network.SpielNeustarten();
         client.sendTCP(msg);
     }
 }

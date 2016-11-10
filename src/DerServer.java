@@ -20,7 +20,7 @@ class DerServer {
             public void disconnected(Connection c) {
                 Network.RemoveHeld removeHeld = new Network.RemoveHeld();
                 removeHeld.name = idToString.get(c.getID());
-                server.sendToAllTCP(removeHeld);
+                server.sendToAllUDP(removeHeld);
             }
 
             @Override
@@ -39,33 +39,33 @@ class DerServer {
 
                     Network.AddHeld msgZuruck = new Network.AddHeld();
                     msgZuruck.held = msg.held;
-                    server.sendToAllTCP(msgZuruck);
+                    server.sendToAllUDP(msgZuruck);
 
                     Network.LevelLaden levelLadenMsg = new Network.LevelLaden();
                     levelLadenMsg.level = level;
-                    server.sendToTCP(c.getID(), levelLadenMsg);
+                    server.sendToUDP(c.getID(), levelLadenMsg);
 
                     if (c.getID() != 1) {
                         Network.AddDinge addDingeMsg = new Network.AddDinge();
                         addDingeMsg.dinge = Assets.dinge;
-                        server.sendToTCP(c.getID(), addDingeMsg);
+                        server.sendToUDP(c.getID(), addDingeMsg);
 
                         Network.AddFelder addFelderMsg = new Network.AddFelder();
                         addFelderMsg.felder = Dungeon.felder;
-                        server.sendToTCP(c.getID(), addFelderMsg);
+                        server.sendToUDP(c.getID(), addFelderMsg);
                     }
 
                 } else if (object instanceof Network.UpdateHeldZuServer) {
                     Network.UpdateHeldZuServer msg = (Network.UpdateHeldZuServer) object;
                     Network.UpdateHeldVonServer zuruckMsg = new Network.UpdateHeldVonServer();
                     zuruckMsg.held = msg.held;
-                    server.sendToAllTCP(zuruckMsg);
+                    server.sendToAllUDP(zuruckMsg);
 
                 } else if (object instanceof Network.UpdateDing) {
-                    server.sendToAllTCP(object);
+                    server.sendToAllUDP(object);
 
                 } else if (object instanceof Network.UpdateFeld) {
-                    server.sendToAllTCP(object);
+                    server.sendToAllUDP(object);
 
                 } else if (object instanceof Network.NaechstesLevelVonClient) {
                     Network.NaechstesLevelVonServer msg = new Network.NaechstesLevelVonServer();

@@ -31,7 +31,7 @@ class Dialoge {
                 "Wie lautet die IP-Adresse von deinem Mitspieler", "localhost");
     }
 
-    static void beenden(Held held, Client client) {
+    static void beenden(Held held, Dungeon dungeon) {
         HighscoreZeugs.zeitStoppen();
         HighscoreZeugs.zeitHighscoreSpeichern();
         HighscoreZeugs.goldHighscoreSpeichern(held.gold);
@@ -52,8 +52,7 @@ class Dialoge {
                 JOptionPane.QUESTION_MESSAGE, null, optionen, optionen[1]);
         if (n == 1) System.exit(0);
         else {
-            Network.SpielNeustarten msg = new Network.SpielNeustarten();
-            client.sendTCP(msg);
+            dungeon.neuStarten();
         }
     }
 

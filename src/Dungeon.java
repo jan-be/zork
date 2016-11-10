@@ -222,9 +222,12 @@ class Dungeon {
         }
         if (held.leben <= 0) {
             if (Dialoge.sterben()) {
-                level = 0;
-                felderLaden(level);
+                neuStarten();
             }
         }
+    }
+
+    void neuStarten() {
+        client.neuStarten();
     }
 }
