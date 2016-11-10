@@ -27,6 +27,7 @@ class Network {
         kryo.register(MonsterGetoetet.class);
         kryo.register(SpielBeenden.class);
         kryo.register(SpielNeustarten.class);
+        kryo.register(Message.class);
     }
 
     static class Login {
@@ -85,5 +86,10 @@ class Network {
     }
 
     static class SpielNeustarten {
+    }
+
+    static class Message {
+        String message;
+        String name;
     }
 }

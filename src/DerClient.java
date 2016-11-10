@@ -14,6 +14,7 @@ class DerClient {
     private Stack<Ding> tempDinge = new Stack<>();
     private Feld[][] tempFelder;
     private int level;
+    TextGebiet textGebiet;
 
     DerClient(String name) {
         this.name = name;
@@ -30,6 +31,11 @@ class DerClient {
                 login.name = name;
                 login.held = helden.get(name);
                 client.sendTCP(login);
+            }
+
+            @Override
+            public void disconnected(Connection connection) {
+                Dialoge.serverGeleftet();
             }
 
             @Override
@@ -83,6 +89,10 @@ class DerClient {
                 } else if (object instanceof Network.SpielNeustarten) {
                     HighscoreZeugs.zeitStarten();
                     dungeon.levelStarten(0);
+
+                } else if (object instanceof Network.Message) {
+                    Network.Message msg = (Network.Message) object;
+                    textGebiet.empfangen(msg.message, msg.name);
                 }
 
 
@@ -153,6 +163,13 @@ class DerClient {
 
     void neuStarten() {
         Network.SpielNeustarten msg = new Network.SpielNeustarten();
+        client.sendTCP(msg);
+    }
+
+    void nachrichtSenden(String text) {
+        Network.Message msg = new Network.Message();
+        msg.message = text;
+        msg.name = name;
         client.sendTCP(msg);
     }
 }

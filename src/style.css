@@ -1,0 +1,7 @@
+.text-area .content {
+    -fx-background-color: darkgray;
+}
+
+.text-field {
+    -fx-background-color: gray;
+}

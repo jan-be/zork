@@ -1,6 +1,5 @@
 import com.esotericsoftware.minlog.Log;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -8,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application {
     static final int ANZAHL_LEVEL = DungeonDaten.getAnzahlLevel();
@@ -24,6 +24,7 @@ public class Main extends Application {
         Assets.init(name);
         Log.set(Log.LEVEL_WARN);
 
+
         String vielleichtIp = Dialoge.mitServerVerbinden();
         if (vielleichtIp == null && Dialoge.isServer()) {
             new DerServer();
@@ -33,10 +34,12 @@ public class Main extends Application {
         } else {
             ipAdresse = vielleichtIp;
         }
+
+
         DerClient client = new DerClient(name);
 
         int monitor = 0;
-//        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initStyle(StageStyle.UNDECORATED);
         Rectangle2D size = Dialoge.bildschirmWaehlen(monitor);
 
         DungeonDaten dungeonDaten = new DungeonDaten();
@@ -52,14 +55,18 @@ public class Main extends Application {
         stage.setY(size.getMinY());
         StackPane pane = new StackPane();
         Canvas canvas = new Canvas(size.getWidth(), size.getHeight() + 40);
+        canvas.setFocusTraversable(true);
         root.getChildren().add(pane);
         pane.getChildren().add(canvas);
         pane.setStyle("-fx-background-color: black");
+        scene.getStylesheets().add(this.getClass() .getResource("/style.css").toExternalForm());
         stage.setMaximized(true);
 
         Bilder.init();
         client.dungeonInit(dungeon);
         new MuteButton(size, root);
+
+        client.textGebiet = new TextGebiet(client, root, size);
 
         GraphicsContext g = canvas.getGraphicsContext2D();
         dungeon.init(g);

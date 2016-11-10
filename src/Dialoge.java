@@ -116,4 +116,10 @@ class Dialoge {
 
         return null;
     }
+
+    static void serverGeleftet() {
+        JOptionPane.showMessageDialog(null, "der Server hat das Spiel verlassen.\n" +
+                "Das Spiel wird beendet.", "ALARM", 0);
+        System.exit(0);
+    }
 }

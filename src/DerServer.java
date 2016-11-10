@@ -79,8 +79,11 @@ class DerServer {
                 } else if (object instanceof Network.SpielBeenden) {
                     server.sendToAllTCP(object);
 
-                } else if(object instanceof Network.SpielNeustarten) {
+                } else if (object instanceof Network.SpielNeustarten) {
                     level = 0;
+                    server.sendToAllTCP(object);
+
+                } else if (object instanceof Network.Message) {
                     server.sendToAllTCP(object);
                 }
             }
