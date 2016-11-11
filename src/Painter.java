@@ -3,7 +3,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import java.util.Collection;
 import java.util.HashMap;
 
 class Painter {
@@ -20,14 +19,14 @@ class Painter {
     }
 
     static void paint() {
-        for (Ding d : Assets.dinge) {
-            dingPaint(g, d);
-        }
+        //dinge zeichnen
+        Assets.dinge.forEach(d -> dingPaint(g, d));
+
+        //eigenen Helden zeichen
         eigenenHeldenPaint(dungeonDaten, g, helden.get(name));
-        Collection<Held> heldenCollection = helden.values();
-        for (Held h : heldenCollection) {
-            alleHeldenPaint(g, h);
-        }
+
+        //andere Helden zeichnen
+        helden.values().forEach(held -> alleHeldenPaint(g, held));
     }
 
     private static void eigenenHeldenPaint(DungeonDaten dungeonDaten, GraphicsContext g, Held held) {
@@ -61,7 +60,7 @@ class Painter {
         g.drawImage(Bilder.get("held"), xPix + Main.feldSize / 10, yPix + Main.feldSize / 10, Main.feldSize * 4 / 5, Main.feldSize * 4 / 5);
 
         g.setTextAlign(TextAlignment.CENTER);
-        g.fillText(held.name, xPix + Main.feldSize / 2, yPix-2);
+        g.fillText(held.name, xPix + Main.feldSize / 2, yPix - 2);
     }
 
     private static void dingPaint(GraphicsContext g, Ding ding) {

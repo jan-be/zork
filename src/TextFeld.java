@@ -3,11 +3,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
-class TextGebiet {
+class TextFeld {
     private TextArea textArea = new TextArea();
     private DerClient client;
 
-    TextGebiet(DerClient client, Pane root, Rectangle2D size) {
+    TextFeld(DerClient client, Pane root, Rectangle2D size) {
         double width = size.getWidth();
         double height = size.getHeight();
 

@@ -5,6 +5,8 @@ import javafx.stage.Screen;
 import javax.swing.*;
 import java.net.InetAddress;
 
+import static javax.swing.JOptionPane.showInputDialog;
+
 class Dialoge {
     static boolean isServer() {
         Object[] optionen = {
@@ -22,12 +24,14 @@ class Dialoge {
     }
 
     static String name() {
-        return JOptionPane.showInputDialog(null,
+        String name = JOptionPane.showInputDialog(null,
                 "Wie willst du heißen", "Name");
+        if (name == null) System.exit(0);
+        return name;
     }
 
     static String ipAdresse() {
-        return JOptionPane.showInputDialog(null,
+        return showInputDialog(null,
                 "Wie lautet die IP-Adresse von deinem Mitspieler", "localhost");
     }
 
@@ -57,8 +61,9 @@ class Dialoge {
     }
 
     static Rectangle2D bildschirmWaehlen(int monitor) {
-        String ergebnis = JOptionPane.showInputDialog(
+        String ergebnis = showInputDialog(
                 "Gib den Monitor ein, auf dem das Spiel laufen soll", "1");
+        if (ergebnis == null) System.exit(0);
         Rectangle2D size = null;
         try {
             if (!ergebnis.equals("")) {

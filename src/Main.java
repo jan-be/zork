@@ -25,7 +25,6 @@ public class Main extends Application {
         Assets.init(name);
         Log.set(Log.LEVEL_WARN);
 
-
         String vielleichtIp = Dialoge.mitServerVerbinden();
         if (vielleichtIp == null && Dialoge.isServer()) {
             new DerServer();
@@ -35,7 +34,6 @@ public class Main extends Application {
         } else {
             ipAdresse = vielleichtIp;
         }
-
 
         DerClient client = new DerClient(name);
 
@@ -61,14 +59,14 @@ public class Main extends Application {
         root.getChildren().add(pane);
         pane.getChildren().add(canvas);
         pane.setStyle("-fx-background-color: black");
-        scene.getStylesheets().add(this.getClass() .getResource("/style.css").toExternalForm());
+        scene.getStylesheets().add(this.getClass().getResource("/style.css").toExternalForm());
         stage.setMaximized(true);
 
         Bilder.init();
         client.dungeonInit(dungeon);
         new MuteButton(size, root);
 
-        client.textGebiet = new TextGebiet(client, root, size);
+        client.textFeld = new TextFeld(client, root, size);
 
         GraphicsContext g = canvas.getGraphicsContext2D();
         dungeon.init(g);
@@ -81,9 +79,6 @@ public class Main extends Application {
         new KeyEventHandler(scene, dungeon);
 
         client.dingeVomServerEinbauen();
-
-        //TODO Inventarframe einbauen
-//        InventarFrame.show();
     }
 
     @Override

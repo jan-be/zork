@@ -14,7 +14,7 @@ class DerClient {
     private Stack<Ding> tempDinge = new Stack<>();
     private Feld[][] tempFelder;
     private int level;
-    TextGebiet textGebiet;
+    TextFeld textFeld;
 
     DerClient(String name) {
         this.name = name;
@@ -92,7 +92,7 @@ class DerClient {
 
                 } else if (object instanceof Network.Message) {
                     Network.Message msg = (Network.Message) object;
-                    textGebiet.empfangen(msg.message, msg.name);
+                    textFeld.empfangen(msg.message, msg.name);
                 }
 
 
@@ -171,5 +171,9 @@ class DerClient {
         msg.message = text;
         msg.name = name;
         client.sendTCP(msg);
+    }
+
+    void beenden() {
+        client.stop();
     }
 }

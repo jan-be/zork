@@ -45,9 +45,9 @@ class Feld {
 
     void aufdecken() {
         aufgedeckt = true;
-        if (Assets.getDing(x, y) != null) {
-            //noinspection ConstantConditions
-            Assets.getDing(x, y).aufgedeckt = true;
+        Ding ding = Assets.getDing(x, y);
+        if (ding != null) {
+            ding.aufgedeckt = true;
         }
     }
 

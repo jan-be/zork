@@ -102,4 +102,8 @@ class DerServer {
         }
         server.start();
     }
+
+    void beenden() {
+        server.stop();
+    }
 }
