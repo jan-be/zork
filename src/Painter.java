@@ -6,19 +6,19 @@ import javafx.scene.text.TextAlignment;
 import java.util.HashMap;
 
 class Painter {
-    private static HashMap<String, Held> helden;
-    private static DungeonDaten dungeonDaten;
-    private static GraphicsContext g;
-    private static String name;
+    private HashMap<String, Held> helden;
+    private DungeonDaten dungeonDaten;
+    private GraphicsContext g;
+    private String name;
 
-    static void init(DungeonDaten dungeonDaten, String name, GraphicsContext g) {
-        Painter.helden = Assets.helden;
-        Painter.dungeonDaten = dungeonDaten;
-        Painter.name = name;
-        Painter.g = g;
+    Painter(DungeonDaten dungeonDaten, String name, GraphicsContext g) {
+        this.helden = Assets.helden;
+        this.dungeonDaten = dungeonDaten;
+        this.name = name;
+        this.g = g;
     }
 
-    static void paint() {
+    void paint() {
         //dinge zeichnen
         Assets.dinge.forEach(d -> dingPaint(g, d));
 
@@ -29,7 +29,7 @@ class Painter {
         helden.values().forEach(held -> alleHeldenPaint(g, held));
     }
 
-    private static void eigenenHeldenPaint(DungeonDaten dungeonDaten, GraphicsContext g, Held held) {
+    private void eigenenHeldenPaint(DungeonDaten dungeonDaten, GraphicsContext g, Held held) {
         double echteBreite = dungeonDaten.breite * Main.feldSize;
 
         //das Herzzeugs
@@ -52,7 +52,7 @@ class Painter {
         g.fillText(Integer.toString(held.gold), echteBreite / 40 * 37, echteBreite / 30 + dungeonDaten.hoehe * Main.feldSize + Main.randSize + Main.feldSize / 2 + 2);
     }
 
-    private static void alleHeldenPaint(GraphicsContext g, Held held) {
+    private void alleHeldenPaint(GraphicsContext g, Held held) {
         double xPix = Main.randSize + held.x * Main.feldSize;
         double yPix = Main.randSize + held.y * Main.feldSize;
 

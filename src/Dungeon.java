@@ -10,14 +10,17 @@ class Dungeon {
     final Held held;
     private final double breite;
     private final DungeonDaten dungeonDaten;
+    private String name;
     private final DerClient client;
     private final Stage stage;
     private int aktX, aktY, level;
     private GraphicsContext g;
+    private Painter painter;
 
     Dungeon(DungeonDaten dungeonDaten, double breite, Stage stage, String name, DerClient client) {
         this.dungeonDaten = dungeonDaten;
         this.breite = breite;
+        this.name = name;
         this.client = client;
         this.stage = stage;
         level = client.getStartLevel();
@@ -114,6 +117,7 @@ class Dungeon {
 
     void init(GraphicsContext g) {
         this.g = g;
+        painter = new Painter(dungeonDaten, name, g);
     }
 
     void paint() {
@@ -129,7 +133,7 @@ class Dungeon {
             g.setStroke(Color.WHITE);
             g.strokeRect(Main.randSize, Main.randSize, breite - 2 * Main.randSize - Main.randSize / dungeonDaten.breite * 3, dungeonDaten.hoehe * Main.feldSize);
 
-            Painter.paint();
+            painter.paint();
         });
 
     }

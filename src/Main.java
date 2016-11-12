@@ -70,7 +70,6 @@ public class Main extends Application {
 
         GraphicsContext g = canvas.getGraphicsContext2D();
         dungeon.init(g);
-        Painter.init(dungeonDaten, name, g);
         dungeon.paint();
         stage.show();
 

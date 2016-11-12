@@ -172,8 +172,4 @@ class DerClient {
         msg.name = name;
         client.sendTCP(msg);
     }
-
-    void beenden() {
-        client.stop();
-    }
 }
