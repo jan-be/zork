@@ -1,5 +1,4 @@
 import javafx.geometry.Rectangle2D;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;

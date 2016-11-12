@@ -88,7 +88,7 @@ class DerClient {
 
                 } else if (object instanceof Network.SpielNeustarten) {
                     HighscoreZeugs.zeitStarten();
-                    dungeon.levelStarten(0);
+                    dungeon.neuStarten();
 
                 } else if (object instanceof Network.Message) {
                     Network.Message msg = (Network.Message) object;

@@ -32,10 +32,6 @@ class Dungeon {
 
     private void felderLaden(int level) {
         held.monsterGetoetetImLevel = 0;
-        held.gold = 0;
-        held.leben = Held.maxLeben;
-        held.ruestung = Held.anfangsruestung;
-        held.schwerterAufgesammelt = 0;
 
         Assets.dinge.clear();
         for (int y = 0; y < dungeonDaten.hoehe; y++) {
@@ -142,17 +138,20 @@ class Dungeon {
     void aktionAusfuehren() {
         if (Assets.hatMonster(aktX, aktY)) {
             kaempfen(aktX, aktY);
+            if (held.leben > 0) update(aktX, aktY);
         } else if (Assets.hatHeiltrank(aktX, aktY)) {
             heilen();
+            update(aktX, aktY);
         } else if (Assets.hatSchwert(aktX, aktY)) {
             schwertAufnehmen();
+            update(aktX, aktY);
         } else if (felder[aktX][aktY].hatVersteckteTuer()) {
             naechstesLevelStartVersuch();
         } else if (Assets.hatBossmonster(aktX, aktY)) {
             kaempfen(aktX + Assets.getBossmonsterPosX(aktX, aktY),
                     aktY + Assets.getBossmonsterPosY(aktX, aktY));
+            if (held.leben > 0) update(aktX, aktY);
         }
-        update(aktX, aktY);
     }
 
     void levelStarten(int level) {
@@ -206,8 +205,6 @@ class Dungeon {
         Ding gegner = Assets.getDing(x, y);
         if (gegner == null) return;
 
-        Musikspieler.playSound("schlag");
-
         int wert = random(1, 7);
 
         // Gegner verliert Leben
@@ -231,15 +228,25 @@ class Dungeon {
         }
 
         if (held.leben <= 0 && Dialoge.sterben()) {
-            neuStarten();
+            neuStartSenden();
         }
+
+        if (held.leben > 0) Musikspieler.playSound("schlag");
     }
 
     private static int random(int a, int b) {
-        return ThreadLocalRandom.current().nextInt(a,b);
+        return ThreadLocalRandom.current().nextInt(a, b);
+    }
+
+    void neuStartSenden() {
+        client.neuStarten();
     }
 
     void neuStarten() {
-        client.neuStarten();
+        held.gold = 0;
+        felderLaden(0);
+        held.leben = Held.maxLeben;
+        held.ruestung = Held.anfangsruestung;
+        held.schwerterAufgesammelt = 0;
     }
 }

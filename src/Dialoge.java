@@ -56,7 +56,7 @@ class Dialoge {
                 JOptionPane.QUESTION_MESSAGE, null, optionen, optionen[1]);
         if (n == 1) System.exit(0);
         else {
-            dungeon.neuStarten();
+            dungeon.neuStartSenden();
         }
     }
 
