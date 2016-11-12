@@ -56,10 +56,13 @@ class Feld {
         double yPix = Main.randSize + y * Main.feldSize;
         if (aufgedeckt) {
             if ((typ == 1) || (typ == 4) || typ == 5 || typ == 6 || typ == 7)
+                //gelb-grün
                 g.setFill(Color.color(0.33, 0.33, 0));
             else if (typ == 2)
+                //lila
                 g.setFill(Color.color(0.33, 0, 0.33));
             else if (typ == 3)
+                //hellblau
                 g.setFill(Color.color(0, 0.33, 0.33));
             else
                 g.setFill(Color.BLACK);

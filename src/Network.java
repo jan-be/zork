@@ -28,6 +28,7 @@ class Network {
         kryo.register(SpielBeenden.class);
         kryo.register(SpielNeustarten.class);
         kryo.register(Message.class);
+        kryo.register(NameSchonVergeben.class);
     }
 
     static class Login {
@@ -91,5 +92,8 @@ class Network {
     static class Message {
         String message;
         String name;
+    }
+
+    static class NameSchonVergeben {
     }
 }

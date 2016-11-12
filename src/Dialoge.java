@@ -127,4 +127,10 @@ class Dialoge {
                 "Das Spiel wird beendet.", "ALARM", 0);
         System.exit(0);
     }
+
+    static void nameSchonVergeben() {
+        JOptionPane.showMessageDialog(null, "Der Name ist schon vergeben\n" +
+                "Das Spiel wird beendet.", "ALARM", 0);
+        System.exit(0);
+    }
 }

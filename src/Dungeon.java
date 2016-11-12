@@ -23,7 +23,7 @@ class Dungeon {
         this.name = name;
         this.client = client;
         this.stage = stage;
-        level = client.getStartLevel();
+        level = client.getLevelAmAnfang();
         felder = new Feld[dungeonDaten.breite][dungeonDaten.hoehe];
         held = Assets.helden.get(name);
         felderLaden(level);
@@ -123,6 +123,7 @@ class Dungeon {
     void paint() {
         Platform.runLater(() -> {
             g.clearRect(0, 0, stage.getWidth(), stage.getHeight());
+
             for (int y = 0; y < dungeonDaten.hoehe; y++) {
                 for (int x = 0; x < dungeonDaten.breite; x++) {
                     felder[x][y].paint(g);
@@ -148,7 +149,8 @@ class Dungeon {
         } else if (felder[aktX][aktY].hatVersteckteTuer()) {
             naechstesLevelStartVersuch();
         } else if (Assets.hatBossmonster(aktX, aktY)) {
-            kaempfen(aktX + Assets.getBossmonsterPosX(aktX, aktY), aktY + Assets.getBossmonsterPosY(aktX, aktY));
+            kaempfen(aktX + Assets.getBossmonsterPosX(aktX, aktY),
+                    aktY + Assets.getBossmonsterPosY(aktX, aktY));
         }
         update(aktX, aktY);
     }
@@ -171,11 +173,11 @@ class Dungeon {
     }
 
     private void schwertAufnehmen() {
+        Ding schwert = Assets.getDing(aktX, aktY);
+        if (schwert == null) return;
+
         Musikspieler.playSound("schwertAufheben");
 
-        Ding schwert = Assets.getDing(aktX, aktY);
-
-        if (schwert == null) return;
         held.angriff += schwert.angriff;
         held.ruestung += schwert.ruestung;
         schwert.nochSichtbar = false;
@@ -183,52 +185,58 @@ class Dungeon {
     }
 
     private void heilen() {
+        Ding heiltrank = Assets.getDing(aktX, aktY);
+        if (heiltrank == null) return;
+
         Musikspieler.playSound("heiltrankTrinken");
 
-        Ding heiltrank = Assets.getDing(aktX, aktY);
-
-        held.leben += ThreadLocalRandom.current().nextInt(25, 50);
-
-        if (heiltrank == null) return;
+        held.leben += random(25, 50);
 
         heiltrank.maleAnklickbar--;
         if (heiltrank.maleAnklickbar == 0) {
             heiltrank.nochSichtbar = false;
         }
+
         if (held.leben > 300) {
             held.leben = 300;
-
         }
-
     }
 
     private void kaempfen(int x, int y) {
+        Ding gegner = Assets.getDing(x, y);
+        if (gegner == null) return;
+
         Musikspieler.playSound("schlag");
 
-        Ding gegner = Assets.getDing(x, y);
+        int wert = random(1, 7);
 
-        int wert = ThreadLocalRandom.current().nextInt(1, 7);
-
-        if (gegner == null) return;
-        gegner.leben = gegner.leben - held.angriff;
+        // Gegner verliert Leben
+        gegner.leben -= held.angriff + random(-10, 10);
 
         if (wert == 6) {
-            held.leben -= 40;     // Held verliert und wird schwer verletzt
+            // Held verliert und wird schwer verletzt
+            held.leben -= random(30, 50);
         } else if (wert >= 3) {
+            // Held verliert Leben
             held.leben -= gegner.angriff;
         } else {
-            held.gold += ThreadLocalRandom.current().nextInt(0, 21);    // Held gewinnt haushoch
+            // Held gewinnt haushoch
+            held.gold += random(0, 21);
         }
-        if (gegner.leben < 0) {
+
+        if (gegner.leben <= 0) {
             held.monsterGetoetetImLevel++;
             client.monsterToeten();
             gegner.nochSichtbar = false;
         }
-        if (held.leben <= 0) {
-            if (Dialoge.sterben()) {
-                neuStarten();
-            }
+
+        if (held.leben <= 0 && Dialoge.sterben()) {
+            neuStarten();
         }
+    }
+
+    private static int random(int a, int b) {
+        return ThreadLocalRandom.current().nextInt(a,b);
     }
 
     void neuStarten() {

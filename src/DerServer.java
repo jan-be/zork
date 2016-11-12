@@ -3,7 +3,10 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.esotericsoftware.jsonbeans.JsonValue.ValueType.object;
 
 class DerServer {
     private final Server server;
@@ -29,6 +32,7 @@ class DerServer {
                 if (object instanceof Network.Login) {
                     String name = ((Network.Login) object).name;
                     if (!isValid(name)) {
+                        server.sendToTCP(c.getID(), new Network.NameSchonVergeben());
                         c.close();
                         return;
                     }
@@ -91,6 +95,9 @@ class DerServer {
             private boolean isValid(String value) {
                 if (value == null) return false;
                 value = value.trim();
+                for (String name : idToString.values()) {
+                    if(name.equals(value)) return false;
+                }
                 return value.length() != 0;
             }
         });

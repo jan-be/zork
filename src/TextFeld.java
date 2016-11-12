@@ -23,7 +23,7 @@ class TextFeld {
         TextField textField = new TextField("deine Nachricht");
         textField.setLayoutX(width / 20);
         textField.setLayoutY(height / 40 * 39);
-        textField.setPrefWidth(width / 4);
+        textField.setPrefWidth(width / 5);
 
         textField.setOnAction((ae) -> {
             senden(textField.getText());

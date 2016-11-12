@@ -93,6 +93,9 @@ class DerClient {
                 } else if (object instanceof Network.Message) {
                     Network.Message msg = (Network.Message) object;
                     textFeld.empfangen(msg.message, msg.name);
+
+                }else if(object instanceof Network.NameSchonVergeben) {
+                    Dialoge.nameSchonVergeben();
                 }
 
 
@@ -141,7 +144,7 @@ class DerClient {
         }
     }
 
-    int getStartLevel() {
+    int getLevelAmAnfang() {
         return level;
     }
 

@@ -25,6 +25,7 @@ public class Main extends Application {
         Assets.init(name);
         Log.set(Log.LEVEL_WARN);
 
+        //IP-Adresse zum verbinden wählen
         String vielleichtIp = Dialoge.mitServerVerbinden();
         if (vielleichtIp == null && Dialoge.isServer()) {
             new DerServer();
@@ -34,18 +35,17 @@ public class Main extends Application {
         } else {
             ipAdresse = vielleichtIp;
         }
-
         DerClient client = new DerClient(name);
 
+        //Auflösung festlegen
         int monitor = 0;
-        stage.initStyle(StageStyle.UNDECORATED);
         Rectangle2D size = Dialoge.bildschirmWaehlen(monitor);
-
         DungeonDaten dungeonDaten = new DungeonDaten();
         randSize = size.getWidth() / 20;
         feldSize = (int) (size.getWidth() / dungeonDaten.breite - randSize / dungeonDaten.breite * 2);
         Dungeon dungeon = new Dungeon(dungeonDaten, size.getWidth(), stage, name, client);
 
+        //JavaFX initialisieren
         stage.setTitle("ZORK");
         Pane root = new Pane();
         Scene scene = new Scene(root);
@@ -62,22 +62,27 @@ public class Main extends Application {
         scene.getStylesheets().add(this.getClass().getResource("/style.css").toExternalForm());
         stage.setMaximized(true);
 
+        //auskommentieren für Fenstermodus
+        stage.initStyle(StageStyle.UNDECORATED);
+
+        //Man könnte es zwar auch in einer Zeile schreiben, aber so finde ich es übersichtlicher
+        //noinspection UnnecessaryLocalVariable
+        TextFeld textFeld = new TextFeld(client, root, size);
+        client.textFeld = textFeld;
+
+        //Dinge, die nicht am Anfang passieren dürfen
         Bilder.init();
         client.dungeonInit(dungeon);
         new MuteButton(size, root);
-
-        client.textFeld = new TextFeld(client, root, size);
-
         GraphicsContext g = canvas.getGraphicsContext2D();
         dungeon.init(g);
         dungeon.paint();
-        stage.show();
-
         Musikspieler.playHintergrundMusik();
-
         new KeyEventHandler(scene, dungeon);
-
         client.dingeVomServerEinbauen();
+
+        //als allerletztes wird das Fenster angezeigt
+        stage.show();
     }
 
     @Override
