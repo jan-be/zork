@@ -1,11 +1,12 @@
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 class TextFeld {
-    private TextArea textArea = new TextArea();
-    private DerClient client;
+    private final TextArea textArea = new TextArea();
+    private final DerClient client;
 
     TextFeld(DerClient client, Pane root, Rectangle2D size) {
         double width = size.getWidth();
@@ -16,10 +17,13 @@ class TextFeld {
         textArea.setLayoutX(width / 20);
         textArea.setLayoutY(height / 20 * 17);
         textArea.setPrefRowCount(4);
+        textArea.setWrapText(true);
+        textArea.setPrefWidth(width / 4);
 
         TextField textField = new TextField("deine Nachricht");
         textField.setLayoutX(width / 20);
         textField.setLayoutY(height / 40 * 39);
+        textField.setPrefWidth(width / 4);
 
         textField.setOnAction((ae) -> {
             senden(textField.getText());

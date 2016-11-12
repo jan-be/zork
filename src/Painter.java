@@ -6,10 +6,10 @@ import javafx.scene.text.TextAlignment;
 import java.util.HashMap;
 
 class Painter {
-    private HashMap<String, Held> helden;
-    private DungeonDaten dungeonDaten;
-    private GraphicsContext g;
-    private String name;
+    private final HashMap<String, Held> helden;
+    private final DungeonDaten dungeonDaten;
+    private final GraphicsContext g;
+    private final String name;
 
     Painter(DungeonDaten dungeonDaten, String name, GraphicsContext g) {
         this.helden = Assets.helden;

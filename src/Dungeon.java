@@ -10,7 +10,7 @@ class Dungeon {
     final Held held;
     private final double breite;
     private final DungeonDaten dungeonDaten;
-    private String name;
+    private final String name;
     private final DerClient client;
     private final Stage stage;
     private int aktX, aktY, level;
